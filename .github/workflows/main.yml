@@ -1,0 +1,39 @@
+---
+name: CI
+
+on:
+  push:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: "actions/setup-python@v2"
+        with:
+          python-version: "3.9"
+      - name: Check formatting, linting and import sorting
+        run: ./scripts/do check
+
+  test:
+    needs: [check]
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: "actions/setup-python@v2"
+        with:
+          python-version: "3.9"
+      - name: Run tests
+#       env:  # Add environment variables required for tests
+        run: |
+          ./scripts/do test
+
+  lint-dockerfile:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: hadolint/hadolint-action@v1.5.0
+        with:
+          failure-threshold: error
