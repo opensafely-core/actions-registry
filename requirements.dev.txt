@@ -26,6 +26,11 @@ django==3.2.5
     # via
     #   -c requirements.prod.in
     #   -r requirements.prod.in
+    #   django-vite
+django-vite==1.1.0
+    # via
+    #   -c requirements.prod.in
+    #   -r requirements.prod.in
 filelock==3.0.12
     # via virtualenv
 flake8==3.9.2
