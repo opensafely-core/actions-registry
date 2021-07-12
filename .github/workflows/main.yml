@@ -28,7 +28,7 @@ jobs:
       - name: Run tests
 #       env:  # Add environment variables required for tests
         run: |
-          ./scripts/do test
+          pytest
 
   lint-dockerfile:
     runs-on: ubuntu-latest
