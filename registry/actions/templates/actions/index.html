@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+  {% block content %}
+    <h2>Actions Registry</h2>
+    <ul>
+        {% for action in actions_list %}
+            <li>
+                <a href="{% url 'actions:detail' action.id %}">
+                    {{ action.action_name }}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}
+</body>
+</html>
