@@ -33,6 +33,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     "actions.apps.ActionsConfig",
+    # 'django_vite',
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
