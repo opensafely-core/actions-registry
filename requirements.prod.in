@@ -1,4 +1,5 @@
 # Main prod requirements
+django
 
 # To generate requirements file, run:
 # pip-compile --generate-hashes --output-file=requirements.prod.txt requirements.prod.in
