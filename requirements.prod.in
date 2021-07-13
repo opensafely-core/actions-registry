@@ -1,5 +1,10 @@
 # Main prod requirements
 django
+environs[django]
+requests
+furl
+gunicorn
+
 
 # To generate requirements file, run:
 # pip-compile --generate-hashes --output-file=requirements.prod.txt requirements.prod.in
