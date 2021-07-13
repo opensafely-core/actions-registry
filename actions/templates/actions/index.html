@@ -8,10 +8,10 @@
   {% block content %}
     <h2>Actions Registry</h2>
     <ul>
-        {% for action in actions_list %}
+        {% for action in actions %}
             <li>
                 <a href="{% url 'actions:detail' action.id %}">
-                    {{ action.action_name }}
+                    {{ action.name }}
                 </a>
             </li>
         {% endfor %}
