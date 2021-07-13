@@ -3,7 +3,6 @@ from django.shortcuts import get_object_or_404, render
 from .models import Action
 
 
-# Create your views here.
 def index(request):
     actions_list = Action.objects.order_by("pub_date")
     return render(request, "actions/index.html", {"actions": actions_list})
