@@ -1,13 +1,106 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-    {% block content %}
-        <h2>{{ action.name}}</h2>
-        {{ action.description}}
-    {% endblock %}
-</body>
-</html>
+{% extends 'base.html' %}
+{% load static %}
+
+{% block meta %}
+    <title> {{ action.name }} </title>
+    {% include "partials/seo.html" %}
+{% endblock %}
+
+{% block content %}
+      <div class="container mx-auto px-4 md:px-8 p-4">
+        <div class="bg-white shadow overflow-hidden sm:rounded-lg max-w-screen-lg mx-auto my-6">
+          <div class="px-4 py-5 sm:px-6">
+            {% if action.name %}
+              <h3 class="text-2xl leading-6 font-medium text-gray-900">
+                {{ action.name }}
+              </h3>
+            {% endif %}
+          </div>
+          <div class="border-t border-gray-200 px-4 py-5 sm:px-6 p-4">
+            <dl class="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2">
+              {% if action.description %}
+                <div class="sm:col-span-2">
+                  <dt class="text-sm font-semibold text-gray-600">
+                    Description
+                  </dt>
+                  <dd class="mt-1 text-sm text-gray-900">
+                    {{ action.description }}
+                  </dd>
+                </div>
+              {% endif %}
+<!--              {% if report.authors %}-->
+<!--                <div class="sm:col-span-2">-->
+<!--                  <dt class="text-sm font-semibold text-gray-600">-->
+<!--                    Authors-->
+<!--                  </dt>-->
+<!--                  <dd class="mt-1 text-sm text-gray-900">-->
+<!--                    {{ report.authors }}-->
+<!--                  </dd>-->
+<!--                </div>-->
+<!--              {% endif %}-->
+<!--              <div class="sm:col-span-2">-->
+<!--                <dt class="text-sm font-semibold text-gray-600">-->
+<!--                  Contact-->
+<!--                </dt>-->
+<!--                <dd class="mt-1 text-sm text-gray-900">-->
+<!--                  Get in touch and tell us how you use this report or new features you'd like to see:-->
+<!--                  <a href="mailto:{{ report.contact_email }}" class="text-oxford-600 hover:text-oxford-800 font-semibold hover:underline">-->
+<!--                    {{ report.contact_email }}-->
+<!--                  </a>-->
+<!--                </dd>-->
+<!--              </div>-->
+              <div class="sm:col-span-1">
+                <dt class="text-sm font-semibold text-gray-600">
+                  First published
+                </dt>
+                <dd class="mt-1 text-sm text-gray-900">
+                  {{ action.pub_date|date:"d M Y"}}
+                </dd>
+              </div>
+              <div class="sm:col-span-1">
+                <dt class="text-sm font-semibold text-gray-600">
+                  Last updated
+                </dt>
+                <dd class="mt-1 text-sm text-gray-900">
+                  {{ action.pub_date|date:"d M Y"}}
+                </dd>
+              </div>
+
+              <div class="sm:col-span-2">
+                <dt class="text-sm font-semibold text-gray-600">
+                  Links
+                </dt>
+                {% for link in report.links.all %}
+                    <dd class="mt-1 text-sm text-gray-900">
+                      <ul class="border border-gray-200 rounded-md divide-y divide-gray-200">
+                        <li class="pl-3 pr-4 py-3 flex items-center justify-between text-sm">
+                          <div class="w-0 flex-1 flex items-center">
+                            {% if link.icon == "github" %}
+                              {% include "icons/brand/github.svg" with htmlClass="flex-shrink-0 h-5 w-5 text-gray-500" %}
+                            {% elif link.icon == "paper" %}
+                              {% include "icons/outline/newspaper.svg" with htmlClass="flex-shrink-0 h-5 w-5 text-gray-500" %}
+                            {% else %}
+                              {% include "icons/outline/paper-clip.svg" with htmlClass="flex-shrink-0 h-5 w-5 text-gray-500" %}
+                            {% endif %}
+                            <a href="{{ link.url }}" class="ml-2 text-oxford-600 hover:text-oxford-800 font-semibold hover:underline">
+                              {{ link.label }}
+                            </a>
+                          </div>
+                        </li>
+                      </ul>
+                    </dd>
+                  {% endfor %}
+              </div>
+            </dl>
+          </div>
+        </div>
+
+        <div class="bg-white shadow overflow-hidden sm:rounded-lg max-w-screen-lg mx-auto my-6">
+          <div class="max-w-4xl mx-auto">
+            <div class="prose prose-sm sm:prose prose-oxford sm:prose-oxford px-8 sm:max-w-none mx-auto py-16">
+              {{ github_report.process_html }}
+            </div>
+          </div>
+        </div>
+      </div>
+{% endblock %}
