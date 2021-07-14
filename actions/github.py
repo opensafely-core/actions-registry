@@ -15,10 +15,10 @@ class GithubAPIException(Exception):
 
 class GithubClient:
     """
-    A connection to the Github API, using cached requests by default
+    A connection to the Github API
     """
 
-    user_agent = "OpenSAFELY Reports"
+    user_agent = "OpenSAFELY Actions"
     base_url = "https://api.github.com"
 
     def __init__(self):
@@ -85,7 +85,7 @@ class GithubRepo:
     @property
     def url(self):
         if self._url is None:
-            self._url = f"https://github.com/{self._owner}/{self._name}"
+            self._url = f"https://api.github.com/repos/{self._owner}/{self._name}"
         return self._url
 
     def get_contents(self, path, ref):
@@ -99,6 +99,22 @@ class GithubRepo:
         contents = self.client._get_json(path_segments, ref=ref)
 
         return GithubContentFile.from_json(contents)
+
+    def get_repo_details(self):
+        """
+        Fetches the About and Name of the repo
+
+        Returns:
+            dict: 2 key dictionary with about and name as keys
+        """
+        response = requests.get(url=self.url)
+
+        contents = response.json()
+
+        description = contents["description"]
+        name = contents["name"][:-7]
+
+        return {"name": name, "about": description}
 
 
 class GithubContentFile:
