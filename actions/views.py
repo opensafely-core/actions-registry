@@ -4,7 +4,7 @@ from .models import Action
 
 
 def index(request):
-    actions_list = Action.objects.order_by("pub_date")
+    actions_list = Action.objects.order_by("name")
     return render(request, "actions/index.html", {"actions": actions_list})
 
 
