@@ -11,7 +11,7 @@
         {% for action in actions %}
             <li>
                 <a href="{% url 'actions:detail' action.id %}">
-                    {{ action.name }}
+                    {{ action.name }} - {{action.about}}
                 </a>
             </li>
         {% endfor %}
