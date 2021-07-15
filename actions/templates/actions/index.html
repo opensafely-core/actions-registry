@@ -32,7 +32,6 @@
                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 md:max-w-0 md:w-full">
                       <a href="{{ report.get_absolute_url }}" class="group flex space-x-2 text-sm truncate">
                           <a href="{% url 'actions:detail' action.id %}" class="text-oxford-800 group-hover:text-oxford-600 truncate max-w-sm md:max-w-none">
-<!--                            {% include "icons/outline/document-report.svg" with htmlClass="flex-shrink-0 h-5 w-5 text-gray-400 group-hover:text-oxford-800" %}-->
                             {{ action.name }}
                           </a>
                       </a>
@@ -45,11 +44,11 @@
                           bg-oxford-100
                           text-oxford-600
                         {% endif %}">
-                        {{ action.description }}
+                        {{ action.about }}
                       </span>
                     </td>
                     <td class="px-6 py-4 md:px-12 whitespace-nowrap text-sm text-gray-500">
-                      {{ action.pub_date | date:"d M Y" }}
+                      {{ action.org }}
                     </td>
                   </tr>
                 {% endfor %}
@@ -60,15 +59,4 @@
       </div>
     </div>
   </div>
-
-<!--    <ul class="grid grid-cols-6 p-4">-->
-<!--        {% for action in actions %}-->
-<!--            <li>-->
-
-<!--                <div class="col-span-3">-->
-<!--                    {{ action.description }}-->
-<!--                </div>-->
-<!--            </li>-->
-<!--        {% endfor %}-->
-<!--    </ul>-->
 {% endblock %}
