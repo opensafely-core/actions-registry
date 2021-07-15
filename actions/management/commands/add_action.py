@@ -8,18 +8,18 @@ class Command(BaseCommand):
     help = "Grabs the data from the actions repos and saves into database"
 
     def add_arguments(self, parser):
-        parser.add_argument("url")
+        parser.add_argument("action_url")
 
-    def handle(self, *args, **options):
+    def handle(self, action_url, **options):
 
         client = GithubClient()
 
-        repo = client.get_repo(options["url"])
+        repo = client.get_repo(action_url)
 
         # get details
         details = repo.get_repo_details()
 
-        org, repo_name = options["url"].split("/")
+        org, repo_name = action_url.split("/")
 
         # get contents
         contents = repo.get_contents(path="docs/README.md", ref="main")

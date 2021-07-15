@@ -75,18 +75,25 @@ class GithubRepo:
     Fetch contents of a Github Repo
     """
 
-    def __init__(self, client, owner, name, url=None):
+    def __init__(self, client, owner, name, url=None, api_url=None):
         self.client = client
         self._owner = owner
         self._name = name
         self.repo_path_segments = ["repos", owner, name]
         self._url = url
+        self._api_url = api_url
 
     @property
     def url(self):
         if self._url is None:
-            self._url = f"https://api.github.com/repos/{self._owner}/{self._name}"
+            self._url = f"https://github.com/{self._owner}/{self._name}"
         return self._url
+
+    @property
+    def api_url(self):
+        if self._api_url is None:
+            self._api_url = f"https://api.github.com/repos/{self._owner}/{self._name}"
+        return self._api_url
 
     def get_contents(self, path, ref):
         """
@@ -107,12 +114,12 @@ class GithubRepo:
         Returns:
             dict: 2 key dictionary with about and name as keys
         """
-        response = requests.get(url=self.url)
+        response = requests.get(url=self.api_url)
 
         contents = response.json()
 
         description = contents["description"]
-        name = contents["name"][:-7]
+        name = contents["name"]
 
         return {"name": name, "about": description}
 
