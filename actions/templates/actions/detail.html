@@ -11,16 +11,13 @@
       <div class="container mx-auto px-4 md:px-8 p-4">
         <div class="bg-white shadow overflow-hidden sm:rounded-lg max-w-screen-lg mx-auto my-6">
           <div class="px-4 py-5 sm:px-6">
-            {% if action.name %}
               <h3 class="text-2xl leading-6 font-medium text-gray-900">
                 {{ action.name }}
               </h3>
-            {% endif %}
           </div>
-          <div class="border-t border-gray-200 px-4 py-5 sm:px-6 p-4">
-            <dl class="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2">
-              {% if action.description %}
-                <div class="sm:col-span-2">
+          <div class="border-t border-gray-200 px-4 py-5 sm:px-6 p-4 ">
+            <dl class="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2 ">
+                <div class="sm:col-span-1">
                   <dt class="text-sm font-semibold text-gray-600">
                     Description
                   </dt>
@@ -28,30 +25,14 @@
                     {{ action.about }}
                   </dd>
                 </div>
-              {% endif %}
               <div class="sm:col-span-1">
-                <dt class="text-sm font-semibold text-gray-600">
-                  Last updated
-                </dt>
-                <dd class="mt-1 text-sm text-gray-900">
-                  {{ action.readme|markdown_filter|safe }}
-                </dd>
-              </div>
-
-              <div class="sm:col-span-2">
-                <dt class="text-sm font-semibold text-gray-600">
-                  Links
-                </dt>
+                <div class="mt-1 text-sm text-gray-900">
+                    <div class="flex flex-col space-y-1 pt-2" markdown="block">
+                        {{ action.readme|markdown_filter|safe }}
+                    </div>
+                </div>
               </div>
             </dl>
-          </div>
-        </div>
-
-        <div class="bg-white shadow overflow-hidden sm:rounded-lg max-w-screen-lg mx-auto my-6">
-          <div class="max-w-4xl mx-auto">
-            <div class="prose prose-sm sm:prose prose-oxford sm:prose-oxford px-8 sm:max-w-none mx-auto py-16">
-              {{ github_report.process_html }}
-            </div>
           </div>
         </div>
       </div>
