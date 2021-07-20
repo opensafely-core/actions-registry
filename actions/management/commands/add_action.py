@@ -1,4 +1,3 @@
-import pycmarkgfm
 from django.core.management.base import BaseCommand
 
 from actions.github import GithubClient
@@ -25,22 +24,12 @@ class Command(BaseCommand):
         # get contents
         contents = repo.get_contents(path="docs/README.md", ref="main")
         readme = contents.decoded_content
-        html_readme = pycmarkgfm.gfm_to_html(readme)
-
-        html_readme = html_readme.replace(
-            "<h3>", '<h3 class="text-sm font-semibold text-gray-600"> '
-        )
-        html_readme = html_readme.replace(
-            "<p>", '<p class="mt-1 text-sm text-gray-900"> '
-        )
-        html_readme = html_readme.replace("<h5>", '<h5 class="text-sm font-semibold"> ')
-        html_readme = html_readme.replace("<ul>", '<div class="list-disc">')
 
         action = Action(
             name=details["name"],
             org=org,
             repo_name=repo_name,
-            readme=html_readme,
+            readme=readme,
             about=details["about"],
         )
 
