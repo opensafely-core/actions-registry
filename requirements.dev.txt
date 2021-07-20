@@ -14,20 +14,36 @@ attrs==20.3.0
     # via
     #   flake8-implicit-str-concat
     #   pytest
-black==21.6b0
+black==21.7b0
     # via -r requirements.dev.in
+bleach==3.3.1
+    # via django-markdown-filter
+certifi==2021.5.30
+    # via requests
 cfgv==3.3.0
     # via pre-commit
+charset-normalizer==2.0.3
+    # via requests
 click==8.0.1
     # via black
 distlib==0.3.2
     # via virtualenv
+dj-database-url==0.5.0
+    # via environs
+dj-email-url==1.0.2
+    # via environs
 django==3.2.5
     # via
     #   -c requirements.prod.in
     #   -r requirements.prod.in
-    #   django-vite
-django-vite==1.1.0
+    #   django-markdown-filter
+django-cache-url==3.2.3
+    # via environs
+django-markdown-filter==0.0.1
+    # via
+    #   -c requirements.prod.in
+    #   -r requirements.prod.in
+environs[django]==9.3.2
     # via
     #   -c requirements.prod.in
     #   -r requirements.prod.in
@@ -41,12 +57,26 @@ flake8-builtins==1.5.3
     # via -r requirements.dev.in
 flake8-implicit-str-concat==0.2.0
     # via -r requirements.dev.in
+furl==2.1.2
+    # via
+    #   -c requirements.prod.in
+    #   -r requirements.prod.in
+gunicorn==20.1.0
+    # via
+    #   -c requirements.prod.in
+    #   -r requirements.prod.in
 identify==2.2.10
     # via pre-commit
+idna==3.2
+    # via requests
 iniconfig==1.1.1
     # via pytest
 isort==5.9.2
     # via -r requirements.dev.in
+markdown2==2.4.0
+    # via django-markdown-filter
+marshmallow==3.12.2
+    # via environs
 mccabe==0.6.1
     # via flake8
 more-itertools==8.8.0
@@ -55,8 +85,12 @@ mypy-extensions==0.4.3
     # via black
 nodeenv==1.6.0
     # via pre-commit
+orderedmultidict==1.0.1
+    # via furl
 packaging==20.9
-    # via pytest
+    # via
+    #   bleach
+    #   pytest
 pathspec==0.8.1
     # via black
 pluggy==0.13.1
@@ -73,20 +107,35 @@ pyparsing==2.4.7
     # via packaging
 pytest==6.2.4
     # via -r requirements.dev.in
+python-dotenv==0.18.0
+    # via environs
 pytz==2021.1
     # via django
 pyyaml==5.4.1
     # via pre-commit
 regex==2021.4.4
     # via black
+requests==2.26.0
+    # via
+    #   -c requirements.prod.in
+    #   -r requirements.prod.in
 six==1.16.0
-    # via virtualenv
+    # via
+    #   bleach
+    #   furl
+    #   orderedmultidict
+    #   virtualenv
 sqlparse==0.4.1
     # via django
 toml==0.10.2
     # via
-    #   black
     #   pre-commit
     #   pytest
+tomli==1.0.4
+    # via black
+urllib3==1.26.6
+    # via requests
 virtualenv==20.4.7
     # via pre-commit
+webencodings==0.5.1
+    # via bleach
