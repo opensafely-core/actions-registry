@@ -103,3 +103,7 @@ venv/
 
 # sqlite db for dev
 *.sqlite3
+
+### Node ###
+npm-debug.log*
+node_modules/

@@ -25,6 +25,7 @@ class Command(BaseCommand):
         # get contents
         contents = repo.get_contents(path="docs/README.md", ref="main")
         readme = contents.decoded_content
+
         action.readme = readme
 
         action.save()

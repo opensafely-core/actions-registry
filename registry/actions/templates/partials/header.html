@@ -1,0 +1,64 @@
+<div class="fixed top-0 min-w-full lg:relative z-10 flex-shrink-0 flex h-16 bg-white border-b border-gray-200">
+  <button type="button" @click="open = true" class="px-4 border-r border-gray-200 text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-oxford-700 lg:hidden">
+    <span class="sr-only">Open sidebar</span>
+    {% include "icons/outline/menu-alt-2.svg" with htmlClass="h-6 w-6" %}
+  </button>
+
+  <div class="flex-1 px-4 flex justify-between">
+    <div class="flex-1 flex">
+      <div class="w-full flex lg:ml-0">
+        <div class="relative w-full flex items-center">
+          <span class="text-base md:text-xl font-semibold">Reports</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="ml-4 flex items-center lg:ml-6">
+        {% if user.is_authenticated %}
+          <div class="relative inline-block text-left" x-data="{ open: false }">
+            <div>
+              <button type="button" class="inline-flex justify-center w-full rounded-md px-1 py-1 overflow-hidden bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-oxford-700" id="menu-button" x-bind:aria-expanded="open.toString()" aria-haspopup="true" @click="open = true">
+                <span class="sr-only">Options</span>
+                <span class="inline-block h-10 w-10 rounded-full overflow-hidden bg-gray-100">
+                  {% include "icons/solid/user.svg" with htmlClass="h-full w-full text-gray-300 relative -bottom-1" %}
+                </span>
+              </button>
+            </div>
+            <div
+              @click.away="open = false"
+              aria-labelledby="menu-button"
+              aria-orientation="vertical"
+              class="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 divide-y divide-gray-100 focus:outline-none"
+              role="menu"
+              x-cloak
+              x-show.transition="open"
+              x-show="open"
+              x-transition:enter-end="transform opacity-100 scale-100"
+              x-transition:enter-start="transform opacity-0 scale-95"
+              x-transition:enter="transition ease-out duration-100"
+              x-transition:leave-end="transform opacity-0 scale-95"
+              x-transition:leave-start="transform opacity-100 scale-100"
+              x-transition:leave="transition ease-in duration-75"
+            >
+              <div class="px-4 py-3">
+                <p class="text-sm">
+                  Logged in as
+                </p>
+                <p class="text-sm font-medium text-gray-900 truncate">
+                  {{ request.user.username }}
+                </p>
+              </div>
+              {% if request.user.is_staff %}
+                <div class="py-1">
+                  <a href="{% url 'admin:index' %}" class="text-gray-700 block w-full text-left px-4 py-2 text-sm hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-oxford-700" role="menuitem" >
+                    Admin
+                  </a>
+                </div>
+              {% endif %}
+            </div>
+          </div>
+        {% else %}
+        {% endif %}
+    </div>
+  </div>
+</div>

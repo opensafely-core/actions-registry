@@ -28,14 +28,11 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-MARKDOWN_FILTER_WHITELIST_TAGS = ["a", "p", "code", "h1", "h2", "h3", "h4", "h5", "h6"]
-
 
 # Application definition
 
 INSTALLED_APPS = [
     "actions.apps.ActionsConfig",
-    "markdown_filter",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -123,6 +120,31 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = "/static/"
+
+MARKDOWN_FILTER_WHITELIST_TAGS = [
+    "h1",
+    "h2",
+    "h3",
+    "h4",
+    "h5",
+    "h6",
+    "a",
+    "p",
+    "ul",
+    "li",
+    "code",
+    "pre",
+    "div",
+    "br",
+]
+
+MARKDOWN_FILTER_WHITELIST_ATTRIBUTES = [
+    "class",
+    "src",
+    "href",
+]
+
+MARKDOWN_FILTER_WHITELIST_STYLES = []
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
