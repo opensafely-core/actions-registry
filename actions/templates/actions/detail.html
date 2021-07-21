@@ -11,7 +11,7 @@
         <div class="bg-white shadow overflow-hidden sm:rounded-lg max-w-screen-lg mx-auto my-6">
           <div class="px-4 py-5 sm:px-6">
               <h3 class="text-2xl leading-6 font-medium text-gray-900">
-                {{ action.name }}
+                {{ name }}
               </h3>
           </div>
           <div class="border-t border-gray-200 px-4 py-5 sm:px-6 p-4 ">
@@ -21,13 +21,21 @@
                     Description
                   </dt>
                   <dd class="mt-1 text-sm text-gray-900">
-                    {{ action.about }}
+                    {{ about }}
+                  </dd>
+                </div>
+                <div class="sm:col-span-1">
+                  <dt class="text-sm font-semibold text-gray-600 pt-2">
+                    Tag
+                  </dt>
+                  <dd class="mt-1 text-sm text-gray-900">
+                    {{ tag }}
                   </dd>
                 </div>
               <div class="sm:col-span-1">
                 <div class="mt-1 text-sm text-gray-900">
                     <div class="flex flex-col space-y-1 pt-2" markdown="block">
-                        {{ action.readme|markdown_filter|safe }}
+                        {{ readme|markdown_filter|safe }}
                     </div>
                 </div>
               </div>

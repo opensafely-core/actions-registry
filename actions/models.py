@@ -24,4 +24,4 @@ class Version(models.Model):
         return f"{self.action} - {self.tag}"
 
     class Meta:
-        unique_together = ["action", "tag"]  # might be action_id
+        unique_together = ["action", "tag"]
