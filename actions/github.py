@@ -1,3 +1,4 @@
+import ast
 import json
 from base64 import b64decode
 
@@ -107,6 +108,24 @@ class GithubRepo:
 
         return GithubContentFile.from_json(contents)
 
+    def get_readme(self, tag="main"):
+        """
+        Fetches the README.md of repo
+
+        Args:
+            tag (str): tag that you want the readme for.
+
+        Returns:
+            str: HTML from readme (at ROOT)
+        """
+        response = requests.get(
+            url=self.api_url + "/readme",
+            headers={"Accept": "application/vnd.github.v3.html+json"},
+            params={"ref": tag},
+        )
+        decoded_response = response.content.decode("utf-8")
+        return decoded_response
+
     def get_repo_details(self):
         """
         Fetches the About and Name of the repo
@@ -122,6 +141,44 @@ class GithubRepo:
         name = contents["name"]
 
         return {"name": name, "about": description}
+
+    def get_tags(self):
+        """
+        Gets a list of tags associated with a repo
+
+        Returns:
+            List of Dicts (1 per tag).
+        """
+        response = requests.get(
+            url=self.api_url + "/tags",
+            headers={"Accept": "application/vnd.github.v3.json"},
+        )
+        decoded_response = response.content.decode()
+        full_tag_list = ast.literal_eval(decoded_response)
+
+        simple_tag_list = []
+        for tag in full_tag_list:
+            tag_dict = {"tag_name": tag["name"], "sha": tag["commit"]["sha"]}
+            simple_tag_list.append(tag_dict)
+
+        return simple_tag_list
+
+    def get_commit(self, sha):
+        """
+        Get details of a specific commit
+
+        Returns:
+            Dict: Details of commit
+        """
+        response = requests.get(
+            url=f"{self.api_url}/git/commits/{sha}",
+            headers={"Accept": "application/vnd.github.v3.json"},
+        )
+        contents = response.json()
+        return {
+            "author": contents["author"]["name"],
+            "date": contents["committer"]["date"][0:9],
+        }
 
 
 class GithubContentFile:
