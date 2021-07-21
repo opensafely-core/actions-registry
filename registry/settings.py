@@ -136,6 +136,9 @@ MARKDOWN_FILTER_WHITELIST_TAGS = [
     "pre",
     "div",
     "br",
+    "article",
+    "span",
+    "svg",
 ]
 
 MARKDOWN_FILTER_WHITELIST_ATTRIBUTES = [
