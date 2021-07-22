@@ -1,5 +1,4 @@
 {% extends 'base.html' %}
-{% load markdown_filter %}
 {% load static %}
 
 {% block meta %}
@@ -14,32 +13,26 @@
                 {{ name }}
               </h3>
           </div>
-          <div class="border-t border-gray-200 px-4 py-5 sm:px-6 p-4 ">
-            <dl class="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2 ">
-                <div class="sm:col-span-1">
-                  <dt class="text-sm font-semibold text-gray-600">
+          <div class="prose prose-sm sm:prose prose-oxford sm:prose-oxford px-8 sm:max-w-none mx-auto">
+                <div>
+                  <h3>
                     Description
-                  </dt>
-                  <dd class="mt-1 text-sm text-gray-900">
+                  </h3>
+                  <dd>
                     {{ about }}
                   </dd>
                 </div>
-                <div class="sm:col-span-1">
-                  <dt class="text-sm font-semibold text-gray-600 pt-2">
+                  <h3>
                     Tag
-                  </dt>
-                  <dd class="mt-1 text-sm text-gray-900">
+                  </h3>
+                  <div>
                     {{ tag }}
-                  </dd>
-                </div>
-              <div class="sm:col-span-1">
-                <div class="mt-1 text-sm text-gray-900">
-                    <div class="flex flex-col space-y-1 pt-2" markdown="block">
-                        {{ readme|markdown_filter|safe }}
+                  </div>
+                <div>
+                    <div>
+                        {{ readme|safe }}
                     </div>
-                </div>
               </div>
-            </dl>
           </div>
         </div>
       </div>
