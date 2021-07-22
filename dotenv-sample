@@ -1,0 +1,5 @@
+# Turn on debug
+DEBUG=1
+
+# A long random string
+SECRET_KEY=12345
