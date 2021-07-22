@@ -1,4 +1,4 @@
-import ast
+import datetime as dt
 import json
 from base64 import b64decode
 
@@ -147,17 +147,16 @@ class GithubRepo:
         Gets a list of tags associated with a repo
 
         Returns:
-            List of Dicts (1 per tag).
+            List of Dicts (1 per tag), with keys 'tag_name' and 'sha'
         """
         response = requests.get(
             url=self.api_url + "/tags",
             headers={"Accept": "application/vnd.github.v3.json"},
         )
-        decoded_response = response.content.decode()
-        full_tag_list = ast.literal_eval(decoded_response)
+        content = response.json()
 
         simple_tag_list = []
-        for tag in full_tag_list:
+        for tag in content:
             tag_dict = {"tag_name": tag["name"], "sha": tag["commit"]["sha"]}
             simple_tag_list.append(tag_dict)
 
@@ -168,16 +167,19 @@ class GithubRepo:
         Get details of a specific commit
 
         Returns:
-            Dict: Details of commit
+            Dict: Details of commit, with keys of 'author' and 'date'
         """
         response = requests.get(
             url=f"{self.api_url}/git/commits/{sha}",
             headers={"Accept": "application/vnd.github.v3.json"},
         )
         contents = response.json()
+
+        date = dt.datetime.strptime(contents["committer"]["date"], "%Y-%m-%dT%H:%M:%SZ")
+
         return {
             "author": contents["author"]["name"],
-            "date": contents["committer"]["date"][0:9],
+            "date": date,
         }
 
 
