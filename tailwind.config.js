@@ -38,6 +38,9 @@ module.exports = {
             a: {
               "font-weight": 600,
             },
+            "a:code": {
+              color: "#b7c0d4"
+            },
             "a:hover": {
               color: theme("colors.oxford.800"),
               "text-decoration": "underline",

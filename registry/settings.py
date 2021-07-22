@@ -113,41 +113,13 @@ USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = True
+USE_TZ = False
 
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = "/static/"
-
-MARKDOWN_FILTER_WHITELIST_TAGS = [
-    "h1",
-    "h2",
-    "h3",
-    "h4",
-    "h5",
-    "h6",
-    "a",
-    "p",
-    "ul",
-    "li",
-    "code",
-    "pre",
-    "div",
-    "br",
-    "article",
-    "span",
-    "svg",
-]
-
-MARKDOWN_FILTER_WHITELIST_ATTRIBUTES = [
-    "class",
-    "src",
-    "href",
-]
-
-MARKDOWN_FILTER_WHITELIST_STYLES = []
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
