@@ -3,3 +3,6 @@ DEBUG=1
 
 # A long random string
 SECRET_KEY=12345
+
+# Vite local development server
+DJANGO_VITE_DEV_MODE=False
