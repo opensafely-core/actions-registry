@@ -50,6 +50,27 @@ update TARGET="prod":
     pip-compile --generate-hashes --output-file=requirements.{{ TARGET }}.txt requirements.{{ TARGET }}.in
     pip install -r requirements.{{ TARGET }}.txt
 
-# Run the dev project
+# configure the local dev env
+dev-config:
+	cp dotenv-sample .env
+
+# install all JS dependencies
+npm-install: check-fnm
+    fnm use
+    npm ci
+    npm run build
+
+check-fnm:
+    #!/usr/bin/env bash
+    if ! which fnm >/dev/null; then
+        echo >&2 "You must install fnm. See https://github.com/Schniz/fnm."
+        exit 1
+    fi
+
+# Gather frontend assets and static files
+collectstatic:
+    ./manage.py collectstatic --no-input --clear | grep -v '^Deleting '
+
+# run the dev server
 run:
-    echo "Not implemented yet"
+    python manage.py runserver localhost:8000
