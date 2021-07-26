@@ -96,7 +96,6 @@ htmlcov
 # IDEs
 .idea/
 
-
 # Virtual environments
 .venv/
 venv/
@@ -104,9 +103,14 @@ venv/
 # sqlite db for dev
 *.sqlite3
 
-### Node ###
+# Local environment file
+.env
+
+# Node
 npm-debug.log*
 node_modules/
 
-# Local environment file
-.env
+# Assets
+/assets/dist
+/assets/stats.html
+/staticfiles
