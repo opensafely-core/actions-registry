@@ -58,6 +58,9 @@ dev-config:
 npm-install: check-fnm
     fnm use
     npm ci
+
+# build frontend assets
+npm-build:
     npm run build
 
 check-fnm:
