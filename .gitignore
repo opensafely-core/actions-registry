@@ -107,3 +107,6 @@ venv/
 ### Node ###
 npm-debug.log*
 node_modules/
+
+# Local environment file
+.env
