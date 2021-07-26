@@ -1,7 +1,9 @@
+import datetime as dt
 import json
 from base64 import b64decode
 
 import requests
+from django.utils import timezone
 from environs import Env
 from furl import furl
 
@@ -107,6 +109,24 @@ class GithubRepo:
 
         return GithubContentFile.from_json(contents)
 
+    def get_readme(self, tag="main"):
+        """
+        Fetches the README.md of repo
+
+        Args:
+            tag (str): tag that you want the readme for.
+
+        Returns:
+            str: HTML from readme (at ROOT)
+        """
+        response = requests.get(
+            url=self.api_url + "/readme",
+            headers={"Accept": "application/vnd.github.v3.html+json"},
+            params={"ref": tag},
+        )
+        decoded_response = response.content.decode("utf-8")
+        return decoded_response
+
     def get_repo_details(self):
         """
         Fetches the About and Name of the repo
@@ -122,6 +142,47 @@ class GithubRepo:
         name = contents["name"]
 
         return {"name": name, "about": description}
+
+    def get_tags(self):
+        """
+        Gets a list of tags associated with a repo
+
+        Returns:
+            List of Dicts (1 per tag), with keys 'tag_name' and 'sha'
+        """
+        response = requests.get(
+            url=self.api_url + "/tags",
+            headers={"Accept": "application/vnd.github.v3.json"},
+        )
+        content = response.json()
+
+        simple_tag_list = []
+        for tag in content:
+            tag_dict = {"tag_name": tag["name"], "sha": tag["commit"]["sha"]}
+            simple_tag_list.append(tag_dict)
+
+        return simple_tag_list
+
+    def get_commit(self, sha):
+        """
+        Get details of a specific commit
+
+        Returns:
+            Dict: Details of commit, with keys of 'author' and 'date'
+        """
+        response = requests.get(
+            url=f"{self.api_url}/git/commits/{sha}",
+            headers={"Accept": "application/vnd.github.v3.json"},
+        )
+        contents = response.json()
+
+        date = dt.datetime.strptime(contents["committer"]["date"], "%Y-%m-%dT%H:%M:%SZ")
+        date = date.replace(tzinfo=timezone.utc)
+
+        return {
+            "author": contents["author"]["name"],
+            "date": date,
+        }
 
 
 class GithubContentFile:
