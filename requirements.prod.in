@@ -1,11 +1,12 @@
 # Main prod requirements
 django
 django-markdown-filter
+django-vite
 environs[django]
-requests
 furl
 gunicorn
 pycmarkgfm
+requests
 structlog
 whitenoise[brotli]
 
