@@ -13,7 +13,7 @@
   {% endblock %}
 
   {# Modern browsers #}
-  <script async defer type="module" src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/2.8.2/alpine.js" integrity="sha512-No22QdEJ4zlXvdQDpm6oeXcjwajpNxvnstx6NEU/5qZFysa5gsgj/bSfAFpSc9Za5LjbgQLRXyCeY53aWmk8ZA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script async defer type="module" src="{% static 'vendor/alpine.js' %}"></script>
 
   {% vite_hmr_client %}
   {% vite_asset 'assets/src/scripts/main.js' %}
@@ -42,5 +42,8 @@
       </div>
     </div>
   </div>
+
+  {# Legacy browsers #}
+  <script nomodule src="{% static 'vendor/alpine-ie11.js' %}"></script>
 </body>
 </html>

@@ -1,3 +1,5 @@
+import copy from "rollup-plugin-copy";
+
 /**
  * @type {import('vite').UserConfig}
  */
@@ -14,6 +16,17 @@
     emptyOutDir: true,
   },
   clearScreen: false,
+  plugins: [
+    copy({
+      targets: [
+        {
+          src: "./node_modules/alpinejs/dist/*",
+          dest: "./assets/dist/vendor",
+        },
+      ],
+      hook: "writeBundle",
+    }),
+  ],
 };
 
 export default config;
