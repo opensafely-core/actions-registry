@@ -32,9 +32,11 @@ class Command(BaseCommand):
             readme = repo.get_readme(tag=tag["tag_name"])
             tag_details = repo.get_commit(sha=tag["sha"])
 
-            Version.objects.get_or_create(
+            Version.objects.update_or_create(
                 action=action,
                 tag=tag["tag_name"],
-                date=tag_details["date"],
-                readme=readme,
+                defaults={
+                    "date": tag_details["date"],
+                    "readme": readme,
+                },
             )

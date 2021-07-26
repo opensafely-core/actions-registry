@@ -3,6 +3,7 @@ import json
 from base64 import b64decode
 
 import requests
+from django.utils import timezone
 from environs import Env
 from furl import furl
 
@@ -176,6 +177,7 @@ class GithubRepo:
         contents = response.json()
 
         date = dt.datetime.strptime(contents["committer"]["date"], "%Y-%m-%dT%H:%M:%SZ")
+        date = date.replace(tzinfo=timezone.utc)
 
         return {
             "author": contents["author"]["name"],
