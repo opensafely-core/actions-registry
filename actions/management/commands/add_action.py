@@ -1,11 +1,10 @@
+from django.conf import settings
 from django.core.exceptions import PermissionDenied
 from django.core.management.base import BaseCommand
 from django.db import transaction
-from django.conf import settings
 
 from actions.github import GithubClient
 from actions.models import Action, Version
-
 
 
 class Command(BaseCommand):
