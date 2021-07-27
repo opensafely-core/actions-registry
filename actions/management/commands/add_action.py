@@ -1,11 +1,11 @@
 from django.core.exceptions import PermissionDenied
 from django.core.management.base import BaseCommand
 from django.db import transaction
+from django.conf import settings
 
 from actions.github import GithubClient
 from actions.models import Action, Version
 
-ALLOWED_ORGS = ["opensafely-actions"]
 
 
 class Command(BaseCommand):
@@ -21,7 +21,7 @@ class Command(BaseCommand):
         repo = client.get_repo(action_url)
         org, repo_name = action_url.split("/")
 
-        if org not in ALLOWED_ORGS:
+        if org not in settings.ALLOWED_ORGS:
             raise PermissionDenied(
                 "This Action belongs to an organisation outside our allowed list."
             )
