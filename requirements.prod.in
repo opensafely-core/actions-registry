@@ -1,6 +1,5 @@
 # Main prod requirements
 django
-django-markdown-filter
 environs[django]
 requests
 furl
