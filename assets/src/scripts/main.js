@@ -1,3 +1,3 @@
 import "../styles/main.css";
 
-console.log('Silence is golden');
+console.log("Silence is golden");
