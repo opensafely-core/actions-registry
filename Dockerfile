@@ -28,6 +28,6 @@ RUN pip install --no-cache-dir --require-hashes --requirement requirements.prod.
 
 COPY . /app
 
-COPY --from=nodeassets /usr/src/app/static/dist ./static/dist
+COPY --from=nodeassets /usr/src/app/assets/dist ./assets/dist
 
 ENTRYPOINT ["/app/entrypoint.sh"]
