@@ -51,6 +51,9 @@ module.exports = {
             "code::after": {
               content: "",
             },
+            ".anchor svg": {
+              display: "none",
+            },
           },
         },
       }),

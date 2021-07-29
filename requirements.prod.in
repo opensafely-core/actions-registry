@@ -1,10 +1,11 @@
 # Main prod requirements
 django
+django-vite
 environs[django]
-requests
 furl
 gunicorn
 pycmarkgfm
+requests
 structlog
 whitenoise[brotli]
 

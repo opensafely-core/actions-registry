@@ -1,8 +1,11 @@
 {% load static %}
+{% load django_vite %}
+
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <link href="{% static 'css/tailwind.css' %}" rel="stylesheet">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   {% block meta %}
     {% with meta_title="OpenSAFELY: Actions" meta_description="Actions curated by the DataLab at the University of Oxford, working on behalf of NHS England." %}
@@ -12,12 +15,18 @@
   {% endblock %}
 
   {# Modern browsers #}
-  <script async defer type="module" src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/2.8.2/alpine.js" integrity="sha512-No22QdEJ4zlXvdQDpm6oeXcjwajpNxvnstx6NEU/5qZFysa5gsgj/bSfAFpSc9Za5LjbgQLRXyCeY53aWmk8ZA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script async defer type="module" src="{% static 'vendor/alpine.js' %}"></script>
+
+  {% vite_hmr_client %}
+  {% vite_asset 'assets/src/scripts/main.js' %}
 
   {% block extra_head %}{% endblock %}
 
   {% include "partials/fonts.html" %}
 
+  <link rel="icon" href="{% static 'favicon.ico' %}">
+  <link rel="icon" href="{% static 'icon.svg' %}" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="{% static 'apple-touch-icon.png' %}">
   <link rel="manifest" href="{% static 'manifest.webmanifest' %}">
 </head>
 <body class="lg:overflow-y-hidden">
@@ -35,5 +44,8 @@
       </div>
     </div>
   </div>
+
+  {# Legacy browsers #}
+  <script nomodule src="{% static 'vendor/alpine-ie11.js' %}"></script>
 </body>
 </html>
