@@ -1,6 +1,5 @@
 # Main prod requirements
 django
-django-markdown-filter
 django-vite
 environs[django]
 furl
