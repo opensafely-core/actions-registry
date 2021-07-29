@@ -3,7 +3,7 @@ WORKDIR /usr/src/app
 
 COPY . ./
 RUN npm ci
-RUN just npm-build
+RUN npm run build
 
 FROM python:3.9-buster
 
