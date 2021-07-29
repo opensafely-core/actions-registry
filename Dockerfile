@@ -1,6 +1,10 @@
 FROM node:16-buster AS nodeassets
 WORKDIR /usr/src/app
 
+COPY . ./
+RUN npm ci
+RUN just npm-build
+
 FROM python:3.9-buster
 
 # Don't cache PyPI downloads or wheels.
