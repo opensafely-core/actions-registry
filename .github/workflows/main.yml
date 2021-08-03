@@ -57,7 +57,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: node-assets
-          path: static/dist
+          path: assets/dist
 
   check:
     needs: build
@@ -91,7 +91,7 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: node-assets
-          path: static/dist
+          path: assets/dist
       - name: Run tests
         env:
           SECRET_KEY: 12345
