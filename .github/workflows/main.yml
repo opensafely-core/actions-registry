@@ -40,3 +40,22 @@ jobs:
       - uses: hadolint/hadolint-action@v1.5.0
         with:
           failure-threshold: error
+
+  deploy:
+    needs: [test, lint-dockerfile]
+    runs-on: ubuntu-latest
+
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Deploy to dokku
+        uses: opensafely-core/dokku-deploy-github-action@4b326b36625e4a10add5f9601e8ffbaf048444b9
+        with:
+          app-name: "actions-registry"
+          dokku-host: "dokku2.ebmdatalab.net"
+          ssh-private-key: ${{ secrets.DOKKU2_DEPLOY_SSH_KEY }}
+          remote-branch: "main"
