@@ -22,7 +22,9 @@ class Action(models.Model):
 
 
 class Version(models.Model):
-    action = models.ForeignKey(Action, on_delete=models.CASCADE)
+    action = models.ForeignKey(
+        Action, related_name="versions", on_delete=models.CASCADE
+    )
     tag = models.CharField(max_length=100)
     date = models.DateTimeField()
     readme = models.TextField()
