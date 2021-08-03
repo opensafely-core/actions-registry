@@ -16,19 +16,20 @@ jobs:
       - name: Check formatting, linting and import sorting
         run: ./scripts/setup_functions check
 
-#  test: TODO: Comment back in when tests done
-#    needs: [check]
-#    runs-on: ubuntu-latest
-#
-#    steps:
-#      - uses: actions/checkout@v2
-#      - uses: "actions/setup-python@v2"
-#        with:
-#          python-version: "3.8"
-#      - name: Run tests
-##       env:  # Add environment variables required for tests
-#        run: |
-#          just test
+  test:
+    needs: [check]
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: "actions/setup-python@v2"
+        with:
+          python-version: "3.9"
+      - name: Run tests
+        env:
+          SECRET_KEY: 12345
+        run: |
+          just test
 
   lint-dockerfile:
     runs-on: ubuntu-latest
