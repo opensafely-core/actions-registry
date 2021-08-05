@@ -44,7 +44,7 @@ def test_update():
     )
     a.versions.create(
         tag="v1.0",
-        date="2021-08-01 12:34:56+00:00",
+        committed_at="2021-08-01 12:34:56+00:00",
         readme="old README",
     )
 
@@ -141,10 +141,10 @@ def verify_action():
     assert a.repo_name == "test-action"
     assert a.about == "A brief description"
     assert a.versions.count() == 2
-    v1, v2 = a.versions.order_by("date")
+    v1, v2 = a.versions.order_by("committed_at")
     assert v1.tag == "v1.0"
-    assert str(v1.date) == "2021-08-01 12:34:56+00:00"
+    assert str(v1.committed_at) == "2021-08-01 12:34:56+00:00"
     assert "README 1" in v1.readme
     assert v2.tag == "v2.0"
     assert "README 2" in v2.readme
-    assert str(v2.date) == "2021-08-02 12:34:56+00:00"
+    assert str(v2.committed_at) == "2021-08-02 12:34:56+00:00"

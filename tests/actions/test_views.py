@@ -12,12 +12,12 @@ def test_index(client):
     )
     a1.versions.create(
         tag="v1.0",
-        date="2021-08-01 12:34:56+00:00",
+        committed_at="2021-08-01 12:34:56+00:00",
         readme="first version",
     )
     a1.versions.create(
         tag="v1.1",
-        date="2021-08-02 12:34:56+00:00",
+        committed_at="2021-08-02 12:34:56+00:00",
         readme="second version",
     )
 
@@ -28,12 +28,12 @@ def test_index(client):
     )
     a2.versions.create(
         tag="v1.0",
-        date="2021-08-03 12:34:56+00:00",
+        committed_at="2021-08-03 12:34:56+00:00",
         readme="first version",
     )
     a2.versions.create(
         tag="v1.1",
-        date="2021-08-04 12:34:56+00:00",
+        committed_at="2021-08-04 12:34:56+00:00",
         readme="second version",
     )
 
@@ -50,12 +50,12 @@ def test_detail(client):
     )
     a.versions.create(
         tag="v1.0",
-        date="2021-08-01 12:34:56+00:00",
+        committed_at="2021-08-01 12:34:56+00:00",
         readme="first version",
     )
     a.versions.create(
         tag="v1.1",
-        date="2021-08-02 12:34:56+00:00",
+        committed_at="2021-08-02 12:34:56+00:00",
         readme="second version",
     )
 

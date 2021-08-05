@@ -20,7 +20,7 @@ def test_get_latest_version():
     version = Version(
         action=action,
         tag="v1.0",
-        date=datetime.now(timezone.utc),
+        committed_at=datetime.now(timezone.utc),
         readme="first version",
     )
     version.save()
@@ -32,7 +32,7 @@ def test_get_latest_version():
     version2 = Version(
         action=action,
         tag="v1.1",
-        date=datetime.now(timezone.utc),
+        committed_at=datetime.now(timezone.utc),
         readme="second version",
     )
     version2.save()

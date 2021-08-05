@@ -16,7 +16,7 @@ class Action(models.Model):
         """
         Gets the latest version from the tag
         """
-        latest_version = Version.objects.filter(action=self.id).latest("date")
+        latest_version = Version.objects.filter(action=self.id).latest("committed_at")
         return latest_version
 
 
@@ -25,7 +25,7 @@ class Version(models.Model):
         Action, related_name="versions", on_delete=models.CASCADE
     )
     tag = models.CharField(max_length=100)
-    date = models.DateTimeField()
+    committed_at = models.DateTimeField()
     readme = models.TextField()
 
     def __str__(self):

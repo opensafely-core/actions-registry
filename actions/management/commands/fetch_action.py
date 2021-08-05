@@ -45,7 +45,7 @@ class Command(BaseCommand):
             action.versions.update_or_create(
                 tag=tag["tag_name"],
                 defaults={
-                    "date": tag_details["date"],
+                    "committed_at": tag_details["date"],
                     "readme": readme,
                 },
             )
