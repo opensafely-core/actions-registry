@@ -42,7 +42,7 @@ def test_index(client):
 
 
 @pytest.mark.django_db
-def test_detail(client):
+def test_action(client):
     a = Action.objects.create(
         org="opensafely-actions",
         repo_name="test action",
@@ -60,4 +60,27 @@ def test_detail(client):
     )
 
     rsp = client.get(f"/{a.id}/")
+    assert rsp.status_code == 302
+    assert rsp.url == f"/{a.id}/v1.1/"
+
+
+@pytest.mark.django_db
+def test_version(client):
+    a = Action.objects.create(
+        org="opensafely-actions",
+        repo_name="test action",
+        about="Testing action",
+    )
+    a.versions.create(
+        tag="v1.0",
+        committed_at="2021-08-01 12:34:56+00:00",
+        readme="first version",
+    )
+    a.versions.create(
+        tag="v1.1",
+        committed_at="2021-08-02 12:34:56+00:00",
+        readme="second version",
+    )
+
+    rsp = client.get(f"/{a.id}/v1.1/")
     assert rsp.status_code == 200

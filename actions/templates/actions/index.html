@@ -29,7 +29,7 @@
                   <tr class="{% if forloop.counter0|divisibleby:'2' %}bg-white{% else %}bg-gray-50{% endif %}">
                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 md:max-w-0 md:w-full">
                       <a href="{{ report.get_absolute_url }}" class="group flex space-x-2 text-sm truncate">
-                          <a href="{% url 'actions:detail' action.id %}" class="text-oxford-800 group-hover:text-oxford-600 truncate max-w-sm md:max-w-none">
+                          <a href="{% url 'actions:action' action.id %}" class="text-oxford-800 group-hover:text-oxford-600 truncate max-w-sm md:max-w-none">
                             {{ action.repo_name }}
                           </a>
                       </a>

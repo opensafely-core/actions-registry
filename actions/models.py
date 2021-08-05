@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 
 
 class Action(models.Model):
@@ -33,3 +34,8 @@ class Version(models.Model):
 
     class Meta:
         unique_together = ["action", "tag"]
+
+    def get_absolute_url(self):
+        return reverse(
+            "actions:version", kwargs={"action_id": self.action_id, "tag": self.tag}
+        )

@@ -1,4 +1,4 @@
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, redirect, render
 
 from .models import Action
 
@@ -8,17 +8,22 @@ def index(request):
     return render(request, "actions/index.html", {"actions": actions_list})
 
 
-def detail(request, action_id):
+def action(request, action_id):
     action = get_object_or_404(Action, pk=action_id)
     version = action.get_latest_version()
-    readme = version.readme
+    return redirect(version)
+
+
+def version(request, action_id, tag):
+    action = get_object_or_404(Action, pk=action_id)
+    version = get_object_or_404(action.versions, tag=tag)
 
     return render(
         request,
-        "actions/detail.html",
+        "actions/version.html",
         {
             "about": action.about,
-            "readme": readme,
+            "readme": version.readme,
             "tag": version.tag,
             "name": action.repo_name,
         },
