@@ -1,9 +1,6 @@
-import pytest
-
 from actions.models import Action
 
 
-@pytest.mark.django_db
 def test_index(client):
     a1 = Action.objects.create(
         org="opensafely-actions",
@@ -41,7 +38,6 @@ def test_index(client):
     assert rsp.status_code == 200
 
 
-@pytest.mark.django_db
 def test_action(client):
     a = Action.objects.create(
         org="opensafely-actions",
@@ -64,7 +60,6 @@ def test_action(client):
     assert rsp.url == "/actions/test-action/v1.1/"
 
 
-@pytest.mark.django_db
 def test_version(client):
     a = Action.objects.create(
         org="opensafely-actions",

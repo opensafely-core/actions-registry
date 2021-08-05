@@ -7,14 +7,12 @@ from django.core.management import CommandError, call_command
 from actions.models import Action
 
 
-@pytest.mark.django_db
 def test_bad_organisation():
     with pytest.raises(CommandError, match="outside our allowed list"):
         call_command("fetch_action", "opensafely-core", "test-action")
 
 
 @responses.activate
-@pytest.mark.django_db
 def test_missing_repo():
     responses.add(
         responses.GET,
@@ -27,7 +25,6 @@ def test_missing_repo():
 
 
 @responses.activate
-@pytest.mark.django_db
 def test_create():
     set_up_responses()
     call_command("fetch_action", "opensafely-actions", "test-action")
@@ -35,7 +32,6 @@ def test_create():
 
 
 @responses.activate
-@pytest.mark.django_db
 def test_update():
     a = Action.objects.create(
         org="opensafely-actions",

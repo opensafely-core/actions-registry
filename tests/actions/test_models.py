@@ -1,12 +1,10 @@
 from datetime import datetime
 
-import pytest
 from django.utils import timezone
 
 from actions.models import Action, Version
 
 
-@pytest.mark.django_db
 def test_get_latest_version():
     # Create an action
     action = Action(
