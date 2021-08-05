@@ -12,10 +12,16 @@ exclude = '''
 
 [tool.coverage.run]
 branch = true
-omit = [".venv/*"]
+omit = [
+        ".venv/*",
+        "manage.py",
+        "actions/asgi.py",
+        "actions/wsgi.py",
+        "actions/logging.py",
+]
 
 [tool.coverage.report]
-# fail_under = 100
+fail_under = 100
 skip_covered = true
 
 [tool.coverage.html]

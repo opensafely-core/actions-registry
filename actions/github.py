@@ -29,7 +29,7 @@ class GithubClient:
         f = furl(self.base_url)
         f.path.segments += path_segments
         if add_args:
-            f.add(add_args)
+            f.add(add_args)  # pragma: no cover
         response = self.session.get(f.url, headers=self.headers)
 
         # Report some expected errors
