@@ -3,7 +3,6 @@ from django.urls import path
 from . import views
 
 
-app_name = "actions"
 urlpatterns = [
     path("", views.index, name="index"),
     # An action's repo's organisation is not included in the URL, because for now we

@@ -21,7 +21,7 @@ class Action(models.Model):
         return latest_version
 
     def get_absolute_url(self):
-        return reverse("actions:action", kwargs={"repo_name": self.repo_name})
+        return reverse("action", kwargs={"repo_name": self.repo_name})
 
     def get_github_url(self):
         return f"https://github.com/{self.org}/{self.repo_name}/"
@@ -43,6 +43,6 @@ class Version(models.Model):
 
     def get_absolute_url(self):
         return reverse(
-            "actions:version",
+            "version",
             kwargs={"repo_name": self.action.repo_name, "tag": self.tag},
         )
