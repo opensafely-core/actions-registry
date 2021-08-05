@@ -28,20 +28,12 @@
               {% for action in actions %}
               <tr class="{% if forloop.counter0|divisibleby:'2' %}bg-white{% else %}bg-gray-50{% endif %}">
                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 md:max-w-0 md:w-full">
-                  <a href="{{ report.get_absolute_url }}" class="group flex space-x-2 text-sm truncate">
-                    <a href="{{ action.get_absolute_url }}" class="text-oxford-800 group-hover:text-oxford-600 truncate max-w-sm md:max-w-none">
-                      {{ action.repo_name }}
-                    </a>
+                  <a href="{{ action.get_absolute_url }}" class="text-oxford-800 group-hover:text-oxford-600 truncate max-w-sm md:max-w-none">
+                    {{ action.repo_name }}
                   </a>
                 </td>
                 <td class="px-6 py-4 md:px-12 whitespace-nowrap text-sm text-gray-500">
-                  <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium capitalize
-                         {% if report.activity == 'published' %}
-                         bg-green-100 text-green-800
-                         {% else %}
-                         bg-oxford-100
-                         text-oxford-600
-                         {% endif %}">
+                  <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium capitalize bg-oxford-100 text-oxford-600">
                     {{ action.about }}
                   </span>
                 </td>
