@@ -31,3 +31,4 @@ use_parentheses = true
 
 [tool.pytest.ini_options]
 DJANGO_SETTINGS_MODULE = "actions.settings"
+addopts = "--tb=native --ignore=node_modules"
