@@ -23,6 +23,9 @@ class Action(models.Model):
     def get_absolute_url(self):
         return reverse("actions:action", kwargs={"repo_name": self.repo_name})
 
+    def get_github_url(self):
+        return f"https://github.com/{self.org}/{self.repo_name}/"
+
 
 class Version(models.Model):
     action = models.ForeignKey(

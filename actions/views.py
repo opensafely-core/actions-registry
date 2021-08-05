@@ -22,9 +22,7 @@ def version(request, repo_name, tag):
         request,
         "actions/version.html",
         {
-            "about": action.about,
-            "readme": version.readme,
-            "tag": version.tag,
-            "name": action.repo_name,
+            "action": action,
+            "version": version,
         },
     )

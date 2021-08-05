@@ -10,7 +10,7 @@
   <div class="bg-white shadow overflow-hidden sm:rounded-lg max-w-screen-lg mx-auto my-6">
     <div class="px-4 py-5 sm:px-6">
       <h3 class="text-2xl leading-6 font-medium text-gray-900">
-        {{ name }}
+        {{ action.repo_name }}
       </h3>
     </div>
     <div class="prose prose-sm sm:prose prose-oxford sm:prose-oxford px-8 sm:max-w-none mx-auto">
@@ -19,17 +19,20 @@
           Description
         </h3>
         <dd>
-        {{ about }}
+        {{ action.about }}
         </dd>
       </div>
       <h3>
         Tag
       </h3>
       <div>
-        {{ tag }}
+        {{ version.tag }}
       </div>
+      <h3>
+        <a href="{{ action.get_github_url }}" target="_blank">View code on GitHub</a>
+      </h3>
       <div>
-        {{ readme|safe }}
+        {{ version.readme|safe }}
       </div>
     </div>
   </div>
