@@ -4,7 +4,7 @@ from .models import Action
 
 
 def index(request):
-    actions_list = Action.objects.order_by("name")
+    actions_list = Action.objects.order_by("repo_name")
     return render(request, "actions/index.html", {"actions": actions_list})
 
 
@@ -20,6 +20,6 @@ def detail(request, action_id):
             "about": action.about,
             "readme": readme,
             "tag": version.tag,
-            "name": action.name,
+            "name": action.repo_name,
         },
     )

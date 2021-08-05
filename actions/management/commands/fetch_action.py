@@ -34,7 +34,6 @@ class Command(BaseCommand):
             repo_name=repo_name,
             org=organisation,
             defaults={
-                "name": details["name"],
                 "about": details["about"],
             },
         )

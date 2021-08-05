@@ -10,9 +10,8 @@ from actions.models import Action, Version
 def test_get_latest_version():
     # Create an action
     action = Action(
-        name="test action",
         org="opensafely-actions",
-        repo_name="test action",
+        repo_name="test-action",
         about="Testing action",
     )
     action.save()

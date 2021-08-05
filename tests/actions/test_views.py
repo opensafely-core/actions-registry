@@ -6,7 +6,6 @@ from actions.models import Action
 @pytest.mark.django_db
 def test_index(client):
     a1 = Action.objects.create(
-        name="test action 1",
         org="opensafely-actions",
         repo_name="test-action-1",
         about="Testing action",
@@ -23,7 +22,6 @@ def test_index(client):
     )
 
     a2 = Action.objects.create(
-        name="test action 2",
         org="opensafely-actions",
         repo_name="test-action-2",
         about="Testing action",
@@ -46,7 +44,6 @@ def test_index(client):
 @pytest.mark.django_db
 def test_detail(client):
     a = Action.objects.create(
-        name="test action",
         org="opensafely-actions",
         repo_name="test action",
         about="Testing action",
