@@ -39,7 +39,7 @@ class Version(models.Model):
     readme = models.TextField()
 
     def __str__(self):
-        return f"{self.action.repo_name} - {self.tag}"
+        return f"{self.action.repo_name}/{self.tag}"
 
     class Meta:
         unique_together = ["action", "tag"]
