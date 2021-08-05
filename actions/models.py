@@ -20,6 +20,9 @@ class Action(models.Model):
         latest_version = Version.objects.filter(action=self.id).latest("committed_at")
         return latest_version
 
+    def get_absolute_url(self):
+        return reverse("actions:action", kwargs={"repo_name": self.repo_name})
+
 
 class Version(models.Model):
     action = models.ForeignKey(
@@ -37,5 +40,6 @@ class Version(models.Model):
 
     def get_absolute_url(self):
         return reverse(
-            "actions:version", kwargs={"action_id": self.action_id, "tag": self.tag}
+            "actions:version",
+            kwargs={"repo_name": self.action.repo_name, "tag": self.tag},
         )

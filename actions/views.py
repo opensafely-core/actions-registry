@@ -8,14 +8,14 @@ def index(request):
     return render(request, "actions/index.html", {"actions": actions_list})
 
 
-def action(request, action_id):
-    action = get_object_or_404(Action, pk=action_id)
+def action(request, repo_name):
+    action = get_object_or_404(Action, repo_name=repo_name)
     version = action.get_latest_version()
     return redirect(version)
 
 
-def version(request, action_id, tag):
-    action = get_object_or_404(Action, pk=action_id)
+def version(request, repo_name, tag):
+    action = get_object_or_404(Action, repo_name=repo_name)
     version = get_object_or_404(action.versions, tag=tag)
 
     return render(
