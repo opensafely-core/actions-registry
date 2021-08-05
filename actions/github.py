@@ -1,7 +1,4 @@
-import datetime as dt
-
 import requests
-from django.utils import timezone
 from furl import furl
 
 
@@ -136,10 +133,7 @@ class GithubRepo:
         )
         contents = response.json()
 
-        date = dt.datetime.strptime(contents["committer"]["date"], "%Y-%m-%dT%H:%M:%SZ")
-        date = date.replace(tzinfo=timezone.utc)
-
         return {
             "author": contents["author"]["name"],
-            "date": date,
+            "date": contents["committer"]["date"],
         }
