@@ -14,16 +14,19 @@ class Action(models.Model):
         unique_together = ["org", "repo_name"]
 
     def get_latest_version(self):
-        """
-        Gets the latest version from the tag
-        """
+        """Return version with latest committed_at."""
+
         latest_version = Version.objects.filter(action=self.id).latest("committed_at")
         return latest_version
 
     def get_absolute_url(self):
+        """Return canonical URL for this Action."""
+
         return reverse("action", kwargs={"repo_name": self.repo_name})
 
     def get_github_url(self):
+        """Return URL of this Action's repo in GitHub."""
+
         return f"https://github.com/{self.org}/{self.repo_name}/"
 
 
@@ -42,6 +45,8 @@ class Version(models.Model):
         unique_together = ["action", "tag"]
 
     def get_absolute_url(self):
+        """Return canonical URL for this Version."""
+
         return reverse(
             "version",
             kwargs={"repo_name": self.action.repo_name, "tag": self.tag},
