@@ -1,16 +1,41 @@
 # Notes for developers
 
-## System requirements
-
-## Local development environment
+## Setup
 
 Set up a local development environment with:
+
 ```
-./scripts/do dev_setup
+just dev_setup
+```
+
+## Running locally
+
+Start a development server with:
+
+```
+just run
 ```
 
 ## Tests
+
 Run the tests with:
+
 ```
-./scripts/do test <args>
+just test <args>
+```
+
+Any args are passed to pytest.
+
+## Deployment
+
+Deployment should happen automatically when a branch is merged into `main` on GitHub.
+
+To deploy manually:
+
+```
+# Add a remote
+$ git remote add dokku dokku@dokku2:
+
+# Push the main branch to dokku
+$ git push dokku main
 ```
