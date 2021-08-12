@@ -19,6 +19,7 @@
     "postcss-color-rgba-fallback": "^4.0.0",
     "purgecss": "^4.0.3",
     "rollup-plugin-copy": "^3.4.0",
+    "sass": "^1.37.5",
     "vite": "^2.4.3"
   }
 }

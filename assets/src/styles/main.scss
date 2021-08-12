@@ -1,0 +1,77 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .prose,
+  .sm\:prose {
+    color: theme("colors.gray.800");
+
+    .anchor {
+      margin-left: -20px;
+      padding-right: 4px;
+    }
+
+    .octicon-link {
+      vertical-align: middle;
+      visibility: hidden;
+
+      path {
+        fill: theme("colors.oxford.600");
+      }
+    }
+
+    h1:hover .anchor .octicon-link,
+    h2:hover .anchor .octicon-link,
+    h3:hover .anchor .octicon-link,
+    h4:hover .anchor .octicon-link,
+    h5:hover .anchor .octicon-link,
+    h6:hover .anchor .octicon-link {
+      visibility: visible;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      align-items: center;
+      color: theme("colors.gray.800");
+      display: flex;
+    }
+
+    ul > li::before {
+      background-color: theme("colors.gray.800");
+    }
+
+    pre {
+      background-color: theme("colors.gray.50");
+      color: theme("colors.gray.700");
+    }
+
+    a {
+      font-weight: 600;
+
+      &:hover,
+      &:focus {
+        color: theme("colors.oxford.800");
+        text-decoration: underline;
+      }
+    }
+
+    code {
+      background-color: theme("colors.gray.50");
+      border-radius: 6px;
+      font-size: 85%;
+      font-weight: normal;
+      margin: 0;
+      padding: 0.2em 0.4em;
+
+      &::before,
+      &::after {
+        content: "";
+      }
+    }
+  }
+}
