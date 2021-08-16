@@ -1,4 +1,4 @@
-from services.logging import logging_config_dict
+from actions.logging import logging_config_dict
 
 
 # Where to log to (stdout and stderr)

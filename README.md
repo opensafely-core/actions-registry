@@ -1,18 +1,9 @@
-# actions-registry
+# Actions Registry
 
-This is a template for an OpenSAFELY Core repository.
+Actions Registry is a simple Django website hosting information about reusable actions
+for the OpenSAFELY framework.
 
-Put your project description here.
-
-New repo checklist:
-- [ ] Does the repo require a Dockerfile?
-  If not, delete:
-  - Dockerfile -
-  - .dockerignore
-  - hadolint pre-commit hook from `.pre-commit-config.yaml`
-  - `lint-dockerfile` action from `.github/workflows/main.yml`
-- [ ] Update DEVELOPERS.md with any project-specific requirements and commands
-- [ ] Update commands in `scripts/do`
+It is deployed at [actions.opensafely.org]().
 
 
 ## Developer docs

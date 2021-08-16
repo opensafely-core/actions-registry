@@ -16,6 +16,7 @@ test ARGS="":
     . scripts/setup_functions
     dev_setup
 
+    python manage.py collectstatic --no-input
     pytest --cov=. {{ ARGS }}
 
 # runs the format (black), sort (isort) and lint (flake8) check but does not change any files

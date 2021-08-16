@@ -1,25 +1,28 @@
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, redirect, render
 
 from .models import Action
 
 
 def index(request):
-    actions_list = Action.objects.order_by("name")
+    actions_list = Action.objects.order_by("repo_name")
     return render(request, "actions/index.html", {"actions": actions_list})
 
 
-def detail(request, action_id):
-    action = get_object_or_404(Action, pk=action_id)
+def action(request, repo_name):
+    action = get_object_or_404(Action, repo_name=repo_name)
     version = action.get_latest_version()
-    readme = version.readme
+    return redirect(version)
+
+
+def version(request, repo_name, tag):
+    action = get_object_or_404(Action, repo_name=repo_name)
+    version = get_object_or_404(action.versions, tag=tag)
 
     return render(
         request,
-        "actions/detail.html",
+        "actions/version.html",
         {
-            "about": action.about,
-            "readme": readme,
-            "tag": version.tag,
-            "name": action.name,
+            "action": action,
+            "version": version,
         },
     )

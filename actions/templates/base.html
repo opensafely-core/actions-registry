@@ -2,50 +2,43 @@
 {% load django_vite %}
 
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  {% block meta %}
+    {% block meta %}
     {% with meta_title="OpenSAFELY: Actions" meta_description="Actions curated by the DataLab at the University of Oxford, working on behalf of NHS England." %}
-      <title>{{ meta_title }}</title>
-      <meta name="description" content="{{ meta_description }}">
+    <title>{{ meta_title }}</title>
+    <meta name="description" content="{{ meta_description }}">
     {% endwith %}
-  {% endblock %}
+    {% endblock %}
 
-  {# Modern browsers #}
-  <script async defer type="module" src="{% static 'vendor/alpine.js' %}"></script>
+    {# Modern browsers #}
+    <script async defer type="module" src="{% static 'vendor/alpine.js' %}"></script>
 
-  {% vite_hmr_client %}
-  {% vite_asset 'assets/src/scripts/main.js' %}
+    {% vite_hmr_client %}
+    {% vite_asset 'assets/src/scripts/main.js' %}
 
-  {% block extra_head %}{% endblock %}
+    {% block extra_head %}{% endblock %}
 
-  {% include "partials/fonts.html" %}
+    {% include "partials/fonts.html" %}
 
-  <link rel="icon" href="{% static 'favicon.ico' %}">
-  <link rel="icon" href="{% static 'icon.svg' %}" type="image/svg+xml">
-  <link rel="apple-touch-icon" href="{% static 'apple-touch-icon.png' %}">
-  <link rel="manifest" href="{% static 'manifest.webmanifest' %}">
-</head>
-<body class="lg:overflow-y-hidden">
-  <div x-data="{ open: false }" @keydown.window.escape="open = false" class="pt-12 lg:pt-0 lg:h-screen flex overflow-hidden bg-white">
+    <link rel="icon" href="{% static 'favicon.ico' %}">
+    <link rel="icon" href="{% static 'icon.svg' %}" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="{% static 'apple-touch-icon.png' %}">
+    <link rel="manifest" href="{% static 'manifest.webmanifest' %}">
+  </head>
+  <body class="flex flex-col min-h-screen">
+    {% include "partials/header.html" %}
 
-    <div class="ie-block flex flex-col w-0 flex-1 overflow-hidden">
-      {% include "partials/header.html" %}
+    <main class="pt-6 pb-8 bg-gray-50 flex-grow">
+      {% block content %}{% endblock content %}
+    </main>
 
-      <div class="flex flex-col flex-1 relative lg:overflow-y-auto overflow-x-hidden">
-        <main class="flex-auto flex-shrink-0 pb-16 bg-gray-50">
-          {% block content %}{% endblock content %}
-        </main>
+    {% include 'partials/footer.html' %}
 
-        {% include 'partials/footer.html' %}
-      </div>
-    </div>
-  </div>
-
-  {# Legacy browsers #}
-  <script nomodule src="{% static 'vendor/alpine-ie11.js' %}"></script>
-</body>
+    {# Legacy browsers #}
+    <script nomodule src="{% static 'vendor/alpine-ie11.js' %}"></script>
+  </body>
 </html>
