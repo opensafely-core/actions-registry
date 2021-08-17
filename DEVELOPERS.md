@@ -39,3 +39,16 @@ $ git remote add dokku dokku@dokku2:
 # Push the main branch to dokku
 $ git push dokku main
 ```
+
+## Updating the database
+
+As the `dokku` user on dokku2, run:
+
+    $ dokku enter actions-registry
+
+This starts a bash session connected to the docker container running the application.
+You can now run any Django management command, including:
+
+    $ ./manage.py fetch_action opensafely-actions [repo-name]
+
+This fetches metadata about the given action from GitHub.
