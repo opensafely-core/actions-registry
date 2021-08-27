@@ -4,6 +4,7 @@ django-vite
 environs[django]
 furl
 gunicorn
+osgithub
 pycmarkgfm
 requests
 structlog
