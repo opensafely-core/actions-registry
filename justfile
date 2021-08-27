@@ -73,8 +73,24 @@ check-fnm:
 
 # Gather frontend assets and static files
 collectstatic:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    . scripts/setup_functions
+    dev_setup
     ./manage.py collectstatic --no-input --clear | grep -v '^Deleting '
+
+# run migrations
+migrate:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    . scripts/setup_functions
+    dev_setup
+    python manage.py migrate
 
 # run the dev server
 run:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    . scripts/setup_functions
+    dev_setup
     python manage.py runserver localhost:8000

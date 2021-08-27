@@ -1,11 +1,23 @@
 # Notes for developers
 
 ## Setup
+Set up local config:
+```
+just dev_config
+```
 
 Set up a local development environment with:
 
 ```
 just dev_setup
+just npm-install
+just npm-build
+```
+
+## Update the local project staticfiles and migrations
+```
+just collectstatic
+just migrate
 ```
 
 ## Running locally

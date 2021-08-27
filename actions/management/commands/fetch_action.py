@@ -1,8 +1,8 @@
 from django.conf import settings
 from django.core.management.base import BaseCommand, CommandError
 from django.db import transaction
+from osgithub import GithubAPIException, GithubClient
 
-from ...github import GithubAPIException, GithubClient
 from ...models import Action
 
 
@@ -21,7 +21,7 @@ class Command(BaseCommand):
         client = GithubClient()
 
         try:
-            repo = client.get_repo(f"{organisation}/{repo_name}")
+            repo = client.get_repo(organisation, repo_name)
         except GithubAPIException as e:
             if str(e) == "Not Found":
                 raise CommandError("Repo not found")
