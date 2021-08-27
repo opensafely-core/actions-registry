@@ -10,8 +10,8 @@ Set up a local development environment with:
 
 ```
 just dev_setup
-just npm-setup
 just npm-install
+just npm-build
 ```
 
 ## Update the local project staticfiles and migrations
