@@ -11,25 +11,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      # Python
-      - uses: "actions/setup-python@v2"
-        with:
-          python-version: "3.9"
-
-      - name: Install Python dependencies
-        run: |
-          set -xe
-          python -m pip install --upgrade pip
-          python -m venv venv
-          venv/bin/pip install --progress-bar=off --require-hashes --requirement requirements.dev.txt
-
-      - name: Cache the venv
-        uses: actions/cache@v2
-        with:
-          path: ${{ github.workspace }}/venv
-          key: venv-${{ github.ref }}-${{ hashFiles('requirements.dev.txt') }}
-
-      # Node.js
       - name: Cache node_modules
         uses: actions/cache@v2
         env:
