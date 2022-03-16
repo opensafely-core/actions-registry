@@ -49,6 +49,8 @@ jobs:
       - uses: "actions/setup-python@v2"
         with:
           python-version: "3.9"
+          cache: "pip"
+          cache-dependency-path: requirements.*.txt
       - uses: extractions/setup-just@v1
       - name: Check formatting, linting and import sorting
         run: just check
@@ -63,11 +65,8 @@ jobs:
       - uses: "actions/setup-python@v2"
         with:
           python-version: "3.9"
-      - name: Use the cached venv
-        uses: actions/cache@v2
-        with:
-          path: ${{ github.workspace }}/venv
-          key: venv-${{ github.ref }}-${{ hashFiles('requirements.txt', 'requirements.dev.txt') }}
+          cache: "pip"
+          cache-dependency-path: requirements.*.txt
       - name: Retrieve assets
         uses: actions/download-artifact@v2
         with:
