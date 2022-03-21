@@ -198,9 +198,9 @@ django-cache-url==3.2.3 \
     --hash=sha256:5514ca3a2075c6b956b3d0a5c540654d32b004e76340d7bdabf6661135b5f218 \
     --hash=sha256:c1d45626ae8a206267c1263aa7a3461e2e186be2e939bcbd8c660e25851ddac8
     # via environs
-django-vite==1.1.0 \
-    --hash=sha256:9e2b6443e752848430fc82318572d1faac7a0942b657d259d1e94f544f4fdf5e \
-    --hash=sha256:b01fdff3bfe797de00cf32ac1daeb8fe3b18b9a3a69095f2c9c7436ab115f18b
+django-vite==2.0.2 \
+    --hash=sha256:5a2e11a9f08a2a0a69c9a7c637a3254ad0c8dd01e07cb40de09a3a180ed99791 \
+    --hash=sha256:f11f4747183b884ee4e6c2ea12f0aa96a846574ee7344c05ac96b4fa89309535
     # via
     #   -c requirements.prod.in
     #   -r requirements.prod.in
