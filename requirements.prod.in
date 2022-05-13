@@ -8,7 +8,6 @@ environs[django]
 furl
 gunicorn
 osgithub
-pycmarkgfm
 requests
 structlog
 whitenoise[brotli]
