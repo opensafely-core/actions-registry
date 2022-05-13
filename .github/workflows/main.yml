@@ -80,6 +80,8 @@ jobs:
 
     if: github.ref == 'refs/heads/main'
 
+    concurrency: deploy-production
+
     steps:
       - uses: actions/checkout@v3
         with:
