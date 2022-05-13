@@ -277,9 +277,9 @@ orderedmultidict==1.0.1 \
     --hash=sha256:04070bbb5e87291cc9bfa51df413677faf2141c73c61d2a5f7b26bea3cd882ad \
     --hash=sha256:43c839a17ee3cdd62234c47deca1a8508a3f2ca1d0678a3bf791c87cf84adbf3
     # via furl
-osgithub==0.1.1 \
-    --hash=sha256:b743a88be2a1d695e53fa06f3f0480ef0a98f0891e7457a60c6e47d0485d11ef \
-    --hash=sha256:da44311d67011dc6fa7f24be785a8cb0ab1fa522db46987c1e181998b22f0be9
+osgithub==0.3.2 \
+    --hash=sha256:7ba4a6902e9451c3ff43c491721b92ff7cb0261505b321b9cac21b0e3e2eccdb \
+    --hash=sha256:eca66e1b364eb1880567bb033b66e84b4db9e19a8d2105ce54350697e1e5867f
     # via
     #   -c requirements.prod.in
     #   -r requirements.prod.in
