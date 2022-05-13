@@ -18,7 +18,7 @@ jobs:
           cache: npm
 
       - name: Install node_modules
-        run: npm install
+        run: npm ci
 
       - name: Build assets
         run: npm run build
