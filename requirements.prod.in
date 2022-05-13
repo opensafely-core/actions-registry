@@ -1,4 +1,7 @@
 # Main prod requirements
+
+# To generate requirements file, run:
+# pip-compile --generate-hashes --output-file=requirements.prod.txt requirements.prod.in
 django
 django-vite
 environs[django]
@@ -9,6 +12,3 @@ pycmarkgfm
 requests
 structlog
 whitenoise[brotli]
-
-# To generate requirements file, run:
-# pip-compile --generate-hashes --output-file=requirements.prod.txt requirements.prod.in
