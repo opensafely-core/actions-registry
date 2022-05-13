@@ -60,6 +60,11 @@ prodenv: requirements-prod
     touch $VIRTUAL_ENV/.prod
 
 
+_env:
+    #!/usr/bin/env bash
+    test -f .env || cp dotenv-sample .env
+
+
 # && dependencies are run after the recipe has run. Needs just>=0.9.9. This is
 # a killer feature over Makefiles.
 #
@@ -137,3 +142,28 @@ migrate: devenv
 # run the dev server
 run: devenv
     $BIN/python manage.py runserver localhost:8000
+
+
+# build docker image env=dev|prod
+docker-build env="dev": _env
+    {{ just_executable() }} docker/build {{ env }}
+
+
+# run tests in docker container
+docker-test *args="": _env
+    {{ just_executable() }} docker/test {{ args }}
+
+
+# run dev server in docker container
+docker-serve: _env
+    {{ just_executable() }} docker/serve
+
+
+# run cmd in dev docker continer
+docker-run *args="bash": _env
+    {{ just_executable() }} docker/run {{ args }}
+
+
+# exec command in an existing dev docker container
+docker-exec *args="bash": _env
+    {{ just_executable() }} docker/exec {{ args }}

@@ -1,0 +1,47 @@
+export DOCKER_USERID := `id -u`
+export DOCKER_GROUPID := `id -g`
+
+# Load .env files by default
+set dotenv-load := true
+
+# enable modern docker build features
+export DOCKER_BUILDKIT := "1"
+export COMPOSE_DOCKER_CLI_BUILD := "1"
+
+
+build env="dev":
+    #!/usr/bin/env bash
+
+    # set build args for prod builds
+    export BUILD_DATE=$(date -u +'%y-%m-%dT%H:%M:%SZ')
+    export GITREF=$(git rev-parse --short HEAD)
+
+    # build the thing
+    docker-compose build --pull {{ env }}
+
+
+# copy built node assets back to host
+copy-assets: build
+    #!/usr/bin/env bash
+    docker-compose build --pull node-assets
+    docker-compose run --rm --no-deps --entrypoint /usr/bin/env node-assets rsync --delete -r /usr/src/app/assets/dist/ /app/assets/dist/
+
+
+# run tests in docker container
+test *args="": copy-assets
+    docker-compose run --rm test python -m pytest --cov=. --cov-report html --cov-report term-missing:skip-covered {{ args }}
+
+
+# run dev server in docker container
+serve: copy-assets
+    docker-compose up dev
+
+
+# run command in dev container
+run *args="bash": copy-assets
+    docker-compose run dev {{ args }}
+
+
+# exec command in existing dev container
+exec *args="bash": copy-assets
+    docker-compose exec dev {{ args }}
