@@ -13,11 +13,12 @@ exclude = '''
 [tool.coverage.run]
 branch = true
 omit = [
-        ".venv/*",
-        "manage.py",
-        "actions/asgi.py",
-        "actions/wsgi.py",
-        "actions/logging.py",
+    ".direnv/*",
+    ".venv/*",
+    "manage.py",
+    "actions/asgi.py",
+    "actions/wsgi.py",
+    "actions/logging.py",
 ]
 
 [tool.coverage.report]
