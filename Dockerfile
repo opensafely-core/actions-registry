@@ -5,7 +5,7 @@ COPY . ./
 RUN npm ci
 RUN npm run build
 
-FROM python:3.9-buster
+FROM python:3.10-buster
 
 # Don't cache PyPI downloads or wheels.
 # Don't use pyc files or __pycache__ folders.

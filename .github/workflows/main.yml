@@ -9,27 +9,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
-
-      - name: Cache node_modules
-        uses: actions/cache@v2
-        env:
-          cache-name: cache-node-modules
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-build-${{ env.cache-name }}-
-            ${{ runner.os }}-build-
-            ${{ runner.os }}-
+      - uses: actions/checkout@v3
 
       - name: Install Node.js
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           node-version: '16'
+          cache: npm
 
       - name: Install node_modules
-        run: npm install
+        run: npm ci
 
       - name: Build assets
         run: npm run build
@@ -45,10 +34,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
-      - uses: "actions/setup-python@v2"
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v3
         with:
-          python-version: "3.9"
+          python-version: "3.10"
           cache: "pip"
           cache-dependency-path: requirements.*.txt
       - uses: extractions/setup-just@v1
@@ -60,11 +49,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: extractions/setup-just@v1
-      - uses: "actions/setup-python@v2"
+      - uses: actions/setup-python@v3
         with:
-          python-version: "3.9"
+          python-version: "3.10"
           cache: "pip"
           cache-dependency-path: requirements.*.txt
       - name: Retrieve assets
@@ -80,8 +69,8 @@ jobs:
   lint-dockerfile:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: hadolint/hadolint-action@v1.5.0
+      - uses: actions/checkout@v3
+      - uses: hadolint/hadolint-action@f988afea3da57ee48710a9795b6bb677cc901183  # v2.1.0
         with:
           failure-threshold: error
 
@@ -91,8 +80,10 @@ jobs:
 
     if: github.ref == 'refs/heads/main'
 
+    concurrency: deploy-production
+
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
