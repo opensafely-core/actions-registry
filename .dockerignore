@@ -12,3 +12,12 @@
 **/venv
 **/.coverage
 **/*.egg-info/
+
+.direnv
+.flake8
+.github/
+.pre-commit-config.yaml
+tests
+.pytest_cache/
+
+node_modules/

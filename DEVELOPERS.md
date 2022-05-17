@@ -40,17 +40,9 @@ Any args are passed to pytest.
 
 ## Deployment
 
-Deployment should happen automatically when a branch is merged into `main` on GitHub.
+Deployment uses `dokku` and requires the environment variables defined in `dotenv-sample`.
+It is deployed to our `dokku2` instance.
 
-To deploy manually:
-
-```
-# Add a remote
-$ git remote add dokku dokku@dokku2:
-
-# Push the main branch to dokku
-$ git push dokku main
-```
 
 ## Updating the database
 
