@@ -41,12 +41,12 @@ Any args are passed to pytest.
 ## Deployment
 
 Deployment uses `dokku` and requires the environment variables defined in `dotenv-sample`.
-It is deployed to our `dokku2` instance.
+It is deployed to our `dokku1` instance (see [deployment notes](DEPLOYMENT.md)).
 
 
 ## Updating the database
 
-As the `dokku` user on dokku2, run:
+As the `dokku` user on dokku1, run:
 
     $ dokku enter actions-registry
 

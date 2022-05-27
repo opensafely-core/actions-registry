@@ -1,6 +1,12 @@
 ---
 name: CI
 
+env:
+    IMAGE_NAME: actions-registry
+    PUBLIC_IMAGE_NAME: ghcr.io/opensafely-core/actions-registry
+    REGISTRY: ghcr.io
+    SSH_AUTH_SOCK: /tmp/agent.sock
+
 on:
   push:
 
@@ -92,19 +98,46 @@ jobs:
 
     runs-on: ubuntu-latest
 
-    if: github.ref == 'refs/heads/main'
+    permissions:
+      contents: read
+      packages: write
 
-    concurrency: deploy-production
+    if: github.ref == 'refs/heads/main'
 
     steps:
       - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
+      - uses: extractions/setup-just@aa5d15c144db4585980a44ebfdd2cf337c4f14cb  # v1.4.0
 
-      - name: Deploy to dokku
-        uses: opensafely-core/dokku-deploy-github-action@4b326b36625e4a10add5f9601e8ffbaf048444b9
+      - name: Build docker image
+        run: |
+          # docker-test step will build the dev image by default, so build the prod image
+          just docker-build prod
+
+      - name: Login to Packages Container registry
+        run: |
+            docker login $REGISTRY -u ${{ github.actor }} --password ${{ secrets.GITHUB_TOKEN }}
+
+      - name: publish docker image
+        run: |
+            docker tag $IMAGE_NAME $PUBLIC_IMAGE_NAME:latest
+            docker push $PUBLIC_IMAGE_NAME:latest
+
+      - name: Setup SSH Agent
+        run: |
+            ssh-agent -a $SSH_AUTH_SOCK > /dev/null
+            ssh-add - <<< "${{ secrets.DOKKU1_DEPLOY_SSH_KEY }}"
+
+      - name: Deploy
+        run: |
+            SHA=$(docker inspect --format='{{index .RepoDigests 0}}' $PUBLIC_IMAGE_NAME:latest)
+            ssh -o "UserKnownHostsFile=/dev/null" -o "StrictHostKeyChecking=no" dokku@dokku1.ebmdatalab.net git:from-image actions-registry $SHA
+
+      - name: Create Sentry release
+        uses: getsentry/action-release@744e4b262278339b79fb39c8922efcae71e98e39
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_RELEASE_INTEGRATION_TOKEN }}
+          SENTRY_ORG: ebm-datalab
+          SENTRY_PROJECT: actions-registry
         with:
-          app-name: "actions-registry"
-          dokku-host: "dokku2.ebmdatalab.net"
-          ssh-private-key: ${{ secrets.DOKKU2_DEPLOY_SSH_KEY }}
-          remote-branch: "main"
+          environment: production
+          ignore_empty: true
