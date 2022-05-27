@@ -104,6 +104,8 @@ jobs:
 
     if: github.ref == 'refs/heads/main'
 
+    concurrency: deploy-production
+
     steps:
       - uses: actions/checkout@v3
       - uses: extractions/setup-just@aa5d15c144db4585980a44ebfdd2cf337c4f14cb  # v1.4.0
