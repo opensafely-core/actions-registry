@@ -1,15 +1,10 @@
 # Notes for developers
 
 ## Setup
-Set up local config:
-```
-just dev_config
-```
-
 Set up a local development environment with:
 
 ```
-just dev_setup
+just devenv
 just npm-install
 just npm-build
 ```
