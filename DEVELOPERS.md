@@ -1,15 +1,10 @@
 # Notes for developers
 
 ## Setup
-Set up local config:
-```
-just dev_config
-```
-
 Set up a local development environment with:
 
 ```
-just dev_setup
+just devenv
 just npm-install
 just npm-build
 ```
@@ -41,8 +36,7 @@ Any args are passed to pytest.
 ## Deployment
 
 Deployment uses `dokku` and requires the environment variables defined in `dotenv-sample`.
-It is deployed to our `dokku1` instance (see [deployment notes](DEPLOYMENT.md)).
-
+It is deployed to our `dokku1` instance (see [Dokku Deployment](https://bennettinstitute-team-manual.pages.dev/tools-systems/dokku/)).
 
 ## Updating the database
 
