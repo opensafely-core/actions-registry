@@ -29,12 +29,11 @@ class Command(BaseCommand):
 
         details = repo.get_repo_details()
         tags = repo.get_tags()
-
         action, created = Action.objects.update_or_create(
             repo_name=repo_name,
             org=organisation,
             defaults={
-                "about": details["about"],
+                "about": str(details["about"] or ""),
             },
         )
 
