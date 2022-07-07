@@ -1,18 +1,31 @@
+import sys
+
 from django.conf import settings
-from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import CommandError
 from django.db import transaction
+from django_extensions.management.jobs import DailyJob
 from osgithub import GithubAPIException, GithubClient
 
 from ...models import Action
 
 
-class Command(BaseCommand):
-    def add_arguments(self, parser):
-        parser.add_argument("organisation")
-        parser.add_argument("repo_name")
+class Job(DailyJob):
+    actions = [
+        "opensafely-actions/cohort-joiner",
+        "opensafely-actions/cohort-report",
+        "opensafely-actions/cox-ipw",
+        "opensafely-actions/dataset-report",
+        "opensafely-actions/deciles-charts",
+        "opensafely-actions/safetab",
+    ]
+
+    def execute(self):
+        for action in self.actions:
+            organisation, repo_name = action.split("/")
+            self.fetch_action(organisation, repo_name)
 
     @transaction.atomic
-    def handle(self, organisation, repo_name, **options):
+    def fetch_action(self, organisation, repo_name, **options):
         if organisation not in settings.ALLOWED_ORGS:
             raise CommandError(
                 "This repo belongs to an organisation outside our allowed list."
@@ -50,6 +63,6 @@ class Command(BaseCommand):
             )
 
         if created:
-            self.stdout.write("Created new Action")
+            sys.stdout.write(f"Created {organisation}/{repo_name}\n")
         else:
-            self.stdout.write("Updated existing Action")
+            sys.stdout.write(f"Updated {organisation}/{repo_name}\n")
