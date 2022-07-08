@@ -1,0 +1,24 @@
+{
+    "cron": [
+        {
+            "command": "python manage.py runjobs hourly |& systemd-cat -t actions-registry",
+            "schedule": "@hourly"
+        },
+        {
+            "command": "python manage.py runjobs daily |& systemd-cat -t actions-registry",
+            "schedule": "@daily"
+        },
+        {
+            "command": "python manage.py runjobs weekly |& systemd-cat -t actions-registry",
+            "schedule": "@weekly"
+        },
+        {
+            "command": "python manage.py runjobs monthly |& systemd-cat -t actions-registry",
+            "schedule": "@monthly"
+        },
+        {
+            "command": "python manage.py runjobs yearly |& systemd-cat -t actions-registry",
+            "schedule": "@yearly"
+        }
+    ]
+}

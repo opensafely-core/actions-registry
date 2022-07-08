@@ -97,11 +97,16 @@ django==4.0.4 \
     --hash=sha256:4e8177858524417563cc0430f29ea249946d831eacb0068a1455686587df40b5
     # via
     #   -r requirements.prod.in
+    #   django-extensions
     #   django-vite
 django-cache-url==3.2.3 \
     --hash=sha256:5514ca3a2075c6b956b3d0a5c540654d32b004e76340d7bdabf6661135b5f218 \
     --hash=sha256:c1d45626ae8a206267c1263aa7a3461e2e186be2e939bcbd8c660e25851ddac8
     # via environs
+django-extensions==3.1.5 \
+    --hash=sha256:28e1e1bf49f0e00307ba574d645b0af3564c981a6dfc87209d48cb98f77d0b1a \
+    --hash=sha256:9238b9e016bb0009d621e05cf56ea8ce5cce9b32e91ad2026996a7377ca28069
+    # via -r requirements.prod.in
 django-vite==2.0.2 \
     --hash=sha256:5a2e11a9f08a2a0a69c9a7c637a3254ad0c8dd01e07cb40de09a3a180ed99791 \
     --hash=sha256:f11f4747183b884ee4e6c2ea12f0aa96a846574ee7344c05ac96b4fa89309535

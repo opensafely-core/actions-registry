@@ -39,6 +39,7 @@ ALLOWED_HOSTS = ["*"]
 # Application definition
 
 INSTALLED_APPS = [
+    "django_extensions",
     "django_vite",
     "actions.apps.ActionsConfig",
     "django.contrib.admin",
