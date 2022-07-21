@@ -92,9 +92,9 @@ dj-email-url==1.0.2 \
     --hash=sha256:15148141c6ef123636e4ca3663e95231ed94ca5ed267e91977e5a4397be8b34c \
     --hash=sha256:838fd4ded9deba53ae757debef431e25fa7fca31d3948b3c4808ccdc84fab2b7
     # via environs
-django==4.0.4 \
-    --hash=sha256:07c8638e7a7f548dc0acaaa7825d84b7bd42b10e8d22268b3d572946f1e9b687 \
-    --hash=sha256:4e8177858524417563cc0430f29ea249946d831eacb0068a1455686587df40b5
+django==4.0.6 \
+    --hash=sha256:a67a793ff6827fd373555537dca0da293a63a316fe34cb7f367f898ccca3c3ae \
+    --hash=sha256:ca54ebedfcbc60d191391efbf02ba68fb52165b8bf6ccd6fe71f098cac1fe59e
     # via
     #   -r requirements.prod.in
     #   django-extensions
