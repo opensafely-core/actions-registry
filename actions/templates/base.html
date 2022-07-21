@@ -15,7 +15,7 @@
     {% endblock %}
 
     {# Modern browsers #}
-    <script async defer type="module" src="{% static 'vendor/alpine.js' %}"></script>
+    <script async defer type="module" src="{% static 'vendor/alpine.js' %}" nonce="{{ request.csp_nonce }}"></script>
 
     {% vite_hmr_client %}
     {% vite_asset 'assets/src/scripts/main.js' %}
@@ -39,6 +39,6 @@
     {% include 'partials/footer.html' %}
 
     {# Legacy browsers #}
-    <script nomodule src="{% static 'vendor/alpine-ie11.js' %}"></script>
+    <script nomodule src="{% static 'vendor/alpine-ie11.js' %}" nonce="{{ request.csp_nonce }}"></script>
   </body>
 </html>

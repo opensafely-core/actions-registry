@@ -60,6 +60,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "csp.middleware.CSPMiddleware",
     "actions.middleware.XSSFilteringMiddleware",
 ]
 
@@ -142,6 +143,22 @@ STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+
+# CSP
+# https://django-csp.readthedocs.io/en/latest/configuration.html
+CSP_DEFAULT_SRC = ["'self'"]
+CSP_STYLE_SRC = ["'self'", "fonts.googleapis.com"]
+
+# which directives to set a nonce for
+CSP_INCLUDE_NONCE_IN = ["script-src", "script-src-elem"]
+
+# configure django-csp to work with Vite when using it in dev mode
+if DJANGO_VITE_DEV_MODE:  # pragma: no cover
+    CSP_CONNECT_SRC = ["ws://localhost:3000/static/bundle/"]
+    CSP_FONT_SRC = ["data:"]
+    CSP_SCRIPT_SRC_ELEM = ["http://localhost:3000"]
+    CSP_STYLE_SRC = ["'unsafe-inline'"]
 
 
 # Permissions Policy
