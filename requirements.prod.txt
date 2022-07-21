@@ -141,9 +141,9 @@ orderedmultidict==1.0.1 \
     --hash=sha256:04070bbb5e87291cc9bfa51df413677faf2141c73c61d2a5f7b26bea3cd882ad \
     --hash=sha256:43c839a17ee3cdd62234c47deca1a8508a3f2ca1d0678a3bf791c87cf84adbf3
     # via furl
-osgithub==0.3.2 \
-    --hash=sha256:7ba4a6902e9451c3ff43c491721b92ff7cb0261505b321b9cac21b0e3e2eccdb \
-    --hash=sha256:eca66e1b364eb1880567bb033b66e84b4db9e19a8d2105ce54350697e1e5867f
+osgithub==0.3.3 \
+    --hash=sha256:6e4d2367e14b87d415e2c96e4d47331a440dc7a72ef2ab364320072c16e837ea \
+    --hash=sha256:99e7a46529664928006c98a4129e1430f0b6aba20106d278b88a8c17cdc76ff9
     # via -r requirements.prod.in
 python-dotenv==0.18.0 \
     --hash=sha256:dd8fe852847f4fbfadabf6183ddd4c824a9651f02d51714fa075c95561959c7d \
