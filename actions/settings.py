@@ -147,18 +147,20 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # CSP
 # https://django-csp.readthedocs.io/en/latest/configuration.html
+CSP_REPORT_ONLY = DEBUG
 CSP_DEFAULT_SRC = ["'self'"]
-CSP_STYLE_SRC = ["'self'", "fonts.googleapis.com"]
+CSP_FONT_SRC = ["'self'", "https://fonts.gstatic.com"]
+CSP_SCRIPT_SRC_ELEM = ["'self'"]
+CSP_STYLE_SRC_ELEM = ["'self'", "https://fonts.googleapis.com"]
 
 # which directives to set a nonce for
 CSP_INCLUDE_NONCE_IN = ["script-src", "script-src-elem"]
 
 # configure django-csp to work with Vite when using it in dev mode
 if DJANGO_VITE_DEV_MODE:  # pragma: no cover
-    CSP_CONNECT_SRC = ["ws://localhost:3000/static/bundle/"]
-    CSP_FONT_SRC = ["data:"]
+    CSP_CONNECT_SRC = ["ws://localhost:3000/static/"]
+    CSP_STYLE_SRC_ELEM = ["'self'", "https://fonts.googleapis.com", "'unsafe-inline'"]
     CSP_SCRIPT_SRC_ELEM = ["http://localhost:3000"]
-    CSP_STYLE_SRC = ["'unsafe-inline'"]
 
 
 # Permissions Policy
