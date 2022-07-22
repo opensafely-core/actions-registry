@@ -9,7 +9,6 @@
   },
   "dependencies": {
     "@tailwindcss/typography": "^0.4.1",
-    "alpinejs": "^2.8.2",
     "tailwindcss": "^2.2.7"
   },
   "devDependencies": {
@@ -18,7 +17,6 @@
     "postcss": "^8.3.6",
     "postcss-color-rgba-fallback": "^4.0.0",
     "purgecss": "^4.0.3",
-    "rollup-plugin-copy": "^3.4.0",
     "sass": "^1.37.5",
     "vite": "^2.4.3"
   }
