@@ -152,6 +152,7 @@ CSP_DEFAULT_SRC = ["'self'"]
 CSP_FONT_SRC = ["'self'", "https://fonts.gstatic.com"]
 CSP_SCRIPT_SRC_ELEM = ["'self'"]
 CSP_STYLE_SRC_ELEM = ["'self'", "https://fonts.googleapis.com"]
+CSP_IMG_SRC = ["'self'", "https://user-images.githubusercontent.com"]
 
 # which directives to set a nonce for
 CSP_INCLUDE_NONCE_IN = ["script-src", "script-src-elem"]
