@@ -8,14 +8,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     {% block meta %}
-    {% with meta_title="OpenSAFELY: Actions" meta_description="Actions curated by the DataLab at the University of Oxford, working on behalf of NHS England." %}
+    {% with meta_title="OpenSAFELY: Actions" meta_description="Actions curated by the Bennett Institute for Applied Data Science, working on behalf of NHS England." %}
     <title>{{ meta_title }}</title>
     <meta name="description" content="{{ meta_description }}">
     {% endwith %}
     {% endblock %}
-
-    {# Modern browsers #}
-    <script async defer type="module" src="{% static 'vendor/alpine.js' %}"></script>
 
     {% vite_hmr_client %}
     {% vite_asset 'assets/src/scripts/main.js' %}
@@ -37,8 +34,5 @@
     </main>
 
     {% include 'partials/footer.html' %}
-
-    {# Legacy browsers #}
-    <script nomodule src="{% static 'vendor/alpine-ie11.js' %}"></script>
   </body>
 </html>

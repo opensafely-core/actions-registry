@@ -52,6 +52,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "django_permissions_policy.PermissionsPolicyMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -59,6 +60,8 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "csp.middleware.CSPMiddleware",
+    "actions.middleware.XSSFilteringMiddleware",
 ]
 
 ROOT_URLCONF = "actions.urls"
@@ -140,5 +143,32 @@ STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+
+# CSP
+# https://django-csp.readthedocs.io/en/latest/configuration.html
+CSP_REPORT_ONLY = DEBUG
+CSP_DEFAULT_SRC = ["'self'"]
+CSP_FONT_SRC = ["'self'", "https://fonts.gstatic.com"]
+CSP_SCRIPT_SRC_ELEM = ["'self'"]
+CSP_STYLE_SRC_ELEM = ["'self'", "https://fonts.googleapis.com"]
+CSP_IMG_SRC = ["'self'", "https://user-images.githubusercontent.com"]
+
+# which directives to set a nonce for
+CSP_INCLUDE_NONCE_IN = ["script-src", "script-src-elem"]
+
+# configure django-csp to work with Vite when using it in dev mode
+if DJANGO_VITE_DEV_MODE:  # pragma: no cover
+    CSP_CONNECT_SRC = ["ws://localhost:3000/static/"]
+    CSP_STYLE_SRC_ELEM = ["'self'", "https://fonts.googleapis.com", "'unsafe-inline'"]
+    CSP_SCRIPT_SRC_ELEM = ["http://localhost:3000"]
+
+
+# Permissions Policy
+# https://github.com/adamchainz/django-permissions-policy/blob/main/README.rst
+PERMISSIONS_POLICY = {
+    "interest-cohort": [],
+}
+
 
 ALLOWED_ORGS = ["opensafely-actions"]
