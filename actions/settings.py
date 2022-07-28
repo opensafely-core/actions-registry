@@ -150,11 +150,11 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 CSP_REPORT_ONLY = DEBUG
 CSP_DEFAULT_SRC = ["'none'"]
 CSP_CONNECT_SRC = ["https://plausible.io"]
-CSP_FONT_SRC = ["'self'", "https://fonts.gstatic.com"]
+CSP_FONT_SRC = ["'self'"]
 CSP_IMG_SRC = ["'self'", "https://user-images.githubusercontent.com"]
 CSP_MANIFEST_SRC = ["'self'"]
 CSP_SCRIPT_SRC = CSP_SCRIPT_SRC_ELEM = ["'self'", "https://plausible.io"]
-CSP_STYLE_SRC = CSP_STYLE_SRC_ELEM = ["'self'", "https://fonts.googleapis.com"]
+CSP_STYLE_SRC = CSP_STYLE_SRC_ELEM = ["'self'"]
 
 # which directives to set a nonce for
 CSP_INCLUDE_NONCE_IN = ["script-src", "script-src-elem"]
@@ -162,6 +162,7 @@ CSP_INCLUDE_NONCE_IN = ["script-src", "script-src-elem"]
 # configure django-csp to work with Vite when using it in dev mode
 if DJANGO_VITE_DEV_MODE:  # pragma: no cover
     CSP_CONNECT_SRC = ["ws://localhost:3000/static/", "https://plausible.io"]
+    CSP_FONT_SRC = ["'self'", "http://localhost:3000"]
     CSP_SCRIPT_SRC = CSP_SCRIPT_SRC_ELEM = [
         "'self'",
         "https://plausible.io",
@@ -169,7 +170,6 @@ if DJANGO_VITE_DEV_MODE:  # pragma: no cover
     ]
     CSP_STYLE_SRC = CSP_STYLE_SRC_ELEM = [
         "'self'",
-        "https://fonts.googleapis.com",
         "'unsafe-inline'",
     ]
 
