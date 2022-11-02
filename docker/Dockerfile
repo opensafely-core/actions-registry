@@ -115,6 +115,7 @@ WORKDIR /app
 # This may not be necessary, but it probably doesn't hurt
 ENV PYTHONPATH=/app
 
+EXPOSE 8000
 
 ##################################################
 #
@@ -139,9 +140,12 @@ COPY --from=node-builder /usr/src/app/assets/dist /app/assets/dist
 # collect static files
 RUN SECRET_KEY=dummy-key python /app/manage.py collectstatic --no-input
 
-# We set command rather than entrypoint, to make it easier to run different
-# things from the cli
-CMD ["/app/docker/entrypoints/prod.sh"]
+# We set a default command rather than entrypoint, to make it easier to run
+# different things from the cli...
+CMD ["gunicorn", "actions.wsgi", "--config=gunicorn.conf.py"]
+
+# But we set the entrypoint to ensure some basic tasks are performed
+ENTRYPOINT ["/app/docker/entrypoints/prod.sh"]
 
 # finally, tag with build information. These will change regularly, therefore
 # we do them as the last action.
