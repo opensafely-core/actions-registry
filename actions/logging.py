@@ -79,6 +79,6 @@ logging_config_dict = {
             "level": "INFO",
             "propagate": False,
         },
-        "jobserver": {"handlers": ["console"], "level": "INFO", "propagate": False},
+        "actions": {"handlers": ["console"], "level": "INFO", "propagate": False},
     },
 }
