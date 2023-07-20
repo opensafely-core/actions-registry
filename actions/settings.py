@@ -133,6 +133,7 @@ STATIC_URL = "/static/"
 
 DJANGO_VITE_ASSETS_PATH = "/static/"
 DJANGO_VITE_DEV_MODE = env.bool("DJANGO_VITE_DEV_MODE", default=False)
+DJANGO_VITE_DEV_SERVER_PORT = 5173
 DJANGO_VITE_MANIFEST_PATH = os.path.join(BASE_DIR, "staticfiles", "manifest.json")
 
 # Insert Whitenoise Middleware.
@@ -161,12 +162,12 @@ CSP_INCLUDE_NONCE_IN = ["script-src", "script-src-elem"]
 
 # configure django-csp to work with Vite when using it in dev mode
 if DJANGO_VITE_DEV_MODE:  # pragma: no cover
-    CSP_CONNECT_SRC = ["ws://localhost:3000/static/", "https://plausible.io"]
-    CSP_FONT_SRC = ["'self'", "http://localhost:3000"]
+    CSP_CONNECT_SRC = ["ws://localhost:5173/static/", "https://plausible.io"]
+    CSP_FONT_SRC = ["'self'", "data:"]
     CSP_SCRIPT_SRC = CSP_SCRIPT_SRC_ELEM = [
         "'self'",
         "https://plausible.io",
-        "http://localhost:3000",
+        "http://localhost:5173",
     ]
     CSP_STYLE_SRC = CSP_STYLE_SRC_ELEM = [
         "'self'",
