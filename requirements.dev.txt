@@ -8,10 +8,6 @@ appdirs==1.4.4 \
     --hash=sha256:7d5d0167b2b1ba821647616af46a749d1c653740dd0d2415100fe26e27afdf41 \
     --hash=sha256:a841dacd6b99318a741b166adb07e19ee71a274450e68237b4650ca1055ab128
     # via virtualenv
-attrs==21.2.0 \
-    --hash=sha256:149e90d6d8ac20db7a955ad60cf0e6881a3f20d37096140088356da6c716b0b1 \
-    --hash=sha256:ef6aaac3ca6cd92904cdd0d83f629a15f18053ec84e6432106f7a4d04ae4f5fb
-    # via pytest
 black==22.6.0 \
     --hash=sha256:074458dc2f6e0d3dab7928d4417bb6957bb834434516f21514138437accdbe90 \
     --hash=sha256:187d96c5e713f441a5829e77120c269b6514418f4513a390b0499b0987f2ff1c \
@@ -173,10 +169,6 @@ pre-commit==2.20.0 \
     --hash=sha256:51a5ba7c480ae8072ecdb6933df22d2f812dc897d5fe848778116129a681aac7 \
     --hash=sha256:a978dac7bc9ec0bcee55c18a277d553b0f419d259dadb4b9418ff2d00eb43959
     # via -r requirements.dev.in
-py==1.10.0 \
-    --hash=sha256:21b81bda15b66ef5e1a777a21c4dcd9c20ad3efd0b3f817e7a809035269e1bd3 \
-    --hash=sha256:3b80836aa6d1feeaa108e046da6423ab8f6ceda6468545ae8d02d9d58d18818a
-    # via pytest
 pycodestyle==2.8.0 \
     --hash=sha256:720f8b39dde8b293825e7ff02c475f3077124006db4f440dcbc9a20b76548a20 \
     --hash=sha256:eddd5847ef438ea1c7870ca7eb78a9d47ce0cdb4851a5523949f2601d0cbbe7f
@@ -189,9 +181,9 @@ pyparsing==2.4.7 \
     --hash=sha256:c203ec8783bf771a155b207279b9bccb8dea02d8f0c9e5f8ead507bc3246ecc1 \
     --hash=sha256:ef9d7589ef3c200abe66653d3f1ab1033c3c419ae9b9bdb1240a85b024efc88b
     # via packaging
-pytest==7.1.2 \
-    --hash=sha256:13d0e3ccfc2b6e26be000cb6568c832ba67ba32e719443bfe725814d3c42433c \
-    --hash=sha256:a06a0425453864a270bc45e71f783330a7428defb4230fb5e6a731fde06ecd45
+pytest==7.4.1 \
+    --hash=sha256:2f2301e797521b23e4d2585a0a3d7b5e50fdddaaf7e7d6773ea26ddb17c213ab \
+    --hash=sha256:460c9a59b14e27c602eb5ece2e47bec99dc5fc5f6513cf924a7d03a578991b1f
     # via
     #   -r requirements.dev.in
     #   pytest-cov
@@ -269,12 +261,6 @@ toml==0.10.2 \
     # via
     #   coverage
     #   pre-commit
-tomli==2.0.1 \
-    --hash=sha256:939de3e7a6161af0c887ef91b7d41a53e7c5a1ca976325f429cb46ea9bc30ecc \
-    --hash=sha256:de526c12914f0c550d15924c62d72abc48d6fe7364aa87328337a31007fe8a4f
-    # via
-    #   black
-    #   pytest
 urllib3==1.26.6 \
     --hash=sha256:39fb8672126159acb139a7718dd10806104dec1e2f0f6c88aab05d17df10c8d4 \
     --hash=sha256:f57b4c16c62fa2760b7e3d97c35b255512fb6b59a259730f36ba32ce9f8e342f
