@@ -106,7 +106,9 @@ coverage[toml]==5.5 \
     --hash=sha256:f030f8873312a16414c0d8e1a1ddff2d3235655a2174e3648b4fa66b3f2f1079 \
     --hash=sha256:f0b278ce10936db1a37e6954e15a3730bea96a0997c26d7fee88e6c396c2086d \
     --hash=sha256:f11642dddbb0253cc8853254301b51390ba0081750a8ac03f20ea8103f0c56b6
-    # via pytest-cov
+    # via
+    #   coverage
+    #   pytest-cov
 distlib==0.3.2 \
     --hash=sha256:106fef6dc37dd8c0e2c0a60d3fca3e77460a48907f335fa28420463a6f799736 \
     --hash=sha256:23e223426b28491b1ced97dc3bbe183027419dfc7982b4fa2f05d5f3ff10711c
@@ -121,9 +123,9 @@ flake8==4.0.1 \
     # via
     #   -r requirements.dev.in
     #   flake8-builtins
-flake8-builtins==1.5.3 \
-    --hash=sha256:09998853b2405e98e61d2ff3027c47033adbdc17f9fe44ca58443d876eb00f3b \
-    --hash=sha256:7706babee43879320376861897e5d1468e396a40b8918ed7bccf70e5f90b8687
+flake8-builtins==2.2.0 \
+    --hash=sha256:392d5af3a0720c5a863aa93dc47f48c879081345a143fe9f20d995fe9ff5686a \
+    --hash=sha256:7ee5766d9c60e5d579dfda84e65c6d0e6c26005f6f59cb9bf722462d7987a807
     # via -r requirements.dev.in
 identify==2.2.10 \
     --hash=sha256:18d0c531ee3dbc112fa6181f34faa179de3f57ea57ae2899754f16a7e0ff6421 \
