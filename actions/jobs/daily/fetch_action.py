@@ -16,6 +16,7 @@ class Job(DailyJob):
         "opensafely-actions/cox-ipw",
         "opensafely-actions/dataset-report",
         "opensafely-actions/deciles-charts",
+        "opensafely-actions/demographic-standardisation",
         "opensafely-actions/safetab",
     ]
 
