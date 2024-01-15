@@ -123,7 +123,16 @@ USE_TZ = True
 
 
 # Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/3.2/howto/static-files/
+# https://docs.djangoproject.com/en/5.0/howto/static-files/
+STORAGES = {
+    "default": {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
+
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
     os.path.join(BASE_DIR, "assets", "dist"),
@@ -131,13 +140,16 @@ STATICFILES_DIRS = [
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 STATIC_URL = "/static/"
 
-DJANGO_VITE_ASSETS_PATH = "/static/"
-DJANGO_VITE_DEV_MODE = env.bool("DJANGO_VITE_DEV_MODE", default=False)
-DJANGO_VITE_MANIFEST_PATH = os.path.join(BASE_DIR, "staticfiles", "manifest.json")
+ASSETS_PATH = "/static/"
+ASSETS_DEV_MODE = env.bool("ASSETS_DEV_MODE", default=False)
+ASSETS_MANIFEST_PATH = os.path.join(BASE_DIR, "staticfiles", "manifest.json")
 
-# Insert Whitenoise Middleware.
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
-
+DJANGO_VITE = {
+    "default": {
+        "dev_mode": ASSETS_DEV_MODE,
+        "manifest_path": ASSETS_MANIFEST_PATH,
+    }
+}
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
@@ -160,7 +172,7 @@ CSP_STYLE_SRC = CSP_STYLE_SRC_ELEM = ["'self'"]
 CSP_INCLUDE_NONCE_IN = ["script-src", "script-src-elem"]
 
 # configure django-csp to work with Vite when using it in dev mode
-if DJANGO_VITE_DEV_MODE:  # pragma: no cover
+if ASSETS_DEV_MODE:  # pragma: no cover
     CSP_CONNECT_SRC = ["ws://localhost:3000/static/", "https://plausible.io"]
     CSP_FONT_SRC = ["'self'", "http://localhost:3000"]
     CSP_SCRIPT_SRC = CSP_SCRIPT_SRC_ELEM = [
