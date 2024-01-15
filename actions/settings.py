@@ -10,7 +10,6 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
-import os
 from pathlib import Path
 
 from environs import Env
@@ -134,15 +133,15 @@ STORAGES = {
 }
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static"),
-    os.path.join(BASE_DIR, "assets", "dist"),
+    BASE_DIR / "static",
+    BASE_DIR / "assets" / "dist",
 ]
-STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+STATIC_ROOT = BASE_DIR / "staticfiles"
 STATIC_URL = "/static/"
 
 ASSETS_PATH = "/static/"
 ASSETS_DEV_MODE = env.bool("ASSETS_DEV_MODE", default=False)
-ASSETS_MANIFEST_PATH = os.path.join(BASE_DIR, "staticfiles", "manifest.json")
+ASSETS_MANIFEST_PATH = BASE_DIR / "staticfiles" / "manifest.json"
 
 DJANGO_VITE = {
     "default": {
