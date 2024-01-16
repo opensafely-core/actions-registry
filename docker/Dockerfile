@@ -154,6 +154,9 @@ LABEL org.opencontainers.image.created=$BUILD_DATE
 ARG GITREF=unknown
 LABEL org.opencontainers.image.revision=$GITREF
 
+ARG USERID=10005
+ARG GROUPID=10005
+USER ${USERID}:${GROUPID}
 
 ##################################################
 #
@@ -173,3 +176,7 @@ RUN --mount=type=cache,target=/root/.cache \
 
 # Override ENTRYPOINT rather than CMD so we can pass arbitrary commands to the entrypoint script
 ENTRYPOINT ["/app/docker/entrypoints/dev.sh"]
+
+ARG USERID
+ARG GROUPID
+USER ${USERID}:${GROUPID}

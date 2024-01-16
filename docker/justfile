@@ -1,8 +1,8 @@
-export DOCKER_USERID := `id -u`
-export DOCKER_GROUPID := `id -g`
-
 # Load .env files by default
 set dotenv-load := true
+
+export DEV_USERID := `id -u`
+export DEV_GROUPID := `id -g`
 
 # enable modern docker build features
 export DOCKER_BUILDKIT := "1"
