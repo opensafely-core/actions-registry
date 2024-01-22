@@ -21,6 +21,6 @@
     "postcss-color-rgba-fallback": "^4.0.0",
     "purgecss": "^4.0.3",
     "sass": "^1.37.5",
-    "vite": "^2.9.16"
+    "vite": "^2.9.17"
   }
 }
