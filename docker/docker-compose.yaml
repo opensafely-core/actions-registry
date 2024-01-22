@@ -44,11 +44,17 @@ services:
     build:
       # the dev stage in the Dockerfile
       target: actions-registry-dev
+      # pass the uid/gid as build arg
+      args:
+        - USERID=${DEV_USERID:-1000}
+        - GROUPID=${DEV_GROUPID:-1000}
     # paths relative to docker-compose.yaml file
     env_file:
       - ../.env
     volumes:
       - ..:/app
+      # provides a persistant inspectable cache for staticfiles
+      - ./staticfiles:/opt/staticfiles
     # override command
     command: python manage.py runserver 0.0.0.0:8000
 
