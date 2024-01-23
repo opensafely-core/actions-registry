@@ -1,11 +1,13 @@
-const defaultTheme = require("tailwindcss/defaultTheme");
+import { fontFamily } from "tailwindcss/defaultTheme";
+import typography from "@tailwindcss/typography";
 
-module.exports = {
+/** @type {import('tailwindcss').Config} */
+export default {
   content: ["./actions/templates/**/*.html"],
   theme: {
     extend: {
       fontFamily: {
-        sans: ["Public Sans", ...defaultTheme.fontFamily.sans],
+        sans: ["Public Sans", ...fontFamily.sans],
       },
       colors: {
         oxford: {
@@ -24,5 +26,5 @@ module.exports = {
       },
     },
   },
-  plugins: [require("@tailwindcss/typography")],
-};
+  plugins: [typography],
+}
