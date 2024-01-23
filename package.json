@@ -7,9 +7,6 @@
     "build": "vite build",
     "serve": "vite preview"
   },
-  "overrides": {
-    "postcss": "^8.4.33"
-  },
   "dependencies": {
     "@fontsource/public-sans": "^5.0.16",
     "@tailwindcss/typography": "^0.4.1",
@@ -19,7 +16,6 @@
     "autoprefixer": "^10.3.1",
     "cssnano": "^5.0.7",
     "postcss": "^8.4.33",
-    "postcss-color-rgba-fallback": "^4.0.0",
     "purgecss": "^4.0.3",
     "sass": "^1.37.5",
     "vite": "^2.9.17"
