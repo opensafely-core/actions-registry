@@ -11,6 +11,7 @@
     "postcss": "^8.4.33"
   },
   "dependencies": {
+    "@fontsource/public-sans": "^5.0.16",
     "@tailwindcss/typography": "^0.4.1",
     "tailwindcss": "^2.2.7"
   },
