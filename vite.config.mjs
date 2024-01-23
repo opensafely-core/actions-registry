@@ -14,7 +14,7 @@
     emptyOutDir: true,
   },
   server: {
-    port: 3000,
+    origin: "http://localhost:5173",
   },
   clearScreen: false,
 };
