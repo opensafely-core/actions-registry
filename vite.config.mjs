@@ -13,6 +13,9 @@
     outDir: "assets/dist",
     emptyOutDir: true,
   },
+  server: {
+    port: 3000,
+  },
   clearScreen: false,
 };
 
