@@ -15,7 +15,6 @@
   "devDependencies": {
     "autoprefixer": "^10.4.17",
     "postcss": "^8.4.33",
-    "purgecss": "^4.0.3",
     "vite": "^2.9.17"
   }
 }
