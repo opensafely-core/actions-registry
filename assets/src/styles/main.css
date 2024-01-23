@@ -7,12 +7,12 @@
   .sm\:prose {
     color: theme("colors.gray.800");
 
-    .anchor {
+    & .anchor {
       margin-left: -20px;
       padding-right: 4px;
     }
 
-    .octicon-link {
+    & .octicon-link {
       vertical-align: middle;
       visibility: hidden;
 
@@ -21,36 +21,36 @@
       }
     }
 
-    h1:hover .anchor .octicon-link,
-    h2:hover .anchor .octicon-link,
-    h3:hover .anchor .octicon-link,
-    h4:hover .anchor .octicon-link,
-    h5:hover .anchor .octicon-link,
-    h6:hover .anchor .octicon-link {
+    & h1:hover .anchor .octicon-link,
+    & h2:hover .anchor .octicon-link,
+    & h3:hover .anchor .octicon-link,
+    & h4:hover .anchor .octicon-link,
+    & h5:hover .anchor .octicon-link,
+    & h6:hover .anchor .octicon-link {
       visibility: visible;
     }
 
-    h1,
-    h2,
-    h3,
-    h4,
-    h5,
-    h6 {
+    & h1,
+    & h2,
+    & h3,
+    & h4,
+    & h5,
+    & h6 {
       align-items: center;
       color: theme("colors.gray.800");
       display: flex;
     }
 
-    ul > li::before {
+    & ul > li::before {
       background-color: theme("colors.gray.800");
     }
 
-    pre {
+    & pre {
       background-color: theme("colors.gray.50");
       color: theme("colors.gray.700");
     }
 
-    a {
+    & a {
       font-weight: 600;
 
       &:hover,
@@ -60,7 +60,7 @@
       }
     }
 
-    code {
+    & code {
       background-color: theme("colors.gray.50");
       border-radius: 6px;
       font-size: 85%;
