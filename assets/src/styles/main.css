@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .anchor {
+    margin-left: -20px;
+    padding-right: 4px;
+  }
+
+  .octicon-link {
+    @apply align-middle invisible;
+  }
+
+  .octicon-link path {
+    @apply fill-oxford-600;
+  }
+
+  h1:hover .anchor .octicon-link,
+  h2:hover .anchor .octicon-link,
+  h3:hover .anchor .octicon-link,
+  h4:hover .anchor .octicon-link,
+  h5:hover .anchor .octicon-link,
+  h6:hover .anchor .octicon-link {
+    @apply visible;
+  }
+}

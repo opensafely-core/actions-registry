@@ -13,6 +13,9 @@
     outDir: "assets/dist",
     emptyOutDir: true,
   },
+  server: {
+    origin: "http://localhost:5173",
+  },
   clearScreen: false,
 };
 

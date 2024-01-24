@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/3.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
-
+import re
 from pathlib import Path
 
 from environs import Env
@@ -132,23 +132,35 @@ STORAGES = {
     },
 }
 
+# https://docs.djangoproject.com/en/4.2/howto/static-files/
+BUILT_ASSETS = env.path("BUILT_ASSETS", default=BASE_DIR / "assets" / "dist")
 STATICFILES_DIRS = [
-    BASE_DIR / "static",
-    BASE_DIR / "assets" / "dist",
+    str(BASE_DIR / "static"),
+    str(BUILT_ASSETS),
 ]
-STATIC_ROOT = BASE_DIR / "staticfiles"
+STATIC_ROOT = env.path("STATIC_ROOT", default=BASE_DIR / "staticfiles")
 STATIC_URL = "/static/"
 
-ASSETS_PATH = "/static/"
 ASSETS_DEV_MODE = env.bool("ASSETS_DEV_MODE", default=False)
-ASSETS_MANIFEST_PATH = BASE_DIR / "staticfiles" / "manifest.json"
 
 DJANGO_VITE = {
     "default": {
         "dev_mode": ASSETS_DEV_MODE,
-        "manifest_path": ASSETS_MANIFEST_PATH,
+        "manifest_path": BUILT_ASSETS / ".vite" / "manifest.json",
     }
 }
+
+# Vite generates files with 8 hash digits
+# http://whitenoise.evans.io/en/stable/django.html#WHITENOISE_IMMUTABLE_FILE_TEST
+
+
+def immutable_file_test(path, url):
+    # Match filename with 12 hex digits before the extension
+    # e.g. app.db8f2edc0c8a.js
+    return re.match(r"^.+[\.\-][0-9a-f]{8,12}\..+$", url)
+
+
+WHITENOISE_IMMUTABLE_FILE_TEST = immutable_file_test
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
@@ -160,10 +172,24 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # https://django-csp.readthedocs.io/en/latest/configuration.html
 CSP_REPORT_ONLY = DEBUG
 CSP_DEFAULT_SRC = ["'none'"]
-CSP_CONNECT_SRC = ["https://plausible.io"]
-CSP_FONT_SRC = ["'self'"]
-CSP_IMG_SRC = ["'self'", "https://user-images.githubusercontent.com"]
+CSP_CONNECT_SRC = [
+    "'self'",
+    "https://plausible.io",
+    "https://sentry.io",
+    "https://*.ingest.sentry.io/",
+]
+CSP_FONT_SRC = ["'self'", "data:"]
+CSP_IMG_SRC = [
+    "'self'",
+    "blob:",
+    "data: w3.org/svg/2000",
+    "https://github.com",
+    "https://*.githubusercontent.com",
+]
 CSP_MANIFEST_SRC = ["'self'"]
+
+# Duplicate the *_ELEM settings for Firefox
+# https://bugzilla.mozilla.org/show_bug.cgi?id=1529338
 CSP_SCRIPT_SRC = CSP_SCRIPT_SRC_ELEM = ["'self'", "https://plausible.io"]
 CSP_STYLE_SRC = CSP_STYLE_SRC_ELEM = ["'self'"]
 
@@ -172,17 +198,21 @@ CSP_INCLUDE_NONCE_IN = ["script-src", "script-src-elem"]
 
 # configure django-csp to work with Vite when using it in dev mode
 if ASSETS_DEV_MODE:  # pragma: no cover
-    CSP_CONNECT_SRC = ["ws://localhost:3000/static/", "https://plausible.io"]
-    CSP_FONT_SRC = ["'self'", "http://localhost:3000"]
+    CSP_CONNECT_SRC = [
+        "'self'",
+        "ws://localhost:5173/static/",
+        "https://plausible.io",
+        "https://sentry.io",
+        "https://*.ingest.sentry.io/",
+    ]
+    CSP_FONT_SRC = ["http://localhost:5173"]
     CSP_SCRIPT_SRC = CSP_SCRIPT_SRC_ELEM = [
         "'self'",
         "https://plausible.io",
-        "http://localhost:3000",
+        "http://localhost:5173",
     ]
-    CSP_STYLE_SRC = CSP_STYLE_SRC_ELEM = [
-        "'self'",
-        "'unsafe-inline'",
-    ]
+    CSP_STYLE_SRC = CSP_STYLE_SRC_ELEM = ["'self'", "'unsafe-inline'"]
+
 
 # Permissions Policy
 # https://github.com/adamchainz/django-permissions-policy/blob/main/README.rst
