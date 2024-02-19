@@ -269,9 +269,9 @@ orderedmultidict==1.0.1 \
     --hash=sha256:04070bbb5e87291cc9bfa51df413677faf2141c73c61d2a5f7b26bea3cd882ad \
     --hash=sha256:43c839a17ee3cdd62234c47deca1a8508a3f2ca1d0678a3bf791c87cf84adbf3
     # via furl
-osgithub==0.3.3 \
-    --hash=sha256:6e4d2367e14b87d415e2c96e4d47331a440dc7a72ef2ab364320072c16e837ea \
-    --hash=sha256:99e7a46529664928006c98a4129e1430f0b6aba20106d278b88a8c17cdc76ff9
+osgithub==0.3.4 \
+    --hash=sha256:7159f74fb0d6e694229b5edb23ba9254da22bb6edd5ce2ee0b5795198d32dc6d \
+    --hash=sha256:7e2bd15600bef50a77eccb104be9a8ef26e29e11754b230be326e154448ebe19
     # via -r requirements.prod.in
 packaging==23.2 \
     --hash=sha256:048fb0e9405036518eaaf48a55953c750c11e1a1b68e0dd1a9d62ed0c092cfc5 \
