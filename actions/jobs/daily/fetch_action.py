@@ -18,6 +18,7 @@ class Job(DailyJob):
         "opensafely-actions/deciles-charts",
         "opensafely-actions/demographic-standardisation",
         "opensafely-actions/kaplan-meier-function",
+        "opensafely-actions/project-dag",
         "opensafely-actions/safetab",
     ]
 

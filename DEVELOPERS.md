@@ -38,18 +38,20 @@ Any args are passed to pytest.
 Deployment uses `dokku` and requires the environment variables defined in `dotenv-sample`.
 It is deployed to our `dokku3` instance (see [Dokku Deployment](https://bennettinstitute-team-manual.pages.dev/tools-systems/dokku/)).
 
-## Updating the database
+## Adding a new action
 
-As the `dokku` user on dokku3, run:
+To add a new action, first edit `actions/jobs/daily/fetch_action.py`.
+
+Then, as the `dokku` user on dokku3, run:
 
     $ dokku enter actions-registry
 
 This starts a bash session connected to the docker container running the application.
-You can now run any Django management command, including:
+Finally, run:
 
-    $ ./manage.py fetch_action opensafely-actions [repo-name]
+    $ python manage.py runjob actions fetch_action
 
-This fetches metadata about the given action from GitHub.
+This fetches metadata about all actions from GitHub.
 
 ## Updating the GitHub token
 
