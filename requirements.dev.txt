@@ -204,9 +204,9 @@ flake8==7.0.0 \
     # via
     #   -r requirements.dev.in
     #   flake8-builtins
-flake8-builtins==2.4.0 \
-    --hash=sha256:03ddfdbb40c6a0ad5375668b89d9d919970d026d65e6bb53185081c99822e466 \
-    --hash=sha256:a9a2002855947081019a14e292200ab6e17ed637c0056aaa87ef23ea46fe8070
+flake8-builtins==2.5.0 \
+    --hash=sha256:8cac7c52c6f0708c0902b46b385bc7e368a9068965083796f1431c0d2e6550cf \
+    --hash=sha256:bdaa3dd823e4f5308c5e712d19fa5f69daa52781ea874f5ea9c3637bcf56faa6
     # via -r requirements.dev.in
 identify==2.5.33 \
     --hash=sha256:161558f9fe4559e1557e1bff323e8631f6a0e4837f7497767c1782832f16b62d \
