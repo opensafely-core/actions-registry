@@ -345,9 +345,9 @@ requests==2.32.3 \
     # via
     #   -c requirements.prod.in
     #   responses
-responses==0.25.2 \
-    --hash=sha256:77a61ad7e6016ed2ac00739b7efa5f35c42351d5b9b5d26bb1be87f197632487 \
-    --hash=sha256:b59707ea25de536d324670791ab073fafd41f3a351cec9c51cb6147089a9a30a
+responses==0.25.3 \
+    --hash=sha256:521efcbc82081ab8daa588e08f7e8a64ce79b91c39f6e62199b19159bea7dbcb \
+    --hash=sha256:617b9247abd9ae28313d57a75880422d55ec63c29d33d629697590a034358dba
     # via -r requirements.dev.in
 tomli==2.0.1 \
     --hash=sha256:939de3e7a6161af0c887ef91b7d41a53e7c5a1ca976325f429cb46ea9bc30ecc \
