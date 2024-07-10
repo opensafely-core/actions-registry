@@ -219,6 +219,9 @@ if ASSETS_DEV_MODE:  # pragma: no cover
 # https://github.com/adamchainz/django-permissions-policy/blob/main/README.rst
 PERMISSIONS_POLICY = {
     "interest-cohort": [],
+    # The following disables Google's Topics. For more information, see:
+    # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Permissions-Policy/browsing-topics
+    "browsing-topics": [],
 }
 
 
