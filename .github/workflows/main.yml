@@ -41,12 +41,11 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: opensafely-core/setup-action@v1
         with:
           python-version: "3.10"
-          cache: "pip"
           cache-dependency-path: requirements.*.txt
-      - uses: extractions/setup-just@v2
+          install-just: true
       - name: Check formatting, linting and import sorting
         run: just check
 
@@ -56,12 +55,11 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - uses: extractions/setup-just@v2
-      - uses: actions/setup-python@v5
+      - uses: opensafely-core/setup-action@v1
         with:
           python-version: "3.10"
-          cache: "pip"
           cache-dependency-path: requirements.*.txt
+          install-just: true
       - name: Retrieve assets
         uses: actions/download-artifact@v4
         with:
@@ -86,7 +84,9 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - uses: extractions/setup-just@dd310ad5a97d8e7b41793f8ef055398d51ad4de6  # v2.0.0
+      - uses: opensafely-core/setup-action@v1
+        with:
+          install-just: true
 
       - name: Build docker image and run tests in it
         run: |
@@ -108,7 +108,9 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - uses: extractions/setup-just@dd310ad5a97d8e7b41793f8ef055398d51ad4de6  # v2.0.0
+      - uses: opensafely-core/setup-action@v1
+        with:
+          install-just: true
 
       - name: Build docker image
         run: |
