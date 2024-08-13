@@ -6,13 +6,9 @@
 
 pre-commit
 black
-flake8
-flake8-builtins
-# currently broken by pinning attrs to <21
-# flake8-implicit-str-concat
-isort
 pytest
 pytest-cov
 pytest-django
 pyyaml==6.0.2
 responses
+ruff
