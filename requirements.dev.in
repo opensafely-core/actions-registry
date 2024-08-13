@@ -9,6 +9,6 @@ black
 pytest
 pytest-cov
 pytest-django
-pyyaml==6.0.2
+pyyaml
 responses
 ruff

@@ -11,7 +11,7 @@ environs[django]
 furl
 gunicorn
 osgithub
-pyyaml==6.0.2
+pyyaml
 requests
 structlog
 whitenoise[brotli]
