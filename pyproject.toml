@@ -15,11 +15,6 @@ skip_covered = true
 
 [tool.coverage.html]
 
-[tool.isort]
-profile = "black"
-lines_after_imports = 2
-skip_glob = [".direnv", "venv", ".venv"]
-
 [tool.pytest.ini_options]
 DJANGO_SETTINGS_MODULE = "actions.settings"
 addopts = "--tb=native --ignore=node_modules"
