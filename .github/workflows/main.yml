@@ -11,32 +11,7 @@ on:
   push:
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Install Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          cache: npm
-
-      - name: Install node_modules
-        run: npm ci
-
-      - name: Build assets
-        run: npm run build
-
-      - name: Store assets
-        uses: actions/upload-artifact@v4
-        with:
-          name: node-assets
-          path: assets/dist
-
   check:
-    needs: build
     runs-on: ubuntu-latest
 
     steps:
@@ -50,7 +25,6 @@ jobs:
         run: just check
 
   test:
-    needs: [build]
     runs-on: ubuntu-latest
 
     steps:
@@ -60,11 +34,20 @@ jobs:
           python-version: "3.10"
           cache-dependency-path: requirements.*.txt
           install-just: true
-      - name: Retrieve assets
-        uses: actions/download-artifact@v4
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
         with:
-          name: node-assets
-          path: assets/dist
+          node-version-file: ".node-version"
+          cache: "npm"
+          cache-dependency-path: package-lock.json
+
+      - name: Install node_modules
+        run: npm ci
+
+      - name: Build assets
+        run: just npm-build
+
       - name: Run tests
         env:
           SECRET_KEY: 12345
