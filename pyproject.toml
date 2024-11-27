@@ -1,3 +1,14 @@
+[project]
+name = "actions-registry"
+description = "actions-registry"
+readme = "README.md"
+authors = [{name = "OpenSAFELY", email = "tech@opensafely.org"}]
+license = {file = "LICENSE"}
+classifiers = [
+  "License :: OSI Approved :: GNU General Public License v3 (GPLv3)"
+]
+requires-python = ">=3.10"
+
 [tool.coverage.run]
 branch = true
 omit = [
