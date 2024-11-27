@@ -1,9 +1,25 @@
+{% load static %}
+
 <div class="relative top-0 min-w-full z-10 flex-shrink-0 flex h-16 bg-oxford-900">
   <div class="flex-1 px-4 flex justify-between">
     <div class="flex-1 flex">
       <div class="w-full flex lg:ml-0">
         <div class="relative w-full flex items-center">
-          <a class="text-base md:text-xl font-semibold text-white" href="{% url 'index' %}">Actions</a>
+          <a
+            class="
+              flex flex-row gap-3 items-center text-base font-semibold text-white
+              md:text-xl
+              hover:text-oxford-100
+              focus:text-oxford-100
+            "
+            href="{% url 'index' %}"
+          >
+            <img
+              class="h-8 w-auto"
+              src="{% static 'opensafely-logo-white.svg' %}"
+            />
+            OpenSAFELY Actions
+          </a>
         </div>
       </div>
     </div>
