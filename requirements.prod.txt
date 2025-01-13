@@ -239,9 +239,9 @@ django-vite==3.0.6 \
     --hash=sha256:363ca9fd774eb228b27f710a9179c68f61e27bb95b41b1f790ee5a0a0e215b14 \
     --hash=sha256:3ad3716e2afe4569353cda8080f557bac37a5b29ab7a5826d5defd67bfbe8e72
     # via -r requirements.prod.in
-environs[django]==11.2.1 \
-    --hash=sha256:9d2080cf25807a26fc0d4301e2d7b62c64fbf547540f21e3a30cc02bc5fbe948 \
-    --hash=sha256:e068ae3174cef52ba4b95ead22e639056a02465f616e62323e04ae08e86a75a4
+environs[django]==14.1.0 \
+    --hash=sha256:a5f2afe9d5a21b468e74a3cceacf5d2371fd67dbb9a7e54fe62290c75a09cdfa \
+    --hash=sha256:a7edda1668ddf1fbfcb7662bdc242dac25648eff2c7fdbaa5d959693afed7a3e
     # via -r requirements.prod.in
 exceptiongroup==1.2.0 \
     --hash=sha256:4bfd3996ac73b41e9b9628b04e079f193850720ea5945fc96a08633c66912f14 \
@@ -375,6 +375,7 @@ typing-extensions==4.9.0 \
     #   asgiref
     #   cattrs
     #   dj-database-url
+    #   environs
 url-normalize==1.4.3 \
     --hash=sha256:d23d3a070ac52a67b83a1c59a0e68f8608d1cd538783b401bc9de2c0fac999b2 \
     --hash=sha256:ec3c301f04e5bb676d333a7fa162fa977ad2ca04b7e652bfc9fac4e405728eed
