@@ -55,8 +55,8 @@ extend-select = [
   "W",  # pycodestyle warning
 ]
 extend-ignore = [
-  "E501",
-  "E731",
+  "A005", # ignore stdlib-module-shadowing. Would need to re-name actions.logging.
+  "E501", # ignore line-length. We judge case-by-case.
 ]
 
 [tool.ruff.lint.isort]
