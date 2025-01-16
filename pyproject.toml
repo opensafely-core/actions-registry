@@ -56,7 +56,7 @@ extend-select = [
 ]
 extend-ignore = [
   "A005", # ignore stdlib-module-shadowing. Would need to re-name actions.logging.
-  "E501",
+  "E501", # ignore line-length. We judge case-by-case.
   "E731",
 ]
 
