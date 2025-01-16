@@ -55,6 +55,7 @@ extend-select = [
   "W",  # pycodestyle warning
 ]
 extend-ignore = [
+  "A005", # ignore stdlib-module-shadowing. Would need to re-name actions.logging.
   "E501",
   "E731",
 ]
