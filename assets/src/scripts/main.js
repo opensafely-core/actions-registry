@@ -6,14 +6,3 @@ import "@fontsource/public-sans/700.css";
 
 // Styles
 import "../styles/main.css";
-
-// Plausible
-if (document.location.hostname === "actions.opensafely.org") {
-  const script = document.createElement("script");
-  script.defer = true;
-  script.setAttribute("data-domain", "actions.opensafely.org");
-  script.id = "plausible";
-  script.src = "https://plausible.io/js/plausible.compat.js";
-
-  document.head.appendChild(script);
-}
