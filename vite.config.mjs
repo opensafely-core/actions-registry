@@ -1,3 +1,5 @@
+import tailwindcss from "@tailwindcss/vite";
+
 /**
  * @type {import('vite').UserConfig}
  */
@@ -17,6 +19,9 @@
     origin: "http://localhost:5173",
   },
   clearScreen: false,
+  plugins: [
+    tailwindcss(),
+  ]
 };
 
 export default config;
