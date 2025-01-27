@@ -7,7 +7,7 @@
 
 {% block content %}
 <div class="container mx-auto px-4 md:px-8">
-  <div class="bg-white shadow sm:rounded-lg max-w-screen-lg mx-auto my-6">
+  <div class="bg-white shadow-sm sm:rounded-lg max-w-(--breakpoint-lg) mx-auto my-6">
     <div class="px-4 py-5 sm:px-6">
       <h1 class="text-2xl leading-6 font-mono font-bold text-gray-900">
         {{ action.repo_name }}
@@ -42,7 +42,7 @@
             <ul class="border border-gray-200 rounded-md divide-y divide-gray-200">
               <li class="pl-3 pr-4 py-3 flex items-center justify-between text-sm">
                 <div class="w-0 flex-1 flex items-center">
-                  {% include "icons/brand/github.svg" with htmlClass="flex-shrink-0 h-5 w-5 text-gray-500" %}
+                  {% include "icons/brand/github.svg" with htmlClass="shrink-0 h-5 w-5 text-gray-500" %}
                   <a href="{{ action.get_github_url }}" class="ml-2 text-oxford-600 hover:text-oxford-800 font-semibold hover:underline">
                     {{ action.org }}/{{ action.repo_name }}
                   </a>
@@ -55,15 +55,15 @@
     </div>
   </div>
 
-  <div class="bg-white shadow overflow-hidden sm:rounded-lg max-w-screen-lg mx-auto my-6 pb-4">
+  <div class="bg-white shadow-sm overflow-hidden sm:rounded-lg max-w-(--breakpoint-lg) mx-auto my-6 pb-4">
     <div class="max-w-4xl px-6 py-8 mx-auto md:px-0">
     <div
       class="
         prose prose-sm sm:prose prose-oxford sm:prose-oxford mx-auto
         prose-headings:flex prose-headings:items-center prose-headings:text-gray-800
         prose-pre:bg-gray-50 prose-pre:text-gray-700
-        prose-a:font-semibold hover:prose-a:text-oxford-800 hover:prose-a:no-underline
-        prose-code:bg-oxford-50 prose-code:m-0 prose-code:font-normal prose-code:rounded prose-code:text-sm prose-code:px-1 prose-code:py-1 before:prose-code:content-none after:prose-code:content-none
+        prose-a:font-semibold prose-a:hover:text-oxford-800 prose-a:hover:no-underline
+        prose-code:bg-oxford-50 prose-code:m-0 prose-code:font-normal prose-code:rounded-sm prose-code:text-sm prose-code:px-1 prose-code:py-1 prose-code:before:content-none prose-code:after:content-none
       "
       >
         {{ version.readme|safe }}
