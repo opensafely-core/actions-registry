@@ -1,25 +1,71 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
-.anchor {
-  margin-left: -20px;
-  padding-right: 4px;
+@source "../../../actions/templates/**/*.html";
+
+@plugin "@tailwindcss/typography";
+
+@theme {
+  --font-sans: "Public Sans", ui-sans-serif, system-ui, sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+
+  --color-oxford: #002147;
+  --color-oxford-50: #f1f7ff;
+  --color-oxford-100: #cfe5ff;
+  --color-oxford-200: #9ccaff;
+  --color-oxford-300: #69afff;
+  --color-oxford-400: #3693ff;
+  --color-oxford-500: #0378ff;
+  --color-oxford-600: #0058be;
+  --color-oxford-700: #00397a;
+  --color-oxford-800: #002147;
+  --color-oxford-900: #001936;
 }
 
-.octicon-link {
-  @apply align-middle invisible;
+/*
+  The default border color has changed to `currentColor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentColor);
+  }
 }
 
-.octicon-link path {
-  @apply fill-oxford-600;
-}
+@layer utilities {
+  .anchor {
+    margin-left: -20px;
+    padding-right: 4px;
+  }
 
-h1:hover .anchor .octicon-link,
-h2:hover .anchor .octicon-link,
-h3:hover .anchor .octicon-link,
-h4:hover .anchor .octicon-link,
-h5:hover .anchor .octicon-link,
-h6:hover .anchor .octicon-link {
-  @apply visible;
+  .octicon-link {
+    @apply align-middle invisible;
+  }
+
+  .octicon-link path {
+    @apply fill-oxford-600;
+  }
+
+  h1:hover .anchor .octicon-link,
+  h2:hover .anchor .octicon-link,
+  h3:hover .anchor .octicon-link,
+  h4:hover .anchor .octicon-link,
+  h5:hover .anchor .octicon-link,
+  h6:hover .anchor .octicon-link {
+    @apply visible;
+  }
+
+  .prose-oxford {
+    --tw-prose-body: var(--color-slate-900);
+    --tw-prose-links: var(--color-oxford-600);
+    --tw-prose-counters: var(--color-slate-800);
+    --tw-prose-bullets: var(--color-slate-800);
+  }
 }
