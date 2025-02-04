@@ -46,6 +46,7 @@ exclude = [
 ]
 
 [tool.ruff.lint]
+isort.lines-after-imports = 2
 extend-select = [
   "A",  # flake8-builtins
   "I",  # isort
@@ -59,5 +60,6 @@ extend-ignore = [
   "E501", # ignore line-length. We judge case-by-case.
 ]
 
-[tool.ruff.lint.isort]
-lines-after-imports = 2
+[tool.ruff.lint.per-file-ignores]
+"gunicorn.conf.py" = ["INP001"]
+"manage.py" = ["INP001"]
