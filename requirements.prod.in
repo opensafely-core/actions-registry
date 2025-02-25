@@ -8,7 +8,6 @@ django-extensions
 django-permissions-policy
 django-vite
 environs[django]
-furl
 gunicorn
 osgithub
 pyyaml
