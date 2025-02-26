@@ -23,6 +23,17 @@ def create_version(action_, tag, readme=None):
     )
 
 
+def test_versions_are_ordered_from_latest_to_oldest(action):
+    create_version(action, "v1.0")
+    # Alphanumeric ordering of tag or readme should be irrelevant
+    create_version(action, "ABC")
+    create_version(action, "v1.1")
+    versions = action.versions.all()
+
+    assert len(versions) == 3
+    assert versions[0].tag == "v1.1"
+
+
 def test_get_latest_version(action):
     # Create a version and check get_latest_version() get this
     create_version(action, "v1.0", "first version")
