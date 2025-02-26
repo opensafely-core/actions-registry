@@ -33,7 +33,23 @@
             </span>
           </dd>
         </div>
-
+        <div class="sm:col-span-2">
+          <dt class="text-sm font-semibold text-gray-600">
+            All versions
+          </dt>
+          {% for action_version in action.versions.all %}
+            {% if action_version.tag == version.tag %}
+              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium uppercase bg-oxford-100 text-oxford-600">
+                {{ action_version.tag }}
+              </span>&nbsp;
+            {% else %}
+              <span>
+              <a href="{{ action_version.get_absolute_url }}" class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium uppercase bg-gray-100 text-gray-600">
+                {{ action_version.tag }}
+              </a></span>&nbsp;
+            {% endif %}
+          {% endfor %}
+        </div>
         <div class="sm:col-span-2">
           <dt class="text-sm font-semibold text-gray-600">
             Links
