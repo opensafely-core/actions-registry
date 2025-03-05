@@ -16,7 +16,7 @@ class Action(models.Model):
     def get_latest_version(self):
         """Return version with latest committed_at."""
 
-        latest_version = Version.objects.filter(action=self.id).latest("committed_at")
+        latest_version = Version.objects.filter(action=self.id).first()
         return latest_version
 
     def get_absolute_url(self):
@@ -43,6 +43,7 @@ class Version(models.Model):
 
     class Meta:
         unique_together = ["action", "tag"]
+        ordering = ["-committed_at"]
 
     def get_absolute_url(self):
         """Return canonical URL for this Version."""
