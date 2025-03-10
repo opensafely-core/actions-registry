@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load resolve_links %}
 
 {% block meta %}
 <title>OpenSAFELY: Actions Registry - {{ action.repo_name }}</title>
@@ -80,7 +81,7 @@
         prose-code:bg-oxford-50 prose-code:m-0 prose-code:font-normal prose-code:rounded-sm prose-code:text-sm prose-code:px-1 prose-code:py-1 prose-code:before:content-none prose-code:after:content-none
       "
       >
-        {{ version.readme|safe }}
+        {{ version.readme|resolve_relative_links:version|safe }}
       </div>
     </div>
   </div>
