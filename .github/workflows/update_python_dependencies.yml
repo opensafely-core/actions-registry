@@ -1,0 +1,28 @@
+name: Update Python dependencies
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 23 * * 0"
+
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+jobs:
+  update-python-dependencies:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: "opensafely-core/setup-action@v1"
+        with:
+          python-version: "3.10"
+          install-just: true
+      - uses: actions/create-github-app-token@v1
+        id: generate-token
+        with:
+          app-id: 1031449
+          private-key: ${{ secrets.CREATE_PR_APP_PRIVATE_KEY }}
+      - uses: bennettoxford/update-dependencies-action@v1
+        with:
+          token: ${{ steps.generate-token.outputs.token }}
+          update_command: "just update-dependencies"
