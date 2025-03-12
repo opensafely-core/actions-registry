@@ -2,6 +2,7 @@
 
 # To generate requirements file, run:
 # pip-compile --generate-hashes --output-file=requirements.prod.txt requirements.prod.in
+bs4
 django
 django-csp
 django-extensions
