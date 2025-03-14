@@ -3,26 +3,6 @@
         {
             "command": "python manage.py fetch_action",
             "schedule": "@daily"
-        },
-        {
-            "command": "python manage.py runjobs hourly",
-            "schedule": "@hourly"
-        },
-        {
-            "command": "python manage.py runjobs daily",
-            "schedule": "@daily"
-        },
-        {
-            "command": "python manage.py runjobs weekly",
-            "schedule": "@weekly"
-        },
-        {
-            "command": "python manage.py runjobs monthly",
-            "schedule": "@monthly"
-        },
-        {
-            "command": "python manage.py runjobs yearly",
-            "schedule": "@yearly"
         }
     ]
 }
