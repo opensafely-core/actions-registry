@@ -4,22 +4,22 @@ import pytest
 import responses
 from django.core.management import CommandError
 
-from actions.jobs.daily.fetch_action import Job
+from actions.management.commands.fetch_action import Command
 from actions.models import Action
 
 
 @pytest.fixture
-def job():
-    return Job()
+def command():
+    return Command()
 
 
-def test_bad_organisation(job):
+def test_bad_organisation(command):
     with pytest.raises(CommandError, match="outside our allowed list"):
-        job.fetch_action("opensafely-core", "test-action")
+        command.fetch_action("opensafely-core", "test-action")
 
 
 @responses.activate
-def test_missing_repo(job):
+def test_missing_repo(command):
     responses.add(
         responses.GET,
         "https://api.github.com/repos/opensafely-actions/test-action",
@@ -27,19 +27,19 @@ def test_missing_repo(job):
         body=json.dumps({"message": "Not Found"}),
     )
     with pytest.raises(CommandError, match="Repo not found"):
-        job.fetch_action("opensafely-actions", "test-action")
+        command.fetch_action("opensafely-actions", "test-action")
 
 
 @responses.activate
-def test_create(job):
+def test_create(command):
     set_up_responses()
-    job.actions = ["opensafely-actions/test-action"]
-    job.execute()
+    command.actions = ["opensafely-actions/test-action"]
+    command.handle()
     verify_action()
 
 
 @responses.activate
-def test_update(job):
+def test_update(command):
     a = Action.objects.create(
         org="opensafely-actions",
         repo_name="test-action",
@@ -52,8 +52,8 @@ def test_update(job):
     )
 
     set_up_responses()
-    job.actions = ["opensafely-actions/test-action"]
-    job.execute()
+    command.actions = ["opensafely-actions/test-action"]
+    command.handle()
     verify_action()
 
 

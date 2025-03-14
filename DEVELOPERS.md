@@ -42,7 +42,7 @@ It is deployed to our `dokku3` instance (see [Dokku Deployment](https://bennett.
 
 ## Adding a new action
 
-To add a new action, first edit `actions/jobs/daily/fetch_action.py`.
+To add a new action, first edit `actions/management/commands/fetch_action.py`.
 
 Then, as the `dokku` user on dokku3, run:
 
@@ -54,7 +54,7 @@ This starts a bash session connected to the docker container running the applica
 Finally, run:
 
 ```sh
-python manage.py runjob actions fetch_action
+python manage.py fetch_action
 ```
 
 This fetches metadata about all actions from GitHub.
