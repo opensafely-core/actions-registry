@@ -1,15 +1,14 @@
 import sys
 
 from django.conf import settings
-from django.core.management.base import CommandError
+from django.core.management.base import BaseCommand, CommandError
 from django.db import transaction
-from django_extensions.management.jobs import DailyJob
 from osgithub import GithubAPIException, GithubClient
 
 from ...models import Action
 
 
-class Job(DailyJob):
+class Command(BaseCommand):
     actions = [
         "opensafely-actions/cohort-joiner",
         "opensafely-actions/cohort-report",
@@ -23,7 +22,7 @@ class Job(DailyJob):
         "opensafely-actions/safetab",
     ]
 
-    def execute(self):
+    def handle(self, *args, **kwargs):
         for action in self.actions:
             organisation, repo_name = action.split("/")
             self.fetch_action(organisation, repo_name)

@@ -1,6 +1,10 @@
 {
     "cron": [
         {
+            "command": "python manage.py fetch_action",
+            "schedule": "@daily"
+        },
+        {
             "command": "python manage.py runjobs hourly",
             "schedule": "@hourly"
         },
