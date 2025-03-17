@@ -5,7 +5,6 @@
 bs4
 django
 django-csp
-django-extensions
 django-permissions-policy
 django-vite
 environs[django]
