@@ -22,16 +22,12 @@ def version(request, repo_name, tag):
     action = get_object_or_404(Action, repo_name=repo_name)
     version = get_object_or_404(action.versions, tag=tag)
 
+    href_base = urljoin(action.get_github_url(), f"blob/{version.tag}/")
+    src_base = urljoin(action.get_github_url(), f"raw/{version.tag}/")
     readme = resolve_relative_urls_to_absolute(
         version.readme,
-        [urljoin(action.get_github_url(), f"blob/{version.tag}/")],
-        ["href"],
-    )
-
-    readme = resolve_relative_urls_to_absolute(
-        readme,
-        [urljoin(action.get_github_url(), f"raw/{version.tag}/")],
-        ["src"],
+        [href_base, src_base],
+        ["href", "src"],
     )
 
     return render(
