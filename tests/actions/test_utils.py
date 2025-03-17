@@ -18,9 +18,5 @@ from actions import utils
     ],
 )
 def test_resolve_urls(url, base_url, abs_url):
-    html = f'<img src="{url}"/>'
-
-    resolved_html = utils.resolve_urls(html, [base_url], ["src"])
-
-    expected_html = f'<img src="{abs_url}"/>'
-    assert resolved_html == expected_html
+    resolved_html = utils.resolve_urls(f'<img src="{url}"/>', [base_url], ["src"])
+    assert resolved_html == f'<img src="{abs_url}"/>'
