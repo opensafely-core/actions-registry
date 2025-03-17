@@ -3,7 +3,7 @@ from urllib.parse import urljoin, urlparse
 from bs4 import BeautifulSoup
 
 
-def resolve_relative_urls_to_absolute(html, base_urls, attributes):
+def resolve_urls(html, base_urls, attributes):
     soup = BeautifulSoup(html, "html.parser")
 
     def resolve(base_url, attribute):
