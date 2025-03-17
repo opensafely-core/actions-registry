@@ -19,9 +19,7 @@ from actions import utils
 def test_resolve_relative_urls_to_absolute(url, base_url, abs_url):
     html = f'<img src="{url}"/>'
 
-    resolved_html = utils.resolve_relative_urls_to_absolute(
-        html, base_url, "img", "src"
-    )
+    resolved_html = utils.resolve_relative_urls_to_absolute(html, base_url, "src")
 
     expected_html = f'<img src="{abs_url}"/>'
     assert resolved_html == expected_html

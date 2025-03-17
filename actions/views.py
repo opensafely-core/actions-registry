@@ -25,14 +25,12 @@ def version(request, repo_name, tag):
     readme = resolve_relative_urls_to_absolute(
         version.readme,
         urljoin(action.get_github_url(), f"blob/{version.tag}/"),
-        "a",
         "href",
     )
 
     readme = resolve_relative_urls_to_absolute(
         readme,
         urljoin(action.get_github_url(), f"raw/{version.tag}/"),
-        "img",
         "src",
     )
 
