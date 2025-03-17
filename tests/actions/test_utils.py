@@ -6,6 +6,7 @@ from actions import utils
 @pytest.mark.parametrize(
     "url,base_url,abs_url",
     [
+        ("", "https://example.com", "https://example.com"),
         ("image.jpg", "https://example.com", "https://example.com/image.jpg"),
         ("./image.jpg", "https://example.com", "https://example.com/image.jpg"),
         ("../image.jpg", "https://example.com", "https://example.com/image.jpg"),

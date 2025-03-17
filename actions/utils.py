@@ -9,7 +9,7 @@ def resolve_urls(html, base_urls, attributes):
     def resolve(base_url, attribute):
         for element in soup.find_all(lambda element: element.has_attr(attribute)):
             url = element.get(attribute)
-            if url and not urlparse(url).netloc:  # is relative
+            if not urlparse(url).netloc:  # is relative
                 element[attribute] = urljoin(base_url, url)
 
     for base_url, attribute in zip(base_urls, attributes):
