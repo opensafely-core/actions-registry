@@ -2,7 +2,7 @@ from urllib.parse import urljoin
 
 from django.shortcuts import get_object_or_404, redirect, render
 
-from actions.utils import resolve_relative_urls_to_absolute
+from actions import utils
 
 from .models import Action
 
@@ -22,19 +22,9 @@ def version(request, repo_name, tag):
     action = get_object_or_404(Action, repo_name=repo_name)
     version = get_object_or_404(action.versions, tag=tag)
 
-    readme = resolve_relative_urls_to_absolute(
-        version.readme,
-        urljoin(action.get_github_url(), f"blob/{version.tag}/"),
-        "a",
-        "href",
-    )
-
-    readme = resolve_relative_urls_to_absolute(
-        readme,
-        urljoin(action.get_github_url(), f"raw/{version.tag}/"),
-        "img",
-        "src",
-    )
+    href_base = urljoin(action.get_github_url(), f"blob/{version.tag}/")
+    src_base = urljoin(action.get_github_url(), f"raw/{version.tag}/")
+    readme = utils.resolve_urls(version.readme, [href_base, src_base], ["href", "src"])
 
     return render(
         request,
