@@ -31,6 +31,10 @@ virtualenv *args:
     # Create venv; installs `uv`-managed python if python interpreter not found
     test -d $VIRTUAL_ENV || uv venv --python $PYTHON_VERSION {{ args }}
 
+    # Block accidentally usage of system pip by placing an executable at .venv/bin/pip
+    echo 'echo "pip is not installed: use uv pip for a pip-like interface."' > .venv/bin/pip
+    chmod +x .venv/bin/pip
+
 _compile src dst *args: virtualenv
     #!/usr/bin/env bash
     set -euo pipefail
