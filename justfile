@@ -9,6 +9,7 @@ export COMPILE := BIN + "/pip-compile --allow-unsafe --generate-hashes"
 
 export DEFAULT_PYTHON := if os_family() == "unix" { `cat .python-version` } else { "python" }
 
+export UV_EXCLUDE_NEWER := `echo ${UV_EXCLUDE_NEWER:-$(date -d '-7 days' +"%Y-%m-%dT%H:00:00Z")}`
 
 # list available commands
 default:
@@ -34,6 +35,26 @@ virtualenv *args:
     # Block accidentally usage of system pip by placing an executable at .venv/bin/pip
     echo 'echo "pip is not installed: use uv pip for a pip-like interface."' > .venv/bin/pip
     chmod +x .venv/bin/pip
+
+# Dependency management using `uv`; respects UV_EXCLUDE_NEWER
+
+sync *args: virtualenv
+    #!/usr/bin/env bash
+    set -euo pipefail
+
+    uv sync {{ args }}
+
+add *args: virtualenv
+    #!/usr/bin/env bash
+    set -euo pipefail
+
+    uv add {{ args }}
+
+remove *args: virtualenv
+    #!/usr/bin/env bash
+    set -euo pipefail
+
+    uv remove {{ args }} || uv remove --dev {{ args }}
 
 _compile src dst *args: virtualenv
     #!/usr/bin/env bash
