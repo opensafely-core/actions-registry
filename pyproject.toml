@@ -8,6 +8,10 @@ classifiers = [
   "License :: OSI Approved :: GNU General Public License v3 (GPLv3)"
 ]
 requires-python = ">=3.10"
+dynamic = ["version"]
+
+[tool.setuptools.packages.find]
+include = ["actions"]
 
 [tool.coverage.run]
 branch = true
