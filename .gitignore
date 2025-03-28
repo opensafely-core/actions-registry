@@ -113,3 +113,6 @@ node_modules/
 /assets/dist
 /assets/stats.html
 /staticfiles
+
+# egg-info
+*.egg-info
