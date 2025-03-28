@@ -7,7 +7,7 @@ export PIP := BIN + if os_family() == "unix" { "/python -m pip" } else { "/pytho
 # enforce our chosen pip compile flags
 export COMPILE := BIN + "/pip-compile --allow-unsafe --generate-hashes"
 
-export DEFAULT_PYTHON := if os_family() == "unix" { "python3.10" } else { "python" }
+export DEFAULT_PYTHON := if os_family() == "unix" { `cat .python-version` } else { "python" }
 
 
 # list available commands
@@ -21,19 +21,15 @@ clean:
 
 
 # ensure valid virtualenv
-virtualenv:
+virtualenv *args:
     #!/usr/bin/env bash
     set -euo pipefail
 
-    # allow users to specify python version in .env
+    # Allow users to specify python version in .env
     PYTHON_VERSION=${PYTHON_VERSION:-$DEFAULT_PYTHON}
 
-    # create venv and upgrade pip
-    test -d $VIRTUAL_ENV || { $PYTHON_VERSION -m venv $VIRTUAL_ENV && $PIP install --upgrade pip; }
-
-    # ensure we have pip-tools so we can run pip-compile
-    test -e $BIN/pip-compile || $PIP install pip-tools
-
+    # Create venv; installs `uv`-managed python if python interpreter not found
+    test -d $VIRTUAL_ENV || uv venv --python $PYTHON_VERSION {{ args }}
 
 _compile src dst *args: virtualenv
     #!/usr/bin/env bash
