@@ -32,7 +32,42 @@ export UV_EXCLUDE_NEWER := `date -d '-7 days' +"%Y-%m-%dT%H:%M:%SZ"`
 See https://docs.astral.sh/uv/configuration/environment/#uv_exclude_newer.
 
 
-## Implementation notes
+- At the time of writing (2025-03-28), `osgithub`'s last release was 4 days ago. We can use it
+to test `uv`'s `--exclude-newer` flag and how packages can get updated by just commands.
+
+```sh
+(actions-registry) alice@lunapiena:~/code/actions-registry$ uv add -r requirements.prod.in --exclude-newer 2025-03-21
+Resolved 39 packages in 1.23s
+Installed 37 packages in 153ms
+ + asgiref==3.8.1
+ + attrs==25.3.0
+ + beautifulsoup4==4.13.3
+...
+ + whitenoise==6.9.0
+ ```
+
+Proceeding to run `uv` commands without the `--exclude-newer` flag will update `osgithub` and other packages.
+Note that the below also shows that removing `bs4` removes `soupsieve` automatically.
+```sh
+(actions-registry) alice@lunapiena:~/code/actions-registry$ uv remove bs4
+Ignoring existing lockfile due to removal of timestamp cutoff: `2025-03-22T00:00:00Z`
+Resolved 36 packages in 1.14s
+Uninstalled 7 packages in 6ms
+Installed 4 packages in 5ms
+ - beautifulsoup4==4.13.3
+ - bs4==0.0.2
+ - cattrs==24.1.2
+ + cattrs==24.1.3
+ - osgithub==0.3.5
+ + osgithub==0.4.0
+ - python-dotenv==1.0.1
+ + python-dotenv==1.1.0
+ - soupsieve==2.6
+...
+ ```
+
+ 
+## Recipe readmes
 
 ### `just virtualenv` recipe
 This recipe assumes that `DEFAULT_PYTHON` in the justfile and the contents of `.python-version` are in sync.
