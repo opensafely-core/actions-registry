@@ -1,5 +1,6 @@
 [project]
 name = "actions-registry"
+"version"= "1.0.0"
 description = "actions-registry"
 readme = "README.md"
 authors = [{name = "OpenSAFELY", email = "tech@opensafely.org"}]
