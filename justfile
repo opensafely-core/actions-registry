@@ -9,7 +9,7 @@ export COMPILE := BIN + "/pip-compile --allow-unsafe --generate-hashes"
 
 export DEFAULT_PYTHON := if os_family() == "unix" { `cat .python-version` } else { "python" }
 
-export UV_EXCLUDE_NEWER := `echo ${UV_EXCLUDE_NEWER:-$(date -d '-7 days' +"%Y-%m-%dT%H:00:00Z")}`
+export UV_EXCLUDE_NEWER := `echo ${UV_EXCLUDE_NEWER:-"2025-03-22T00:00:00Z"}`
 
 # list available commands
 default:
