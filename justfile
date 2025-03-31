@@ -42,7 +42,7 @@ sync *args: virtualenv
     #!/usr/bin/env bash
     set -euo pipefail
 
-    uv sync {{ args }}
+    uv sync {{ args }} --frozen
 
 add *args: virtualenv
     #!/usr/bin/env bash
