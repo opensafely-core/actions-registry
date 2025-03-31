@@ -9,7 +9,6 @@ export COMPILE := BIN + "/pip-compile --allow-unsafe --generate-hashes"
 
 export DEFAULT_PYTHON := if os_family() == "unix" { `cat .python-version` } else { "python" }
 
-# export UV_EXCLUDE_NEWER := `echo ${UV_EXCLUDE_NEWER:-"2025-03-22T00:00:00Z"}`
 
 # list available commands
 default:
@@ -36,25 +35,18 @@ virtualenv *args:
     echo 'echo "pip is not installed: use uv pip for a pip-like interface."' > .venv/bin/pip
     chmod +x .venv/bin/pip
 
-# Dependency management using `uv`; respects UV_EXCLUDE_NEWER
+# Dependency management using `uv`
 
 sync *args: virtualenv
     #!/usr/bin/env bash
     set -euo pipefail
 
-    uv sync {{ args }} --frozen
+    # Sync environment and lockfile with pyproject.toml
+    # Resolves dependencies using existing lockfile timestamp cutoff; override via setting UV_EXCLUDE_NEWER
+    LOCKFILE_TIMESTAMP=$(grep -n exclude-newer uv.lock | cut -d'=' -f2 | cut -d'"' -f2)
+    UV_EXCLUDE_NEWER=${UV_EXCLUDE_NEWER:-$LOCKFILE_TIMESTAMP} uv sync {{ args }}
 
-add *args: virtualenv
-    #!/usr/bin/env bash
-    set -euo pipefail
 
-    uv add {{ args }} --exclude-newer $(grep -n exclude-newer uv.lock | cut -d'=' -f2 | cut -d'"' -f2)
-
-remove *args: virtualenv
-    #!/usr/bin/env bash
-    set -euo pipefail
-
-    uv remove {{ args }} || uv remove --dev {{ args }}
 
 _compile src dst *args: virtualenv
     #!/usr/bin/env bash
