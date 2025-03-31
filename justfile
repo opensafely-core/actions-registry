@@ -120,8 +120,12 @@ upgrade env package="": virtualenv
     FORCE=true {{ just_executable() }} requirements-{{ env }} $opts
 
 
-# update (upgrade) prod and dev dependencies
-update-dependencies: (upgrade 'prod') (upgrade 'dev')
+update-dependencies: virtualenv
+    #!/usr/bin/env bash
+    set -euo pipefail
+
+    # By default, excludes releases newer than 7 days; override via setting UV_EXCLUDE_NEWER
+    UV_EXCLUDE_NEWER=${UV_EXCLUDE_NEWER:-$(date -d '-7 days' +"%Y-%m-%dT%H:%M:%SZ")} uv sync
 
 
 # *ARGS is variadic, 0 or more. This allows us to do `just test -k match`, for example.
