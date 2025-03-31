@@ -9,7 +9,7 @@ export COMPILE := BIN + "/pip-compile --allow-unsafe --generate-hashes"
 
 export DEFAULT_PYTHON := if os_family() == "unix" { `cat .python-version` } else { "python" }
 
-export UV_EXCLUDE_NEWER := `echo ${UV_EXCLUDE_NEWER:-"2025-03-22T00:00:00Z"}`
+# export UV_EXCLUDE_NEWER := `echo ${UV_EXCLUDE_NEWER:-"2025-03-22T00:00:00Z"}`
 
 # list available commands
 default:
@@ -48,7 +48,7 @@ add *args: virtualenv
     #!/usr/bin/env bash
     set -euo pipefail
 
-    uv add {{ args }}
+    uv add {{ args }} --exclude-newer $(grep -n exclude-newer uv.lock | cut -d'=' -f2 | cut -d'"' -f2)
 
 remove *args: virtualenv
     #!/usr/bin/env bash
