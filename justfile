@@ -42,8 +42,8 @@ sync *args: virtualenv
     set -euo pipefail
 
     # Sync environment and lockfile with pyproject.toml
-    # Resolves dependencies using existing lockfile timestamp cutoff; override via setting UV_EXCLUDE_NEWER
-    LOCKFILE_TIMESTAMP=$(grep -n exclude-newer uv.lock | cut -d'=' -f2 | cut -d'"' -f2)
+    # Resolves dependencies using existing lockfile timestamp cutoff if available; override via setting UV_EXCLUDE_NEWER
+    LOCKFILE_TIMESTAMP=$(grep -n exclude-newer uv.lock | cut -d'=' -f2 | cut -d'"' -f2) || (uv sync {{ args }}; exit 0)
     UV_EXCLUDE_NEWER=${UV_EXCLUDE_NEWER:-$LOCKFILE_TIMESTAMP} uv sync {{ args }}
 
 
