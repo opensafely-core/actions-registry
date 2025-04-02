@@ -53,17 +53,26 @@ requirements-prod *args:
 requirements-dev *args: requirements-prod
     {{ just_executable() }} _compile requirements.dev.in requirements.dev.txt {{ args }}
 
-
-# ensure prod requirements installed and up to date
-prodenv: requirements-prod
+# update `uv.lock` if dependencies in `pyproject.toml` have changed
+requirements *args: virtualenv
     #!/usr/bin/env bash
     set -euo pipefail
 
-    # exit if .txt file has not changed since we installed them (-nt == "newer than', but we negate with || to avoid error exit code)
-    test requirements.prod.txt -nt $VIRTUAL_ENV/.prod || exit 0
+    # Determine timestamp cutoff for resolving dependencies
+    # Use existing lockfile timestamp cutoff if present
+    # If (unexpectedly) no timestamp is found, set a new timestamp equal to one week ago
+    TIMESTAMP=$(grep -n exclude-newer uv.lock | cut -d'=' -f2 | cut -d'"' -f2) || TIMESTAMP=$(date -d '-7 days' +"%Y-%m-%dT%H:%M:%SZ")
 
-    $PIP install -r requirements.prod.txt
-    touch $VIRTUAL_ENV/.prod
+    # Run `uv lock` with the timestamp; override by setting UV_EXCLUDE_NEWER
+    UV_EXCLUDE_NEWER=${UV_EXCLUDE_NEWER:-$TIMESTAMP} uv lock {{ args }}
+
+
+# Install prod dependencies into environement and remove dev dependencies
+prodenv: requirements
+    #!/usr/bin/env bash
+    set -euo pipefail
+
+    uv sync --frozen --no-dev
 
 
 _env:
@@ -76,16 +85,12 @@ _env:
 # && dependencies are run after the recipe has run. Needs just>=0.9.9. This is
 # a killer feature over Makefiles.
 #
-# ensure dev requirements installed and up to date
-devenv: _env prodenv requirements-dev && install-precommit
+# Install dev and prod dependencies into environment
+devenv: _env requirements && install-precommit
     #!/usr/bin/env bash
     set -euo pipefail
 
-    # exit if .txt file has not changed since we installed them (-nt == "newer than', but we negate with || to avoid error exit code)
-    test requirements.dev.txt -nt $VIRTUAL_ENV/.dev || exit 0
-
-    $PIP install -r requirements.dev.txt
-    touch $VIRTUAL_ENV/.dev
+    uv sync --frozen
 
 
 # ensure precommit is installed
@@ -96,20 +101,59 @@ install-precommit:
     BASE_DIR=$(git rev-parse --show-toplevel)
     test -f $BASE_DIR/.git/hooks/pre-commit || $BIN/pre-commit install
 
+# upgrade dependencies (specify package to upgrade single package, all by default)
+# when resolving dependencies, exclude releases newer than `UV_EXCLUDE_NEWER` (default: 7 days ago)
+_upgrade *opts: virtualenv
+    #!/usr/bin/env bash
+    set -euo pipefail
 
-# upgrade dev or prod dependencies (specify package to upgrade single package, all by default)
-upgrade env package="": virtualenv
+    UV_EXCLUDE_NEWER=${UV_EXCLUDE_NEWER:-$(date -d '-7 days' +"%Y-%m-%dT%H:%M:%SZ")}
+    touch -d "$UV_EXCLUDE_NEWER" .target
+
+    LOCKFILE_TIMESTAMP=$(grep -n exclude-newer uv.lock | cut -d'=' -f2 | cut -d'"' -f2) || LOCKFILE_TIMESTAMP=""
+    if [ -z $LOCKFILE_TIMESTAMP ]; then
+        echo "No existing timestamp found in uv.lock."
+    else
+        touch -d "$LOCKFILE_TIMESTAMP" .existing
+
+        if [ .existing -nt .target ]; then
+            echo "The lockfile timestamp is newer than the target cutoff. Using the lockfile timestamp."
+            UV_EXCLUDE_NEWER=$(grep -n exclude-newer uv.lock | cut -d'=' -f2 | cut -d'"' -f2)
+        else
+            sed -i "s|^exclude-newer = .*|exclude-newer = \"$UV_EXCLUDE_NEWER\"|" uv.lock
+            rm .existing
+        fi
+    fi
+    rm .target
+
+    echo "UV_EXCLUDE_NEWER set to $UV_EXCLUDE_NEWER."
+
+    uv sync --exclude-newer $UV_EXCLUDE_NEWER {{ opts }}
+
+upgrade package="": virtualenv
     #!/usr/bin/env bash
     set -euo pipefail
 
     opts="--upgrade"
     test -z "{{ package }}" || opts="--upgrade-package {{ package }}"
-    FORCE=true {{ just_executable() }} requirements-{{ env }} $opts
-
+    FORCE=true {{ just_executable() }} _upgrade $opts
 
 # update (upgrade) prod and dev dependencies
-update-dependencies: (upgrade 'prod') (upgrade 'dev')
+update-dependencies: upgrade
 
+upgrade-prod: (_upgrade "--upgrade --no-dev")
+
+upgrade-dev: (_upgrade "--upgrade --only-dev")
+
+# update `pyproject.toml` that the project's minimum required version of a given package is its current latest one
+# "latest" is defined using the value of `UV_EXCLUDE_NEWER` (default: 7 days ago)
+require-latest package: virtualenv (upgrade package)
+    #!/usr/bin/env bash
+    set -euo pipefail
+
+    VERSION=$(uv pip show {{ package }} | grep -n Version: | cut -d' ' -f2)
+    echo "Adding constraint {{ package }}>=${VERSION}"
+    uv add "{{ package }}>=${VERSION}" --exclude-newer $(grep -n exclude-newer uv.lock | cut -d'=' -f2 | cut -d'"' -f2)
 
 # *ARGS is variadic, 0 or more. This allows us to do `just test -k match`, for example.
 # Run the tests
