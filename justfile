@@ -112,7 +112,8 @@ upgrade package="": virtualenv
 
     LOCKFILE_TIMESTAMP=$(grep -n exclude-newer uv.lock | cut -d'=' -f2 | cut -d'"' -f2) || LOCKFILE_TIMESTAMP=""
     if [ -z $LOCKFILE_TIMESTAMP ]; then
-        echo "No existing timestamp found in uv.lock."
+        echo "Lockfile will be ignored due to no existing timestamp."
+        echo "To respect the lockfile, do not run this recipe; directly run uv sync with UV_EXCLUDE_NEWER unset."
     else
         touch -d "$LOCKFILE_TIMESTAMP" .existing
 
@@ -120,6 +121,7 @@ upgrade package="": virtualenv
             echo "The lockfile timestamp is newer than the target cutoff. Using the lockfile timestamp."
             UV_EXCLUDE_NEWER=$(grep -n exclude-newer uv.lock | cut -d'=' -f2 | cut -d'"' -f2)
         else
+            # Write the new timestamp to the lockfile, or else `uv` will disregard it
             sed -i "s|^exclude-newer = .*|exclude-newer = \"$UV_EXCLUDE_NEWER\"|" uv.lock
             rm .existing
         fi
