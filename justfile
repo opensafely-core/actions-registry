@@ -103,7 +103,7 @@ install-precommit:
 
 # upgrade dependencies (specify package to upgrade single package, all by default)
 # when resolving dependencies, exclude releases newer than `UV_EXCLUDE_NEWER` (default: 7 days ago)
-_upgrade *opts: virtualenv
+upgrade package="": virtualenv
     #!/usr/bin/env bash
     set -euo pipefail
 
@@ -128,22 +128,12 @@ _upgrade *opts: virtualenv
 
     echo "UV_EXCLUDE_NEWER set to $UV_EXCLUDE_NEWER."
 
-    uv sync --exclude-newer $UV_EXCLUDE_NEWER {{ opts }}
-
-upgrade package="": virtualenv
-    #!/usr/bin/env bash
-    set -euo pipefail
-
     opts="--upgrade"
     test -z "{{ package }}" || opts="--upgrade-package {{ package }}"
-    FORCE=true {{ just_executable() }} _upgrade $opts
+    uv sync --exclude-newer $UV_EXCLUDE_NEWER $opts
 
 # update (upgrade) prod and dev dependencies
 update-dependencies: upgrade
-
-upgrade-prod: (_upgrade "--upgrade --no-dev")
-
-upgrade-dev: (_upgrade "--upgrade --only-dev")
 
 # update `pyproject.toml` that the project's minimum required version of a given package is its current latest one
 # "latest" is defined using the value of `UV_EXCLUDE_NEWER` (default: 7 days ago)
