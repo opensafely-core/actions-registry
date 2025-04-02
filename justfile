@@ -91,25 +91,23 @@ upgrade package="": virtualenv
     set -euo pipefail
 
     UV_EXCLUDE_NEWER=${UV_EXCLUDE_NEWER:-$(date -d '-7 days' +"%Y-%m-%dT%H:%M:%SZ")}
-    touch -d "$UV_EXCLUDE_NEWER" .target
+    touch -d "$UV_EXCLUDE_NEWER" $VIRTUAL_ENV/.target
 
     LOCKFILE_TIMESTAMP=$(grep -n exclude-newer uv.lock | cut -d'=' -f2 | cut -d'"' -f2) || LOCKFILE_TIMESTAMP=""
     if [ -z $LOCKFILE_TIMESTAMP ]; then
         echo "Lockfile will be ignored due to no existing timestamp."
         echo "To respect the lockfile, do not run this recipe; directly run uv sync with UV_EXCLUDE_NEWER unset."
     else
-        touch -d "$LOCKFILE_TIMESTAMP" .existing
+        touch -d "$LOCKFILE_TIMESTAMP" $VIRTUAL_ENV/.existing
 
-        if [ .existing -nt .target ]; then
+        if [ $VIRTUAL_ENV/.existing -nt $VIRTUAL_ENV/.target ]; then
             echo "The lockfile timestamp is newer than the target cutoff. Using the lockfile timestamp."
             UV_EXCLUDE_NEWER=$(grep -n exclude-newer uv.lock | cut -d'=' -f2 | cut -d'"' -f2)
         else
             # Write the new timestamp to the lockfile, or else `uv` will disregard it
             sed -i "s|^exclude-newer = .*|exclude-newer = \"$UV_EXCLUDE_NEWER\"|" uv.lock
-            rm .existing
         fi
     fi
-    rm .target
 
     echo "UV_EXCLUDE_NEWER set to $UV_EXCLUDE_NEWER."
 
