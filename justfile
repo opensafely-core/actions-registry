@@ -35,23 +35,6 @@ virtualenv *args:
     echo 'echo "pip is not installed: use uv pip for a pip-like interface."' > .venv/bin/pip
     chmod +x .venv/bin/pip
 
-_compile src dst *args: virtualenv
-    #!/usr/bin/env bash
-    set -euo pipefail
-
-    # exit if src file is older than dst file (-nt = 'newer than', but we negate with || to avoid error exit code)
-    test "${FORCE:-}" = "true" -o {{ src }} -nt {{ dst }} || exit 0
-    $BIN/pip-compile --allow-unsafe --generate-hashes --output-file={{ dst }} {{ src }} {{ args }}
-
-
-# update requirements.prod.txt if requirements.prod.in has changed
-requirements-prod *args:
-    {{ just_executable() }} _compile requirements.prod.in requirements.prod.txt {{ args }}
-
-
-# update requirements.dev.txt if requirements.dev.in has changed
-requirements-dev *args: requirements-prod
-    {{ just_executable() }} _compile requirements.dev.in requirements.dev.txt {{ args }}
 
 # update `uv.lock` if dependencies in `pyproject.toml` have changed
 requirements *args: virtualenv
@@ -67,7 +50,7 @@ requirements *args: virtualenv
     UV_EXCLUDE_NEWER=${UV_EXCLUDE_NEWER:-$TIMESTAMP} uv lock {{ args }}
 
 
-# Install prod dependencies into environement and remove dev dependencies
+# Install prod dependencies into environment
 prodenv: requirements
     #!/usr/bin/env bash
     set -euo pipefail
