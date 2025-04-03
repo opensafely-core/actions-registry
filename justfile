@@ -35,23 +35,36 @@ virtualenv *args:
     echo 'echo "pip is not installed: use uv pip for a pip-like interface."' > .venv/bin/pip
     chmod +x .venv/bin/pip
 
-
-# update `uv.lock` if dependencies in `pyproject.toml` have changed
-requirements *args: virtualenv
+# Wrap`uv` commands that change the lockfile
+_uv *args: virtualenv
     #!/usr/bin/env bash
     set -euo pipefail
 
-    # Determine timestamp cutoff for resolving dependencies
-    # Use existing lockfile timestamp cutoff if present
-    # If (unexpectedly) no timestamp is found, set a new timestamp equal to 7 days ago
-    TIMESTAMP=$(grep -n exclude-newer uv.lock | cut -d'=' -f2 | cut -d'"' -f2) || TIMESTAMP=$(date -d '-7 days' +"%Y-%m-%dT%H:%M:%SZ")
+    UV_EXCLUDE_NEWER=${UV_EXCLUDE_NEWER:-}
 
-    # Run `uv lock` with the timestamp; override by setting UV_EXCLUDE_NEWER
-    UV_EXCLUDE_NEWER=${UV_EXCLUDE_NEWER:-$TIMESTAMP} uv lock {{ args }}
+    if [ -z "$UV_EXCLUDE_NEWER" ]; then
+        # Set UV_EXCLUDE_NEWER to existing lockfile timestamp cutoff
+        # If there is no timestamp, use 7 days ago
+        TIMESTAMP=$(grep -n exclude-newer uv.lock | cut -d'=' -f2 | cut -d'"' -f2) || TIMESTAMP=$(date -d '-7 days' +"%Y-%m-%dT%H:%M:%SZ")
+        export UV_EXCLUDE_NEWER=$TIMESTAMP
+    fi
 
+    uv {{ args }}
+
+# wrap `uv lock`: update `uv.lock` if dependencies in `pyproject.toml` have changed
+lock *args: virtualenv (_uv "lock " + args)
+
+# wrap `uv sync`
+sync *args: virtualenv (_uv "sync " + args)
+
+# wrap `uv add`
+add args: virtualenv (_uv "add " + args)
+
+# wrap `uv remove`
+remove args: virtualenv (_uv "remove " + args)
 
 # Install prod dependencies into environment
-prodenv: requirements
+prodenv: lock
     #!/usr/bin/env bash
     set -euo pipefail
 
@@ -69,7 +82,7 @@ _env:
 # a killer feature over Makefiles.
 #
 # Install dev and prod dependencies into environment
-devenv: _env requirements && install-precommit
+devenv: _env lock && install-precommit
     #!/usr/bin/env bash
     set -euo pipefail
 
