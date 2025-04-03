@@ -43,7 +43,7 @@ requirements *args: virtualenv
 
     # Determine timestamp cutoff for resolving dependencies
     # Use existing lockfile timestamp cutoff if present
-    # If (unexpectedly) no timestamp is found, set a new timestamp equal to one week ago
+    # If (unexpectedly) no timestamp is found, set a new timestamp equal to 7 days ago
     TIMESTAMP=$(grep -n exclude-newer uv.lock | cut -d'=' -f2 | cut -d'"' -f2) || TIMESTAMP=$(date -d '-7 days' +"%Y-%m-%dT%H:%M:%SZ")
 
     # Run `uv lock` with the timestamp; override by setting UV_EXCLUDE_NEWER
