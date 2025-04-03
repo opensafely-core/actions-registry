@@ -21,6 +21,8 @@ jobs:
           python-version: "3.10"
           cache-dependency-path: requirements.*.txt
           install-just: true
+      - name: Install uv
+        uses: astral-sh/setup-uv@4db96194c378173c656ce18a155ffc14a9fc4355
       - name: Check formatting, linting and import sorting
         run: just check
 
@@ -34,6 +36,9 @@ jobs:
           python-version: "3.10"
           cache-dependency-path: requirements.*.txt
           install-just: true
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@4db96194c378173c656ce18a155ffc14a9fc4355
 
       - name: Install Node.js
         uses: actions/setup-node@v4
