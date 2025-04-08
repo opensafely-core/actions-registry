@@ -78,3 +78,15 @@ extend-ignore = [
 [tool.ruff.lint.per-file-ignores]
 "gunicorn.conf.py" = ["INP001"]
 "manage.py" = ["INP001"]
+
+[dependency-groups]
+dev = [
+    "pip-tools",
+    "pre-commit",
+    "pytest",
+    "pytest-cov",
+    "pytest-django",
+    "pyyaml",
+    "responses",
+    "ruff",
+]
