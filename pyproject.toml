@@ -9,6 +9,20 @@ classifiers = [
   "License :: OSI Approved :: GNU General Public License v3 (GPLv3)"
 ]
 requires-python = ">=3.10"
+dependencies = [
+    "bs4",
+    "django",
+    "django-csp",
+    "django-permissions-policy",
+    "django-vite",
+    "environs[django]",
+    "gunicorn",
+    "osgithub",
+    "pyyaml",
+    "requests",
+    "structlog",
+    "whitenoise[brotli]",
+]
 
 [tool.coverage.run]
 branch = true
