@@ -31,3 +31,10 @@ The dependencies are specified by the `uv.lock` file.
 ### `just devenv` recipe
 Install production and development dependencies into the virtual environment.
 The dependencies are specified by the `uv.lock` file.
+
+### `just upgrade` recipe
+Upgrade all dependencies, or a specific dependency.
+The "env" argument has no effect on the command.
+
+### `just update-dependencies` recipe
+Upgrade all dependencies.
