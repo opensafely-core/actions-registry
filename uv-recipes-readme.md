@@ -22,3 +22,12 @@ The `requirements-prod` recipe previously only locked `prod` dependencies, but n
 (i.e. now, `requirements-prod` is equivalent to `requirements-dev`.)
 This is because `uv` does not support only locking certain groups of dependencies.
 (i.e. the `uv lock` command does not support locking `--group` or `--no-group` flags.)
+
+### `just prodenv` recipe
+Install production dependencies into the virtual environment.
+Remove any installed `dev` dependencies from the virtual environment.
+The dependencies are specified by the `uv.lock` file.
+
+### `just devenv` recipe
+Install production and development dependencies into the virtual environment.
+The dependencies are specified by the `uv.lock` file.
