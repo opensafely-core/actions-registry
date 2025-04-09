@@ -35,24 +35,33 @@ virtualenv *args:
     echo 'echo "pip is not installed: use uv pip for a pip-like interface."' > .venv/bin/pip
     chmod +x .venv/bin/pip
 
-
-# update uv.lock if dependencies in pyproject.toml have changed
-requirements-prod *args:
-    uv lock {{ args }}
-
-
-# update uv.lock if dependencies in pyproject.toml have changed
-requirements-dev *args:
-    uv lock {{ args }}
-
-
-# ensure prod requirements installed and up to date
-prodenv: requirements-prod
+# Wrap `uv` commands that alter the lockfile
+_uv +args: virtualenv
     #!/usr/bin/env bash
     set -euo pipefail
 
-    uv sync --frozen --no-dev
+    LOCKFILE_TIMESTAMP=$(grep -n exclude-newer uv.lock | cut -d'=' -f2 | cut -d'"' -f2) || LOCKFILE_TIMESTAMP=""
+    UV_EXCLUDE_NEWER=${UV_EXCLUDE_NEWER:-$LOCKFILE_TIMESTAMP}
 
+    if [ -n "${UV_EXCLUDE_NEWER}" ]; then
+        # echo "Using uv with UV_EXCLUDE_NEWER=${UV_EXCLUDE_NEWER}."
+        export UV_EXCLUDE_NEWER
+    else
+        unset UV_EXCLUDE_NEWER
+    fi
+
+    uv {{ args }}
+
+# update uv.lock if dependencies in pyproject.toml have changed
+requirements-prod *args: (_uv "lock" args)
+
+
+# update uv.lock if dependencies in pyproject.toml have changed
+requirements-dev *args: (_uv "lock" args)
+
+
+# ensure prod requirements installed and up to date
+prodenv: requirements-prod (_uv "sync --frozen --no-dev")
 
 _env:
     #!/usr/bin/env bash
@@ -65,11 +74,7 @@ _env:
 # a killer feature over Makefiles.
 #
 # ensure prod and dev requirements installed and up to date
-devenv: _env requirements-dev && install-precommit
-    #!/usr/bin/env bash
-    set -euo pipefail
-
-    uv sync --frozen
+devenv: _env requirements-dev (_uv "sync --frozen") && install-precommit
 
 
 # ensure precommit is installed
@@ -88,11 +93,44 @@ upgrade env package="": virtualenv
 
     opts="--upgrade"
     test -z "{{ package }}" || opts="--upgrade-package {{ package }}"
-    uv lock $opts
+
+    LOCKFILE_TIMESTAMP=$(grep -n exclude-newer uv.lock | cut -d'=' -f2 | cut -d'"' -f2) || LOCKFILE_TIMESTAMP=""
+    if [ -z "${LOCKFILE_TIMESTAMP}" ]; then
+        uv lock $opts
+    else
+        uv lock --exclude-newer $LOCKFILE_TIMESTAMP $opts
+    fi
 
 
 # update (upgrade) prod and dev dependencies
-update-dependencies: virtualenv
+# Format of "date" argument should matches linux date command's --date flag
+update-dependencies date="": virtualenv
+    #!/usr/bin/env bash
+    set -euo pipefail
+
+    LOCKFILE_TIMESTAMP=$(grep -n exclude-newer uv.lock | cut -d'=' -f2 | cut -d'"' -f2) || LOCKFILE_TIMESTAMP=""
+    if [ -z "{{ date }}" ]; then
+        UV_EXCLUDE_NEWER=${UV_EXCLUDE_NEWER:-$LOCKFILE_TIMESTAMP}
+    else
+        UV_EXCLUDE_NEWER=${UV_EXCLUDE_NEWER:-$(date -d "{{ date }}" +"%Y-%m-%dT%H:%M:%SZ")}
+    fi
+
+    if [ -n "${UV_EXCLUDE_NEWER}" ]; then
+        if [ -n "${LOCKFILE_TIMESTAMP}" ]; then
+            touch -d "$UV_EXCLUDE_NEWER" $VIRTUAL_ENV/.target
+            touch -d "$LOCKFILE_TIMESTAMP" $VIRTUAL_ENV/.existing
+            if [ $VIRTUAL_ENV/.existing -nt $VIRTUAL_ENV/.target ]; then
+                echo "The lockfile timestamp is newer than the target cutoff. Using the lockfile timestamp."
+                UV_EXCLUDE_NEWER=$LOCKFILE_TIMESTAMP
+            fi
+        fi
+        echo "UV_EXCLUDE_NEWER set to $UV_EXCLUDE_NEWER."
+        export UV_EXCLUDE_NEWER
+    else
+        echo "UV_EXCLUDE_NEWER not set."
+        unset UV_EXCLUDE_NEWER
+    fi
+
     uv lock --upgrade
 
 
