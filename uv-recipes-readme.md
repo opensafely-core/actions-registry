@@ -12,3 +12,13 @@ To alter the preference, use the [--python-preference](https://docs.astral.sh/uv
 For deployment, we should prefer the ubuntu system python over `uv`-managed python,
 as the latter statically links the `openssl` library which is not ideal for security reasons.
 (based on discussions with Simon; to be discussed in the tech catchup).
+
+### `just requirements-prod` and `just requirements-dev` recipes
+Update the `uv.lock` file if dependencies in `pyproject.toml` have changed.
+
+The behaviour of `requirements-dev` has not changed: both `dev` and `prod` dependencies are resolved and locked.
+
+The `requirements-prod` recipe previously only locked `prod` dependencies, but now it also locks `dev` dependencies.
+(i.e. now, `requirements-prod` is equivalent to `requirements-dev`.)
+This is because `uv` does not support only locking certain groups of dependencies.
+(i.e. the `uv lock` command does not support locking `--group` or `--no-group` flags.)
