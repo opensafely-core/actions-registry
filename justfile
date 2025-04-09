@@ -81,18 +81,19 @@ install-precommit:
     test -f $BASE_DIR/.git/hooks/pre-commit || $BIN/pre-commit install
 
 
-# upgrade dev or prod dependencies (specify package to upgrade single package, all by default)
+# upgrade dev and prod dependencies (specify package to upgrade single package, all by default)
 upgrade env package="": virtualenv
     #!/usr/bin/env bash
     set -euo pipefail
 
     opts="--upgrade"
     test -z "{{ package }}" || opts="--upgrade-package {{ package }}"
-    FORCE=true {{ just_executable() }} requirements-{{ env }} $opts
+    uv lock $opts
 
 
 # update (upgrade) prod and dev dependencies
-update-dependencies: (upgrade 'prod') (upgrade 'dev')
+update-dependencies: virtualenv
+    uv lock --upgrade
 
 
 # *ARGS is variadic, 0 or more. This allows us to do `just test -k match`, for example.
