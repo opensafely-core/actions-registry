@@ -1,4 +1,166 @@
+# Summary of the spike
+
+## Scope
+- For the spike, we will use `uv`'s primary interface to manage dependencies.
+Use of `uv pip` to replace `pip` is out of scope, as is the preservation of the
+`requirements.in` and `requirements.txt` files.
+
+- We will focus on preserving the API provided by the existing `just` recipes of:
+    - `virtualenv`
+    - `requirements-dev`
+    - `requirements-prod`
+    - `devenv`
+    - `prodenv`
+    - `upgrade`
+    - `update-dependencies`,
+but switch their implementation to `uv`.
+
+- While we won't modify the existing API,
+we will note down any cases where modifying the API would be sensible.
+
+- Following `uv`'s [documentation](https://docs.astral.sh/uv/concepts/projects/layout/#the-lockfile),
+we will not consider manual manipulation of the `uv.lock` file.
+
+## The `pyproject.toml` and `uv.lock` files
+
+- `uv` uses sections in `pyproject.toml` to manage dependencies. The file can be manually edited.
+    - Prod dependencies are listed in the project's `[dependencies]` section.
+    - Dev dependencies are listed in the project's `[dependency-groups]` section, under the `dev` group.
+
+- The `uv.lock` file is `uv`'s lockfile.
+From the [uv docs](https://docs.astral.sh/uv/concepts/projects/layout/#the-lockfile):
+
+> `uv.lock` is a human-readable TOML file but is managed by uv and should not be edited manually.
+
+> This file should be checked into version control, allowing for consistent and reproducible installations across machines.
+
+>Unlike the pyproject.toml, which is used to specify the broad requirements of your project, the lockfile contains the exact resolved versions that are installed in the project environment.
+
+## The `uv` commands for managing dependencies
+We are interested in the following commands:
+
+- `uv venv`: Create a virtual environment.
+
+- `uv lock`: Resolves project dependencies into lockfile.
+    - With an existing uv.lock file, previously locked versions of packages will be preferred[^1].
+    - Passing `--upgrade` will update the lockfile with the latest versions of all packages.
+    - Passing `--upgrade-package` will update the lockfile with the latest version of a specific package.
+
+- `uv sync`: Installs a subset of packages in the lockfile into the environment.
+    - Implicitly runs `uv lock`, unless `--locked` or `--frozen` are passed.
+    - Passing `--locked` will run a check on the lockfile and error if it is outdated.
+    - Passing `--frozen` will update the environment according to the lockfile without checking if it is up to date.
+
+- `uv add`: Adds a package to `pyproject.toml`, then runs `uv sync` (e.g. `uv add osgithub`).
+    - The latest version of the package is added as a constraint unless `--frozen` is passed.
+    - The `--dev` flag can be used to add a package to the dev dependencies.
+    - A textfile can be passed to add multiple packages at once (e.g. `uv add -r requirements.dev.in --dev`).
+    - Not used in the final `just` recipes as it does not match the existing API.
+
+- `uv remove`: Removes a package from `pyproject.toml`, then runs `uv sync` (e.g. `uv remove black --dev`).
+    - The `--dev` flag can be used to remove a package from the dev dependencies.
+    - Not used in the final `just` recipes as it does not match the existing API.
+
+## Reproducing the existing `just` recipes with `uv` commands
+
+|`just` recipe|Definition|`uv` command wrapped|
+|-------------|-----|--------------------|
+|`virtualenv`|Create a virtual envrionment|`uv venv`|
+|`requirements-dev`|Update the lockfile if dev dependencies in source file has changed|`uv lock`|
+|`requirements-prod`|Update the lockfile if prod dependencies in source file has changed|`uv lock`|
+|`upgrade`|Update the lockfile with the latest versions of all prod/dev packages, or a specific prod/dev dependency|`uv lock --upgrade` or `uv lock --upgrade-package`|
+|`update-dependencies`|Update the lockfile with the latest versions of all packages|`uv lock --upgrade`|
+|`devenv`|Install dev and prod dependencies into the environment|`uv sync --frozen --dev`|
+|`prodenv`|Install prod dependencies into the environment|`uv sync --frozen`|
+
+Owing to the fact that `uv lock` does not support only resolving a subset of dependencies, it is not possible to
+exactly reproduce the recipes that only resolve prod but not dev dependencies.
+
+The `requirements-dev` and `requirements-prod` recipes under `uv` implementation are identical in behaviour.
+
+Running `upgrade 'prod'` or `upgrade 'dev'` or `upgrade '*'` where `*` is any string are all equivalent;
+all dependencies are updated to the latest versions.
+
+## Proposed API changes
+- Replace `requirements-dev` and `requirements-prod` with `requirements`.
+- Remove the positional argument from `upgrade`.
+
+## Implementing a cooldown period for upgrading dependencies
+
+### Setting the timestamp cutoff
+- A timestamp cutoff can be set via the `--exclude-newer` flag or the
+`UV_EXCLUDE_NEWER` environment variable.
+
+- The same timestamp cutoff is applied to all packages.
+
+- A package's version must be older than the cutoff to be considered for installation,
+note that it does not need to be the latest version.
+
+- `uv` commands work as aforementioned provided that the timestamp cutoff for the command
+and in the lockfile match, i.e. previously locked versions of packages will be preferred.
+
+### Removing or amending the timestamp cutoff
+- The existing lockfile will be ignored.
+
+- Dependencies are resolved against the new timestamp cutoff (or lack thereof).
+Therefore, all available upgrades will be triggered.
+
+- Therefore, unless the desire is to update all dependencies, the timestamp cutoff for a
+`uv` command should be set to the one in the lockfile. We try to do this in the `just` recipes.
+
+### Implmenting the cooldown period in `just` recipes
+
+|`just` recipe|Default timestamp cutoff value|Can be overridden?|
+|-------------|------------------------------|------------------|
+|`virtualenv`|Not set|N/A|
+|`requirements-dev`|Lockfile timestamp|Yes, via setting `UV_EXCLUDE_NEWER`|
+|`requirements-prod`|Lockfile timestamp|Yes, via setting `UV_EXCLUDE_NEWER`|
+|`upgrade`|Lockfile timestamp|No, as changing the timestamp is incompatible with single-package upgrade|
+|`update-dependencies`|Lockfile timestamp or as specified by "date" parameter|Yes, via setting `UV_EXCLUDE_NEWER`|
+|`devenv`|(Lockfile timestamp)|No, as this command just syncs the lockfile and environment|
+|`prodenv`|(Lockfile timestamp)|No, as this command just syncs the lockfile and environment|
+
+- Most `just` recipes will set the timestamp cutoff to the one in the lockfile.
+- Some recipes allow the timestamp cutoff to be overridden via the `UV_EXCLUDE_NEWER` environment variable.
+- The `update-dependencies` recipe allows the timestamp cutoff to be renewed via the "date" parameter
+(e.g. `just update-dependencies '7 days ago'`).
+
+
+### Limitations of implementing the cooldown period via `uv`
+- `update-dependencies`:
+    - If a date set via the `date` parameter is earlier than the lockfile timestamp,
+    the lockfile timestamp will be used instead. This is to prevent accidental downgrades.
+    - Currently there is no way of downgrading via `update-dependencies`, deliberate or not.
+- `upgrade`:
+    - It is not possible to amend the timestamp cutoff, as this is not compatible with single-package upgrades.
+    - To upgrade all dependencies and amend the timestamp, use the `update-dependencies` recipe.
+
+### CI
+- In 6d751fa, I have copied what's done for [r-docker](https://github.com/opensafely-core/r-docker/commit/b3fd60830e221d84a2f70038a4374c89ae812b75),
+and add astral's `setup-uv` action as a job in the workflow.
+- To follow good practice, the action is pinned to a specific commit SHA.
+
+### Dockerfile
+- To set up the Dockerfile to use `uv`, we need to change the `builder`
+and `actions-registry-dev` images to use `uv` instead of `pip`.
+- We can copy the `uv` executable from astral's `uv` image from the container registry.
+- (Possibly we would want to pin a SHA for this as well?)
+- We would need to set some environment variables,
+e.g. setting `UV_PYTHON_DOWNLOADS=never` ensures that we only use the system Python.
+
+### No cheating?
+The recurring theme is that the following are mutually exclusive:
+- Upgrading a single package
+- Amending or removing the timestamp cutoff
+
+However, there may come a time that you would want to bypass the cooldown period for a single package.
+You either:
+- Can’t (i.e. must make all available upgrades at once), or
+- Must “cheat” by manually editing the lockfile, which is discouraged
+
 # Notes during the spike
+
+These are here to provide a bit more extra context - stop here if you want to.
 
 ## Chat with Simon
 These are rough bullet points that are in no particular order.
@@ -24,29 +186,6 @@ https://hynek.me/articles/docker-uv/
 ## How can we use `uv` to manage our dependencies?
 
 These are loose notes instead of crafted, organsied sections.
-
-### The `uv` lockfile and how `uv` uses `pyproject.toml`
-
-What is the `uv` lockfile?
-From the [uv docs](https://docs.astral.sh/uv/concepts/projects/layout/#the-lockfile):
-
-> `uv.lock` is a human-readable TOML file but is managed by uv and should not be edited manually.
-
-> This file should be checked into version control, allowing for consistent and reproducible installations across machines.
-
->Unlike the pyproject.toml, which is used to specify the broad requirements of your project, the lockfile contains the exact resolved versions that are installed in the project environment.
-
-We can manually edit the `pyproject.toml` file instead of the `uv.lock` file.
-`uv` uses sections in `pyproject.toml` to manage dependencies.
-It will aim to reflect any changes made to `pyproject.toml` in the `uv.lock` file (Command: `uv lock`).
-Then, it will sync the environment with the  `uv.lock` (Command: `uv sync`).
-
-The behaviour of `uv sync` is altered by flags:
-- Running `uv sync` without the `--locked` flag implicitly runs `uv lock`:
-`uv` will update both the lockfile and the environment to match `pyproject.toml`.
-- Running `uv sync` with the `--locked` flag will sync the environment with the lockfile, but before doing so,
-it will run a check on the lockfile and error if it is outdated relative to `pyproject.toml`.
-- Running `uv sync` with the `--frozen` flag will update the environment with the lockfile as the source of truth (rather than `pyproject.toml`).
 
 ### Adding / removing / altering constraints of dependencies
 There are two ways to add, remove or alter the constraints of dependencies:
@@ -328,56 +467,17 @@ For recipes like `devenv` and `prodenv`,
 we should make sure that the command being run is `uv sync --frozen` and not `uv sync`,
 since we are only wanting to sync the environment with the lockfile.
 
-Things are trickier for the commands that actually manage dependencies.
-(i.e. those that aim to alter `pyproject.toml` and the lockfile.)
-
-#### Approach 1: Set `UV_EXCLUDE_NEWER` for all `uv` commands
-Assume a timestamp cutoff is committed to the lockfile.
-If we set `UV_EXCLUDE_NEWER` to the timestamp we read from the lockfile:
-```sh
-LOCKFILE_TIMESTAMP=$(grep -n exclude-newer uv.lock | cut -d'=' -f2 | cut -d'"' -f2)
-export UV_EXCLUDE_NEWER=$LOCKFILE_TIMESTAMP
-```
-then all `uv` commands would see the environment variable and the lockfile will not be ignored.
-
-So, maybe we can set `UV_EXCLUDE_NEWER` in the justfile, and then run `uv` commands exclusively via `just`.
-
-Commands like `update-dependencies` should of course, be setting a new timestamp cutoff and writing it to the lockfile:
-```sh
-update-dependencies *args: virtualenv
-    #!/usr/bin/env bash
-    set -euo pipefail
-
-    UV_EXCLUDE_NEWER=$(date -d '-7 days' +"%Y-%m-%dT%H:%M:%SZ") uv sync
-```
-
-Would this mean wrapping all `uv` commands in `just`? `just add`, `just sync`, `just remove` etc.?
-
-### Approach 2: Only set `UV_EXCLUDE_NEWER` for `uv sync`
-Instead of wrapping all `uv` commands in `just`, we could dictate that changes to project dependencies be made
-via directly editing the `pyproject.toml` file followed by running a just command that wraps `uv sync`.
-(i.e., we don't wrap `uv add` or `uv remove` in `just`.)
-
-```sh
-sync *args: virtualenv
-    #!/usr/bin/env bash
-    set -euo pipefail
-
-    # Sync environment and lockfile with pyproject.toml
-    # Resolves dependencies using existing lockfile timestamp cutoff if available; override via setting UV_EXCLUDE_NEWER
-    LOCKFILE_TIMESTAMP=$(grep -n exclude-newer uv.lock | cut -d'=' -f2 | cut -d'"' -f2) || (uv sync {{ args }}; exit 0)
-    UV_EXCLUDE_NEWER=${UV_EXCLUDE_NEWER:-$LOCKFILE_TIMESTAMP} uv sync {{ args }}
-```
-
-This is much like the pip-tools based approach of editing the `requirements.in` file and running `pip-compile` to update the `requirements.txt` file.
-Here, we don't set `UV_EXCLUDE_NEWER` globally in the justfile, but only for this recipe.
-
-Similar to Approach 1, an `update-dependencies` recipe would be setting a new timestamp cutoff and writing it to the lockfile.
-
-What should we call the just command? `sync`? `resolve-dependencies`? `requirements`?
+Things are trickier for the commands that actually call `uv lock`.
+We need to take care that we use the lockfile timestamp.
 
 ### What if we need to disrespect the lockfile timestamp?
-For both approaches 1 and 2, we need to figure out how to handle the case where we need to update a package to a version that is newer than the timestamp cutoff in the lockfile. (E.g. the `osgithub` example above.)
+We might need to figure out how to handle the case where we need to update a package to a version that is newer than the timestamp cutoff in the lockfile
+(E.g. the `osgithub` example above.)
 
 It is probably hard to avoid having to manually manipulate the lockfile timestamp.
 We probably want to write a set of instructions, or create a `just` command specifically for that scenario.
+
+See 28da865 for the recipe I tried to write - following limiting the scope of the spike to not doing manual manipulations of lockfiles,
+this was removed.
+
+[^1]: See the [`uv` docs](https://docs.astral.sh/uv/concepts/projects/sync/#upgrading-locked-package-versions)
