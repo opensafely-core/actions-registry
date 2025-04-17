@@ -16,7 +16,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - uses: opensafely-core/setup-action@v1
+      - uses: opensafely-core/setup-action@8309ec8eb730c5b342dd496a09392f95bedd2fb0
         with:
           python-version: "3.10"
           cache-dependency-path: requirements.*.txt
@@ -31,7 +31,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - uses: opensafely-core/setup-action@v1
+      - uses: opensafely-core/setup-action@8309ec8eb730c5b342dd496a09392f95bedd2fb0
         with:
           python-version: "3.10"
           cache-dependency-path: requirements.*.txt
