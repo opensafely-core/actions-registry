@@ -50,7 +50,7 @@ _uv +args: virtualenv
         unset UV_EXCLUDE_NEWER
     fi
 
-    uv {{ args }}
+    uv {{ args }} || exit 1
 
 # update uv.lock if dependencies in pyproject.toml have changed
 requirements-prod *args: (_uv "lock" args)
@@ -148,7 +148,7 @@ lint *args=".": devenv
     $BIN/ruff check --output-format=full {{ args }}
 
 # runs the various dev checks but does not change any files
-check: format lint
+check: (_uv "lock --check") format lint
 
 
 # fix formatting and import sort ordering

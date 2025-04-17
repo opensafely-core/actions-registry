@@ -70,19 +70,25 @@ RUN --mount=type=cache,target=/var/cache/apt \
     /root/docker-apt-install.sh /tmp/build-dependencies.txt
 
 # Install everything in venv for isolation from system python libraries
-RUN python3.10 -m venv /opt/venv
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /usr/local/bin/uv
+ENV UV_LINK_MODE=copy \
+    UV_COMPILE_BYTECODE=1 \
+    UV_PYTHON_DOWNLOADS=never \
+    UV_PYTHON=python3.10 \
+    UV_PROJECT_ENVIRONMENT="/opt/venv"
+
+RUN uv venv --python-preference system
 ENV VIRTUAL_ENV=/opt/venv/ PATH="/opt/venv/bin:$PATH"
 
 # The cache mount means a) /root/.cache is not in the image, and b) it's preserved
 # between docker builds locally, for faster dev rebuild.
-COPY requirements.prod.txt /tmp/requirements.prod.txt
+COPY pyproject.toml /tmp/pyproject.toml
+COPY uv.lock /tmp/uv.lock
 
 # DL3042: using cache mount instead
-# DL3013: we always want latest pip/setuptools/wheel, at least for now
 # hadolint ignore=DL3042,DL3013
 RUN --mount=type=cache,target=/root/.cache \
-    python -m pip install -U pip setuptools wheel && \
-    python -m pip install --require-hashes --requirement /tmp/requirements.prod.txt
+    uv sync  --frozen --no-dev --no-install-project --directory /tmp
 
 
 ##################################################
@@ -168,11 +174,20 @@ USER ${USERID}:${GROUPID}
 FROM actions-registry-base as actions-registry-dev
 
 # install development requirements
-COPY requirements.dev.txt /tmp/requirements.dev.txt
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /usr/local/bin/uv
+ENV UV_LINK_MODE=copy \
+    UV_COMPILE_BYTECODE=1 \
+    UV_PYTHON_DOWNLOADS=never \
+    UV_PYTHON=python3.10 \
+    UV_PROJECT_ENVIRONMENT="/opt/venv"
+
+COPY pyproject.toml /tmp/pyproject.toml
+COPY uv.lock /tmp/uv.lock
+
 # using cache mount instead
 # hadolint ignore=DL3042
 RUN --mount=type=cache,target=/root/.cache \
-    python -m pip install --require-hashes --requirement /tmp/requirements.dev.txt
+    uv sync --frozen --no-install-project --directory /tmp
 
 # Override ENTRYPOINT rather than CMD so we can pass arbitrary commands to the entrypoint script
 ENTRYPOINT ["/app/docker/entrypoints/dev.sh"]
