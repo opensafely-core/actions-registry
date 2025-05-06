@@ -44,12 +44,14 @@ class Command(BaseCommand):
             raise  # pragma: no cover
 
         details = repo.get_repo_details()
+        contributors = [i for i in repo.get_contributors() if "[bot]" not in i]
         tags = repo.get_tags()
         action, created = Action.objects.update_or_create(
             repo_name=repo_name,
             org=organisation,
             defaults={
                 "about": str(details["about"] or ""),
+                "contributors": contributors,
             },
         )
 
