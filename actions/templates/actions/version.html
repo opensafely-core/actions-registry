@@ -25,6 +25,17 @@
         </div>
         <div class="sm:col-span-2">
           <dt class="text-sm font-semibold text-gray-600">
+            Contributors
+          </dt>
+          <dd class="mt-1 text-sm text-gray-900">
+            {% for contributor in action.contributors %}
+              <a href="https://github.com/{{ contributor }}/" class="text-oxford-600 hover:text-oxford-800 hover:underline">
+                {{ contributor }}</a>{% if not forloop.last %}, {% endif %}
+            {% endfor %}
+          </dd>
+        </div>
+        <div class="sm:col-span-2">
+          <dt class="text-sm font-semibold text-gray-600">
             All versions
           </dt>
           {% for action_version in action.versions.all %}
