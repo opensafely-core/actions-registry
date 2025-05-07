@@ -74,6 +74,18 @@ def set_up_responses():
     )
     responses.add(
         responses.GET,
+        "https://api.github.com/repos/opensafely-actions/test-action/contributors",
+        status=200,
+        body=json.dumps(
+            [
+                {"login": "catlover"},
+                {"login": "dependabot[bot]"},
+                {"login": "bottlelover"},
+            ]
+        ),
+    )
+    responses.add(
+        responses.GET,
         "https://api.github.com/repos/opensafely-actions/test-action/tags",
         status=200,
         body=json.dumps(
@@ -143,6 +155,7 @@ def verify_action():
     a = Action.objects.get()
     assert a.org == "opensafely-actions"
     assert a.repo_name == "test-action"
+    assert a.contributors == ["catlover", "bottlelover"]
     assert a.about == "A brief description"
     assert a.versions.count() == 2
     v1, v2 = a.versions.order_by("committed_at")
