@@ -36,6 +36,16 @@
         </div>
         <div class="sm:col-span-2">
           <dt class="text-sm font-semibold text-gray-600">
+            Topics
+          </dt>
+          <dd class="mt-1 text-sm text-gray-900">
+            {% for topic in action.topics %}
+                {{ topic }}{% if not forloop.last %}, {% endif %}
+            {% endfor %}
+          </dd>
+        </div>
+        <div class="sm:col-span-2">
+          <dt class="text-sm font-semibold text-gray-600">
             All versions
           </dt>
           {% for action_version in action.versions.all %}
