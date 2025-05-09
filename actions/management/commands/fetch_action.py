@@ -45,6 +45,7 @@ class Command(BaseCommand):
 
         details = repo.get_repo_details()
         contributors = [i for i in repo.get_contributors() if "[bot]" not in i]
+        topics = sorted(repo.get_topics())
         tags = repo.get_tags()
         action, created = Action.objects.update_or_create(
             repo_name=repo_name,
@@ -52,6 +53,7 @@ class Command(BaseCommand):
             defaults={
                 "about": str(details["about"] or ""),
                 "contributors": contributors,
+                "topics": topics,
             },
         )
 

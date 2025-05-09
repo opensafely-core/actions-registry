@@ -7,6 +7,7 @@ class Action(models.Model):
     repo_name = models.CharField(max_length=200)
     about = models.TextField(default="")
     contributors = models.JSONField(default=list)
+    topics = models.JSONField(default=list)
 
     def __str__(self):
         return self.repo_name
