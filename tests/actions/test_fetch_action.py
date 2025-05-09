@@ -70,7 +70,13 @@ def set_up_responses():
         responses.GET,
         "https://api.github.com/repos/opensafely-actions/test-action",
         status=200,
-        body=json.dumps({"name": "test-action", "description": "A brief description"}),
+        body=json.dumps(
+            {
+                "name": "test-action",
+                "description": "A brief description",
+                "topics": ["baz", "bar"],
+            }
+        ),
     )
     responses.add(
         responses.GET,
@@ -156,6 +162,7 @@ def verify_action():
     assert a.org == "opensafely-actions"
     assert a.repo_name == "test-action"
     assert a.contributors == ["catlover", "bottlelover"]
+    assert a.topics == ["bar", "baz"]
     assert a.about == "A brief description"
     assert a.versions.count() == 2
     v1, v2 = a.versions.order_by("committed_at")
