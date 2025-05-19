@@ -13,7 +13,7 @@
     "tailwindcss": "^4.1.6"
   },
   "devDependencies": {
-    "@tailwindcss/vite": "^4.1.6",
+    "@tailwindcss/vite": "^4.1.7",
     "vite": "^6.3.5"
   }
 }
