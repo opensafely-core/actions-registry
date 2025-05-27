@@ -33,6 +33,8 @@ SECRET_KEY = env.str("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env.bool("DEBUG", default=False)
 
+DEBUG_TOOLBAR = env.bool("DJANGO_DEBUG_TOOLBAR", default=False)
+
 ALLOWED_HOSTS = ["*"]
 
 
@@ -48,6 +50,8 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
 ]
+if DEBUG_TOOLBAR:
+    INSTALLED_APPS.append("debug_toolbar")
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -62,6 +66,10 @@ MIDDLEWARE = [
     "csp.middleware.CSPMiddleware",
     "actions.middleware.XSSFilteringMiddleware",
 ]
+if DEBUG_TOOLBAR:
+    # Include the Debug Tooolbar middleware as early as possible; refer to the docs:
+    # https://django-debug-toolbar.readthedocs.io/en/latest/installation.html#add-the-middleware
+    MIDDLEWARE = ["debug_toolbar.middleware.DebugToolbarMiddleware", *MIDDLEWARE]
 
 ROOT_URLCONF = "actions.urls"
 
@@ -213,6 +221,11 @@ if ASSETS_DEV_MODE:  # pragma: no cover
     ]
     CSP_STYLE_SRC = CSP_STYLE_SRC_ELEM = ["'self'", "'unsafe-inline'"]
 
+# Debug Toolbar is shown only if your IP address is listed in INTERNAL_IPS.
+# https://django-debug-toolbar.readthedocs.io/en/latest/installation.html#configuring-internal-ips
+INTERNAL_IPS = [
+    "127.0.0.1",
+]
 
 # Permissions Policy
 # https://github.com/adamchainz/django-permissions-policy/blob/main/README.rst
