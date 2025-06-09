@@ -8,7 +8,7 @@
     "serve": "vite preview"
   },
   "dependencies": {
-    "@fontsource/public-sans": "^5.2.5",
+    "@fontsource/public-sans": "^5.2.6",
     "@tailwindcss/typography": "^0.5.16",
     "tailwindcss": "^4.1.7"
   },
