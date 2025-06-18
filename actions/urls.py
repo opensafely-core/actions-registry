@@ -1,4 +1,5 @@
-from django.urls import path
+from django.conf import settings
+from django.urls import include, path
 
 from . import views
 
@@ -13,3 +14,5 @@ urlpatterns = [
     path("actions/<str:repo_name>/", views.action, name="action"),
     path("actions/<str:repo_name>/<str:tag>/", views.version, name="version"),
 ]
+if settings.DEBUG_TOOLBAR:
+    urlpatterns.extend([path("__debug__/", include("debug_toolbar.urls"))])

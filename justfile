@@ -164,7 +164,7 @@ migrate: devenv
 
 # run the dev server
 run: devenv
-    $BIN/python manage.py runserver localhost:8000
+    DJANGO_DEBUG_TOOLBAR=1 $BIN/python manage.py runserver localhost:8000
 
 
 # build docker image env=dev|prod
