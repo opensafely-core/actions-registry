@@ -18,6 +18,7 @@ class Command(BaseCommand):
         "opensafely-actions/demographic-standardisation",
         "opensafely-actions/diabetes-algo",
         "opensafely-actions/kaplan-meier-function",
+        "opensafely-actions/matching",
         "opensafely-actions/project-dag",
         "opensafely-actions/safetab",
     ]
