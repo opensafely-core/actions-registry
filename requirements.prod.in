@@ -9,7 +9,7 @@ django-permissions-policy
 django-vite
 environs[django]
 gunicorn
-osgithub
+osgithub==0.4.0
 pyyaml
 requests
 structlog
