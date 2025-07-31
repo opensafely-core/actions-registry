@@ -2,18 +2,29 @@ import pytest
 
 
 @pytest.mark.parametrize(
-    "debug, debug_toolbar, expected",
+    "django_debug_toolbar_value, expected",
     [
-        (True, True, True),
-        (False, False, False),
+        ("1", True),
+        ("0", False),
     ],
 )
-def test_debug_toolbar_urls_are_toggled_by_relevant_settings(
-    debug, debug_toolbar, expected, settings, remove_from_module_cache
+def test_debug_toolbar_urls_are_toggled_by_environment_variable(
+    django_debug_toolbar_value,
+    expected,
+    settings,
+    remove_from_module_cache,
+    monkeypatch,
 ):
+    remove_from_module_cache("actions.settings")
     remove_from_module_cache("actions.urls")
-    settings.DEBUG = debug
-    settings.DEBUG_TOOLBAR = debug_toolbar
+    monkeypatch.setenv("DJANGO_DEBUG_TOOLBAR", django_debug_toolbar_value)
+
+    # Patch settings based on imported actions.settings
+    import actions.settings
+
+    settings.DEBUG = actions.settings.DEBUG
+    settings.DEBUG_TOOLBAR = actions.settings.DEBUG_TOOLBAR
+    settings.INSTALLED_APPS = actions.settings.INSTALLED_APPS
 
     # Only import actions.urls after settings are patched
     import actions.urls
