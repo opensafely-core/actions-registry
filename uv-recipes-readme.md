@@ -1,8 +1,6 @@
 ## Recipe readmes
 
 ### `just virtualenv` recipe
-This recipe assumes that `DEFAULT_PYTHON` in the justfile and the contents of `.python-version` are in sync.
-
 As before, the recipe respects the `PYTHON_VERSION` environment variable, if set.
 
 The recipe will look for the specified python version. If not found, `uv` will install its managed version.
@@ -31,8 +29,11 @@ This is because `uv` does not support only locking certain groups of dependencie
 (i.e. the `uv lock` command does not support locking `--group` or `--no-group` flags.)
 
 #### Limitations
-- Cannot only lock `prod` dependencies.
-- (COOLDOWN ONLY:) Cannot define new timestamp or remove timestamp without triggering all available upgrades.
+- Cannot only lock `prod` dependencies. This is probably a good thing as
+it avoids potential errors in resolving dev and prod dependencies separately.
+- It is not possible to define your own package-specific timestamp cutoff
+using this recipe. Version constraints should be used instead (in combination
+with `just upgrade` if needed).
 
 #### Cooldown period implementation details
 - If a new dependency is added to `pyproject.toml`, running `just requirements-prod` or
@@ -40,15 +41,12 @@ This is because `uv` does not support only locking certain groups of dependencie
 defined by the `UV_EXCLUDE_NEWER` timestamp.
 a. If `UV_EXCLUDE_NEWER` is not provided or provided as an empty string, it is set to the
 current lockfile's `exclude-newer` timestamp.
-b. If `UV_EXCLUDE_NEWER` is not provided or provided as an empty string, 
-**and** the lockfile does not contain an `exclude-newer` timestamp, no timestamp cutoff is used.
-(i.e., the recipe will not attempt to implement the cooldown period.)
+b. If `UV_EXCLUDE_NEWER` is not provided or provided as an empty string,
+**and** the lockfile does not contain an `exclude-newer` timestamp, no global timestamp cutoff is used.
+(i.e., the recipe will not attempt to implement the global cooldown period)
 c. If `UV_EXCLUDE_NEWER` is provided as a timestamp, it will be used as the new
 timestamp cutoff and written into the lockfile. All dependencies will be updated to
 the latest compatible version inline with the new timestamp cutoff.
-
-The behaviour for (b) can be changed by tampering with the lockfile, but we are not going
-to do that.
 
 ### `just prodenv` recipe
 Install production dependencies into the virtual environment.
@@ -79,16 +77,16 @@ The "env" argument has no effect on the command.
 
 #### Limitations
 - Cannot upgrade only prod or only dev dependencies.
-- (COOLDOWN ONLY:) Must stick to the `exclude-newer` timestamp (or lack thereof) in the lockfile.
-To change the timestamp, must use `just update-dependencies` instead, which will upgrade all dependencies.
+- (COOLDOWN ONLY:) Must stick to the global timestamp cutoff (or lack thereof) in the lockfile.
+To change the global timestamp, must use `just update-dependencies` instead, which will upgrade all dependencies without a package-specific timestamp.
 
 #### Cooldown period implementation
 - This recipe updates all dependencies or a specific dependency to the latest compatible
 version inline with the `exclude-newer` timestamp in the lockfile.
-Unlike the recipes above, it is not possible to specify an alternative timestamp cutoff via setting `UV_EXCLUDE_NEWER`.
-- This is because setting `UV_EXCLUDE_NEWER` to anything other than the current
-lockfile timestamp is **incompatible with attempting a single-package upgrade**.
-- If there is no timestamp in the lockfile, no timestamp cutoff is used.
+Unlike the recipes above, it is not possible to specify an alternative global timestamp
+cutoff via setting `UV_EXCLUDE_NEWER`.
+- It is possible to set a package-specific timestamp cutoff via the `package-date` arg.
+- If there is no global timestamp in the lockfile, no global timestamp cutoff is used.
 (i.e., the recipe will not attempt to implement the cooldown period.)
 
 ### `just update-dependencies` recipe
@@ -102,11 +100,13 @@ Upgrade all dependencies.
 - This recipe updates all dependencies to their latest compatible versions, as
 defined by the `UV_EXCLUDE_NEWER` timestamp. By default, this is the `exclude-newer`
 timestamp in the lockfile.
-- If `UV_EXCLUDE_NEWER` is set to a timestamp, it will be used as the new timestamp cutoff
+- If `UV_EXCLUDE_NEWER` is set to a timestamp, it will be used as the new global timestamp cutoff
 and written into the lockfile.
-- If the `date` parameter is passed, a new timestamp cutoff is calculated and will be
+- If the `date` parameter is passed, a new global timestamp cutoff is calculated and will be
 written into the lockfile. (Example usage: `just update-dependencies "7 days ago"`.)
 - If both `UV_EXCLUDE_NEWER` and the `date` parameter are passed, `UV_EXCLUDE_NEWER` will
 have precedence.
 - If the lockfile timestamp is newer than a user-specified timestamp (via `UV_EXCLUDE_NEWER` or the `date` parameter), the lockfile timestamp will have precedence.
 (E.g., on April 8th, if the lockfile timestamp is set to April 7th, and the user runs `just update-dependencies "7 days ago"`, April 7th will be used as the cutoff rather than April 1st.)
+- Package-specific timestamps in the existing lockfile will be respected if they are
+newer than the specified global cutoff, and discarded if they are older.
