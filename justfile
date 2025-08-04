@@ -40,7 +40,7 @@ _uv +args: virtualenv
     #!/usr/bin/env bash
     set -euo pipefail
 
-    LOCKFILE_TIMESTAMP=$(grep -n exclude-newer uv.lock | cut -d'=' -f2 | cut -d'"' -f2) || LOCKFILE_TIMESTAMP=""
+    LOCKFILE_TIMESTAMP=$(grep -n "exclude-newer = " uv.lock | cut -d'=' -f2 | cut -d'"' -f2) || LOCKFILE_TIMESTAMP=""
     UV_EXCLUDE_NEWER=${UV_EXCLUDE_NEWER:-$LOCKFILE_TIMESTAMP}
 
     if [ -n "${UV_EXCLUDE_NEWER}" ]; then
@@ -94,7 +94,7 @@ upgrade env package="": virtualenv
     opts="--upgrade"
     test -z "{{ package }}" || opts="--upgrade-package {{ package }}"
 
-    LOCKFILE_TIMESTAMP=$(grep -n exclude-newer uv.lock | cut -d'=' -f2 | cut -d'"' -f2) || LOCKFILE_TIMESTAMP=""
+    LOCKFILE_TIMESTAMP=$(grep -n "exclude-newer = " uv.lock | cut -d'=' -f2 | cut -d'"' -f2) || LOCKFILE_TIMESTAMP=""
     if [ -z "${LOCKFILE_TIMESTAMP}" ]; then
         uv lock $opts
     else
@@ -108,7 +108,7 @@ update-dependencies date="": virtualenv
     #!/usr/bin/env bash
     set -euo pipefail
 
-    LOCKFILE_TIMESTAMP=$(grep -n exclude-newer uv.lock | cut -d'=' -f2 | cut -d'"' -f2) || LOCKFILE_TIMESTAMP=""
+    LOCKFILE_TIMESTAMP=$(grep -n "exclude-newer = " uv.lock | cut -d'=' -f2 | cut -d'"' -f2) || LOCKFILE_TIMESTAMP=""
     if [ -z "{{ date }}" ]; then
         UV_EXCLUDE_NEWER=${UV_EXCLUDE_NEWER:-$LOCKFILE_TIMESTAMP}
     else
