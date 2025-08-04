@@ -88,53 +88,57 @@ all dependencies are updated to the latest versions.
 ## Implementing a cooldown period for upgrading dependencies
 
 ### Setting the timestamp cutoff
-- A timestamp cutoff can be set via the `--exclude-newer` flag or the
-`UV_EXCLUDE_NEWER` environment variable.
+- A global timestamp cutoff can be set via the `--exclude-newer` flag or the
+`UV_EXCLUDE_NEWER` environment variable. The global timestamp cutoff is applied to all packages.
 
-- The same timestamp cutoff is applied to all packages.
+- A package-specific timestamp cutoff can be set via the `--exclude-newer-package` flag (new in version 0.8.4). Multiple packages can be specified.
 
-- A package's version must be older than the cutoff to be considered for installation,
+- A package's version must be older than the/its cutoff to be considered for installation,
 note that it does not need to be the latest version.
 
 - `uv` commands work as aforementioned provided that the timestamp cutoff for the command
 and in the lockfile match, i.e. previously locked versions of packages will be preferred.
 
 ### Removing or amending the timestamp cutoff
-- The existing lockfile will be ignored.
+- Amending any of the cutoffs (global or package-specific) will cause `uv` to ignore the existing lockfile.
 
-- Dependencies are resolved against the new timestamp cutoff (or lack thereof).
+- Dependencies are resolved against the new timestamp cutoff(s), or lack thereof.
 Therefore, all available upgrades will be triggered.
 
-- Therefore, unless the desire is to update all dependencies, the timestamp cutoff for a
-`uv` command should be set to the one in the lockfile. We try to do this in the `just` recipes.
+- Therefore, unless the desire is to update all dependencies, the timestamp cutoff(s) for a
+`uv` command should be set to the one(s) in the lockfile. We try to do this in the `just` recipes.
 
 ### Implmenting the cooldown period in `just` recipes
 
 |`just` recipe|Default timestamp cutoff value|Can be overridden?|
 |-------------|------------------------------|------------------|
 |`virtualenv`|Not set|N/A|
-|`requirements-dev`|Lockfile timestamp|Yes, via setting `UV_EXCLUDE_NEWER`|
-|`requirements-prod`|Lockfile timestamp|Yes, via setting `UV_EXCLUDE_NEWER`|
-|`upgrade`|Lockfile timestamp|No, as changing the timestamp is incompatible with single-package upgrade|
-|`update-dependencies`|Lockfile timestamp or as specified by "date" parameter|Yes, via setting `UV_EXCLUDE_NEWER`|
-|`devenv`|(Lockfile timestamp)|No, as this command just syncs the lockfile and environment|
-|`prodenv`|(Lockfile timestamp)|No, as this command just syncs the lockfile and environment|
+|`requirements-dev`|Lockfile timestamp(s)|Only the global cutoff, via setting `UV_EXCLUDE_NEWER`|
+|`requirements-prod`|Lockfile timestamp(s)|Only the global cutoff, via setting `UV_EXCLUDE_NEWER`|
+|`upgrade`|Lockfile timestamp(s)|Yes - for the global cutoff, set `UV_EXCLUDE_NEWER`, for the target package for the upgrade, pass the `package-date` argument|
+|`update-dependencies`|Lockfile timestamp(s) or as specified by "date" parameter|Only the global cutoff, via setting `UV_EXCLUDE_NEWER`[^2]|
+|`devenv`|(Lockfile timestamp(s))|No, as this command just syncs the lockfile and environment|
+|`prodenv`|(Lockfile timestamp(s))|No, as this command just syncs the lockfile and environment|
 
-- Most `just` recipes will set the timestamp cutoff to the one in the lockfile.
-- Some recipes allow the timestamp cutoff to be overridden via the `UV_EXCLUDE_NEWER` environment variable.
+- Most `just` recipes will set the timestamp cutoff to the one(s) in the lockfile.
+- Some recipes allow the global timestamp cutoff to be overridden via the `UV_EXCLUDE_NEWER` environment variable.
+- The `upgrade` recipe allows a package-specific timestamp cutoff to be set via the `package-date` argument.
+(e.g. `just upgrade prod osgithub now`).
 - The `update-dependencies` recipe allows the timestamp cutoff to be renewed via the "date" parameter
 (e.g. `just update-dependencies '7 days ago'`).
 
 
 ### Limitations of implementing the cooldown period via `uv`
+- All commands except `devenv` and `prodenv`:
+    - Pinning a package via setting a package-specific timestamp cutoff earlier than the global timestamp
+    is not supported. Pinning must be done via a version constraint in the `pyproject.toml` file
+    (e.g. `osgithub<=0.3.5`).
 - `update-dependencies`:
-    - If a date set via the `date` parameter is earlier than the lockfile timestamp,
-    the lockfile timestamp will be used instead. This is to prevent accidental downgrades.
+    - If a date set via the `date` parameter is earlier than the global lockfile timestamp,
+    the global lockfile timestamp will be used instead. This is to prevent accidental downgrades.
+    - If a date set via the `date` parameter is earlier than a given package-specific timestamp cutoff,
+    the package-specific timestamp cutoff will be retained. Again, this is to prevent accidental downgrades.
     - Currently there is no way of downgrading via `update-dependencies`, deliberate or not.
-- `upgrade`:
-    - It is not possible to amend the timestamp cutoff, as this is not compatible with single-package upgrades.
-    - To upgrade all dependencies and amend the timestamp, use the `update-dependencies` recipe.
-
 ### CI
 - In 6d751fa, I have copied what's done for [r-docker](https://github.com/opensafely-core/r-docker/commit/b3fd60830e221d84a2f70038a4374c89ae812b75),
 and add astral's `setup-uv` action as a job in the workflow.
@@ -147,16 +151,6 @@ and `actions-registry-dev` images to use `uv` instead of `pip`.
 - (Possibly we would want to pin a SHA for this as well?)
 - We would need to set some environment variables,
 e.g. setting `UV_PYTHON_DOWNLOADS=never` ensures that we only use the system Python.
-
-### No cheating?
-The recurring theme is that the following are mutually exclusive:
-- Upgrading a single package
-- Amending or removing the timestamp cutoff
-
-However, there may come a time that you would want to bypass the cooldown period for a single package.
-You either:
-- Can’t (i.e. must make all available upgrades at once), or
-- Must “cheat” by manually editing the lockfile, which is discouraged
 
 # Notes during the spike
 
@@ -355,14 +349,11 @@ Ignoring existing lockfile due to addition of timestamp cutoff: `2025-03-22T15:0
   ╰─▶ Because only osgithub<0.4.0 is available and your project depends on osgithub>=0.4.0, we can conclude that your project's requirements are unsatisfiable.
 ```
 
-It seems like we are a bit stuck here.
-We have a couple of options:
-1. We can spontaneously review the changelog of `cattrs`, `typing-extensions`, `url-normalize` and `virtualenv`.
-This is clearly not great - `url-normalize` updated from 1.4.3 to 2.2.0, that doesn't seem like a trivial review.
+We are presented with two options:
 
-2. We can try to set a new timestamp cutoff, since we know `osgithub` was updated on March 24.
+1.  We can try to set a new global timestamp cutoff, since we know `osgithub` was updated on March 24.
 ```sh
-actions-registryalice@lunapiena:~/code/actions-registry$ uv sync --exclude-newer "2025-03-24"
+(actions-registry) alice@lunapiena:~/code/actions-registry$ uv sync --exclude-newer "2025-03-24"
 Ignoring existing lockfile due to addition of timestamp cutoff: `2025-03-25T00:00:00Z`
 Resolved 25 packages in 14ms
 Uninstalled 4 packages in 11ms
@@ -376,52 +367,46 @@ Installed 4 packages in 14ms
  - virtualenv==20.30.0
  + virtualenv==20.29.3
 ```
-This works, but that is because `cattrs` etc. all happened to have been updated after March 24.
-If `url-normalize` had been updated on March 23 (instead of March 30), we would have been forced to review its changelog.
+i.e. we update some other packages alongside updating `osgithub`.
 
-3. We can remove the timestamp cutoff from the lockfile, and run `uv sync` again.
-First revert the change in constraint and revert the lockfile and environment:
-```sh
-actions-registryalice@lunapiena:~/code/actions-registry$ uv add "osgithub>=0.3.5" --exclude-newer "2025-03-22T15:00:00Z"
-Ignoring existing lockfile due to addition of timestamp cutoff: `2025-03-22T15:00:00Z`
-Resolved 25 packages in 19ms
-Uninstalled 4 packages in 4ms
-Installed 4 packages in 5ms
- - cattrs==24.1.3
- + cattrs==24.1.2
- - osgithub==0.4.0
- + osgithub==0.3.5
- - typing-extensions==4.13.0
- + typing-extensions==4.12.2
- - url-normalize==2.2.0
- + url-normalize==1.4.3
- ```
+2. We can retain the original global timestamp cutoff and set a separate timestamp cutoff for `osgithub`.
+This uses the `exclude-newer-package` flag newly available in `uv 0.8.4`[^3].
 
-Then, manually delete the timestamp cutoff from the lockfile.
-This time, `uv` will not ignore the lockfile.
-It will respect that the package versions in the lockfile already fit the constraints in `pyproject.toml`, except for one:
+The command would look like this:
 ```sh
-actions-registryalice@lunapiena:~/code/actions-registry$ uv add "osgithub>=0.4.0"
-Resolved 25 packages in 12ms
-Uninstalled 1 package in 0.81ms
-Installed 1 package in 4ms
- - osgithub==0.3.5
- + osgithub==0.4.0
+uv sync --exclude-newer "2025-03-22T15:00:00Z" --exclude-newer-package osgithub="2025-03-31T00:00:00Z"
 ```
 
-This achieves what we want, but is a fiddly solution.
-As a reminder, the recommendation of the `uv` docs is to not edit the lockfile manually:
+Running it then updates `osgithub` only:
+```sh
+(actions-registry) alice@lunapiena:~/code/actions-registry$ uv sync --exclude-newer "2025-03-22T15:00:00Z"  --exclude-newer-package osgithub="2025-03-31T00:00:00Z"
+Ignoring existing lockfile due to change in timestamp cutoff: `global: 2025-03-22T15:00:00Z` vs. `global: 2025-03-22T15:00:00Z, osgithub: 2025-03-31T00:00:00Z`
+Resolved 65 packages in 13ms
+Uninstalled 1 package in 0.24ms
+Installed 1 package in 3ms
+ - osgithub==0.3.5
+ + osgithub==0.4.0
+ ```
 
-> `uv.lock` is a human-readable TOML file but is managed by uv and should not be edited manually.
+ and both the global timestamp cutoff and the package-specific timestamp cutoffs have been written to the lockfile:
 
-But this seems to be the only sane option to only update the package we want to update, and not the others.
+```toml
+[options]
+exclude-newer = "2025-03-22T15:00:00Z"
+
+[options.exclude-newer-package]
+osgithub = "2025-03-31T00:00:00Z"
+```
+
+Note that the lockfile is still "ignored" in the sense that resolution still
+occurs - we just get to keep the existing timestamp cutoff for the other packages.
 
 ### Aligning timestamp cutoffs
-The above scenario is a bit extreme, since we are trying to update a package to a release that is after the existing timestamp
+In the above scenario, we are trying to update a package to a release that is after the existing timestamp
 cutoff in the lockfile without affecting the other packages.
 
-What if we are in a situation where we're happy to respect the existing timestamp cutoff? Then, the situation is straightforward.
-We would need to read off the timestamp cutoff from the lockfile, and pass it to the `uv` command.
+What if we are in a situation where we're happy to respect the existing timestamp cutoff, and just need to add a new package?
+Then, we would need to read off the timestamp cutoff from the lockfile, and pass it to the `uv` command.
 ```sh
 actions-registryalice@lunapiena:~/code/actions-registry$ uv add bs4 --exclude-newer "2025-03-22T15:00:00Z"
 Resolved 28 packages in 126ms
@@ -432,12 +417,13 @@ Installed 3 packages in 9ms
  + soupsieve==2.6
 ```
 
-We see that since the `--exclude-newer` value matches the one in the lockfile, the lockfile is not ignored.
+We see that since the `--exclude-newer` value matches the global timestamp cutoff in the lockfile, the lockfile is not ignored.
 **In other words, to avoid undesired updates, the `uv` command must be run with the same timestamp cutoff as the one in the lockfile.**
 
-It is only when the above is impossible (e.g. the scenario above where we want to update `osgithub` to a release that is newer than the timestamp cutoff in the lockfile) that things become tricky.
+The same applies to the package-specific timestamp cutoffs.
+We would need to read the cutoffs from the lockfile and pass them via `--exclude-newer-package` to the `uv` command.
 
-In general, we should write `just` recipes that will run `uv` commands with the same timestamp cutoff as the one in the lockfile.
+In general, we should write `just` recipes that will run `uv` commands with the same timestamp cutoff(s) as the one in the lockfile.
 
 It should also be noted that if we would be committing lockfiles with a timestamps to branches, we should pay attention to use the `--frozen` flag
 when we checkout the branch and want to sync the environment with the lockfile.
@@ -469,15 +455,10 @@ since we are only wanting to sync the environment with the lockfile.
 
 Things are trickier for the commands that actually call `uv lock`.
 We need to take care that we use the lockfile timestamp.
-
-### What if we need to disrespect the lockfile timestamp?
-We might need to figure out how to handle the case where we need to update a package to a version that is newer than the timestamp cutoff in the lockfile
-(E.g. the `osgithub` example above.)
-
-It is probably hard to avoid having to manually manipulate the lockfile timestamp.
-We probably want to write a set of instructions, or create a `just` command specifically for that scenario.
-
-See 28da865 for the recipe I tried to write - following limiting the scope of the spike to not doing manual manipulations of lockfiles,
-this was removed.
+Currently, `grep` is used to read off the global timestamp cutoff,
+and `sed` is used to read off the package-specific timestamp cutoffs.
+I might iterate on the specific implementation when time comes.
 
 [^1]: See the [`uv` docs](https://docs.astral.sh/uv/concepts/projects/sync/#upgrading-locked-package-versions)
+[^2]: Although it is probably much better to use the `date` parameter to set the timestamp cutoff
+[^3]: https://github.com/astral-sh/uv/releases/tag/0.8.4
