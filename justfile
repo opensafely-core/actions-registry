@@ -148,7 +148,22 @@ update-dependencies date="": virtualenv
         unset UV_EXCLUDE_NEWER
     fi
 
-    uv lock --upgrade
+    opts=""
+    if [ -n "${UV_EXCLUDE_NEWER}" ] && [ -n "$(grep "options.exclude-newer-package" uv.lock)" ]; then
+        touch -d "$UV_EXCLUDE_NEWER" $VIRTUAL_ENV/.target
+        while IFS= read -r line; do
+            package="$(echo "${line%%=*}" | xargs)"
+            date="$(echo "${line#*=}" | xargs)"
+            touch -d "$date" $VIRTUAL_ENV/.package
+            if [ $VIRTUAL_ENV/.package -nt $VIRTUAL_ENV/.target ]; then
+                opts="$opts --exclude-newer-package $package=$date"
+            else
+                echo "The cutoff for $package ($date) is older than the global cutoff and will no longer be specified."
+            fi
+        done < <(sed -n '/options.exclude-newer-package/,/^$/p' uv.lock | grep '=')
+    fi
+
+    uv lock --upgrade $opts || exit 1
 
 
 # *ARGS is variadic, 0 or more. This allows us to do `just test -k match`, for example.
