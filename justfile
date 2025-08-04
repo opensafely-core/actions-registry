@@ -104,18 +104,18 @@ install-precommit:
 
 
 # upgrade dev and prod dependencies (specify package to upgrade single package, all by default)
-upgrade env package="": virtualenv
-    #!/usr/bin/env bash
-    set -euo pipefail
+upgrade env package="" package-date="": virtualenv
+    if [ -z "{{ package }}" ]; then \
+        just _uv "lock --upgrade"; \
+    else \
+        just _upgrade-package {{ package }} "{{ package-date }}"; \
+    fi
 
-    opts="--upgrade"
-    test -z "{{ package }}" || opts="--upgrade-package {{ package }}"
-
-    LOCKFILE_TIMESTAMP=$(grep -n "exclude-newer = " uv.lock | cut -d'=' -f2 | cut -d'"' -f2) || LOCKFILE_TIMESTAMP=""
-    if [ -z "${LOCKFILE_TIMESTAMP}" ]; then
-        uv lock $opts
-    else
-        uv lock --exclude-newer $LOCKFILE_TIMESTAMP $opts
+_upgrade-package package="" package-date="":
+    if [ -z "{{ package-date }}" ]; then \
+        just _uv "lock --upgrade-package {{ package }}"; \
+    else \
+        just _uv "lock --upgrade-package {{ package }} --exclude-newer-package {{ package }}=$(date -d "{{ package-date }}" +"%Y-%m-%dT%H:%M:%SZ")"; \
     fi
 
 
