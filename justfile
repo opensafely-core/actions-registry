@@ -50,7 +50,24 @@ _uv +args: virtualenv
         unset UV_EXCLUDE_NEWER
     fi
 
-    uv {{ args }} || exit 1
+    opts=""
+    if [ -n "${UV_EXCLUDE_NEWER}" ] && [ -n "$(grep "options.exclude-newer-package" uv.lock)" ]; then
+        touch -d "$UV_EXCLUDE_NEWER" $VIRTUAL_ENV/.target
+        while IFS= read -r line; do
+            package="$(echo "${line%%=*}" | xargs)"
+            date="$(echo "${line#*=}" | xargs)"
+            touch -d "$date" $VIRTUAL_ENV/.package
+            if [[ "{{ args }}" == *"--exclude-newer-package $package"* ]]; then
+                continue # already set by the caller
+            elif [ $VIRTUAL_ENV/.package -nt $VIRTUAL_ENV/.target ]; then
+                opts="$opts --exclude-newer-package $package=$date"
+            else
+                echo "The cutoff for $package ($date) is older than the global cutoff and will no longer be specified."
+            fi
+        done < <(sed -n '/options.exclude-newer-package/,/^$/p' uv.lock | grep '=')
+    fi
+
+    uv {{ args }} $opts || exit 1
 
 # update uv.lock if dependencies in pyproject.toml have changed
 requirements-prod *args: (_uv "lock" args)
