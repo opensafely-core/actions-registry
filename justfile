@@ -104,14 +104,14 @@ install-precommit:
 
 
 # upgrade dev and prod dependencies (specify package to upgrade single package, all by default)
-upgrade env package="" package-date="": virtualenv
+@upgrade env package="" package-date="": virtualenv
     if [ -z "{{ package }}" ]; then \
         just _uv "lock --upgrade"; \
     else \
         just _upgrade-package {{ package }} "{{ package-date }}"; \
     fi
 
-_upgrade-package package="" package-date="":
+@_upgrade-package package="" package-date="":
     if [ -z "{{ package-date }}" ]; then \
         just _uv "lock --upgrade-package {{ package }}"; \
     else \
