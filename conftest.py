@@ -13,15 +13,16 @@ def enable_db_access_for_all_tests(db):
 def remove_from_module_cache():
     """
     Factory fixture to remove a given module from sys.modules when called,
-    and again during the test's teardown.
+    and restore it during the test's teardown.
     """
-    teardown_targets = set()
+    saved_modules = set()
 
     def _remove_from_module_cache(module_name):
-        sys.modules.pop(module_name, None)
-        teardown_targets.add(module_name)
+        module_to_cache = sys.modules.pop(module_name, None)
+        if module_to_cache is not None:
+            saved_modules.add(module_to_cache)
 
     yield _remove_from_module_cache
 
-    for module_name in teardown_targets:
-        sys.modules.pop(module_name, None)
+    for module in saved_modules:
+        sys.modules[module.__name__] = module
