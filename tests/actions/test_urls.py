@@ -1,22 +1,23 @@
-import pytest
+class TestDebugToolbarURLs:
+    def test_settings_on(self, settings, remove_from_module_cache):
+        """Test that when Django debug toolbar settings are on, the related
+        URL patterns DO appear in our URL configuration."""
+        settings.DEBUG_TOOLBAR = True
+        settings.INSTALLED_APPS = ["debug_toolbar"]
 
+        remove_from_module_cache("actions.urls")
+        import actions.urls
 
-@pytest.mark.parametrize(
-    "debug, debug_toolbar, expected",
-    [
-        (True, True, True),
-        (False, False, False),
-    ],
-)
-def test_debug_toolbar_urls_are_toggled_by_relevant_settings(
-    debug, debug_toolbar, expected, settings, remove_from_module_cache
-):
-    remove_from_module_cache("actions.urls")
-    settings.DEBUG = debug
-    settings.DEBUG_TOOLBAR = debug_toolbar
+        patterns = {str(p.pattern) for p in actions.urls.urlpatterns}
+        assert "__debug__/" in patterns
 
-    # Only import actions.urls after settings are patched
-    import actions.urls
+    def test_settings_off(self, settings, remove_from_module_cache):
+        """Test that when Django debug toolbar settings are off, the related
+        URL patterns DO NOT appear in our URL configuration."""
+        settings.DEBUG_TOOLBAR = False
 
-    patterns = {str(p.pattern) for p in actions.urls.urlpatterns}
-    assert ("__debug__/" in patterns) is expected
+        remove_from_module_cache("actions.urls")
+        import actions.urls
+
+        patterns = {str(p.pattern) for p in actions.urls.urlpatterns}
+        assert "__debug__/" not in patterns
