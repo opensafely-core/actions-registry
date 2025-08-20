@@ -93,8 +93,8 @@ all dependencies are updated to the latest versions.
 
 - A package-specific timestamp cutoff can be set via the `--exclude-newer-package` flag (new in version 0.8.4). Multiple packages can be specified.
 
-- A package's version must be older than the/its cutoff to be considered for installation,
-note that it does not need to be the latest version.
+- A package's version must be older than the global cutoff or its specific cutoff (whichever applies)
+to be considered for installation, note that it does not need to be the latest version.
 
 - `uv` commands work as aforementioned provided that the timestamp cutoff for the command
 and in the lockfile match, i.e. previously locked versions of packages will be preferred.
