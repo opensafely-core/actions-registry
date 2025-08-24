@@ -65,9 +65,9 @@ backports-datetime-fromisoformat==2.0.3 \
     --hash=sha256:fb35f607bd1cbe37b896379d5f5ed4dc298b536f4b959cb63180e05cacc0539d \
     --hash=sha256:ffe5f793db59e2f1d45ec35a1cf51404fdd69df9f6952a0c87c3060af4c00e32
     # via marshmallow
-beautifulsoup4==4.13.4 \
-    --hash=sha256:9bbbb14bfde9d79f38b8cd5f8c7c85f4b8f2523190ebed90e950a8dea4cb1c4b \
-    --hash=sha256:dbb3c4e1ceae6aefebdaf2423247260cd062430a410e38c66f2baa50a8437195
+beautifulsoup4==4.13.5 \
+    --hash=sha256:5e70131382930e7c3de33450a2f54a63d5e4b19386eab43a5b34d594268f3695 \
+    --hash=sha256:642085eaa22233aceadff9c69651bc51e8bf3f874fb6d7104ece2beb24b47c4a
     # via bs4
 brotli==1.1.0 \
     --hash=sha256:03d20af184290887bdea3f0f78c4f737d126c74dc2f3ccadf07e54ceca3bf208 \
@@ -425,9 +425,9 @@ pyyaml==6.0.2 \
     --hash=sha256:f753120cb8181e736c57ef7636e83f31b9c0d1722c516f7e86cf15b7aa57ff12 \
     --hash=sha256:ff3824dc5261f50c9b0dfb3be22b4567a6f938ccce4587b38952d85fd9e9afe4
     # via -r requirements.prod.in
-requests==2.32.4 \
-    --hash=sha256:27babd3cda2a6d50b30443204ee89830707d396671944c998b5975b031ac2b2c \
-    --hash=sha256:27d0316682c8a29834d3264820024b62a36942083d52caf2f14c0591336d3422
+requests==2.32.5 \
+    --hash=sha256:2462f94637a34fd532264295e186976db0f5d453d1cdd31473c85a6a161affb6 \
+    --hash=sha256:dbba0bac56e100853db0ea71b82b4dfd5fe2bf6d3754a8893c3af500cec7d7cf
     # via
     #   -r requirements.prod.in
     #   osgithub
