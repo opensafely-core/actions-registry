@@ -314,9 +314,9 @@ django-csp==4.0 \
     --hash=sha256:b27010bb702eb20a3dad329178df2b61a2b82d338b70fbdc13c3a3bd28712833 \
     --hash=sha256:d5a0a05463a6b75a4f1fc1828c58c89af8db9364d09fc6e12f122b4d7f3d00dc
     # via -r requirements.prod.in
-django-permissions-policy==4.26.0 \
-    --hash=sha256:0e129870453ff90521aa2cf8264978fbc57e33117d2313052809730869f8b626 \
-    --hash=sha256:d5a5067b8137c326f3015e02d8e6615e980f1a12903d0dbf9cb446e227bc67dd
+django-permissions-policy==4.27.0 \
+    --hash=sha256:2e2462f097f6ab1c6074a5c18870a5eb2e7f0622a21ecada848feddac1218817 \
+    --hash=sha256:c524aa01196d524dbbad74dbd6dedfe4af48a49aa5c8cf8dd3af148f70240903
     # via -r requirements.prod.in
 django-vite==3.1.0 \
     --hash=sha256:4e46572bd6b1ce70784be129205dc2ffcbc7a3c19fea50bebfb72b327bbde5fc \
@@ -475,7 +475,7 @@ urllib3==2.5.0 \
     # via
     #   requests
     #   requests-cache
-whitenoise[brotli]==6.9.0 \
-    --hash=sha256:8c4a7c9d384694990c26f3047e118c691557481d624f069b7f7752a2f735d609 \
-    --hash=sha256:c8a489049b7ee9889617bb4c274a153f3d979e8f51d2efd0f5b403caf41c57df
+whitenoise[brotli]==6.10.0 \
+    --hash=sha256:7b7e53de65d749cb1ce4a7100e751d9742e323b52746f9f93944c0d348ea2d02 \
+    --hash=sha256:bad74a40b33b055ba59731b6048dd08d5647f273b72bef922aa43ddd287b02da
     # via -r requirements.prod.in
