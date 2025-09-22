@@ -8,8 +8,8 @@
     "serve": "vite preview"
   },
   "dependencies": {
-    "@fontsource/public-sans": "^5.2.6",
-    "@tailwindcss/typography": "^0.5.16",
+    "@fontsource/public-sans": "^5.2.7",
+    "@tailwindcss/typography": "^0.5.18",
     "tailwindcss": "^4.1.11"
   },
   "devDependencies": {
