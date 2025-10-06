@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@fontsource/public-sans": "^5.2.7",
-    "@tailwindcss/typography": "^0.5.18",
+    "@tailwindcss/typography": "^0.5.19",
     "tailwindcss": "^4.1.11"
   },
   "devDependencies": {
