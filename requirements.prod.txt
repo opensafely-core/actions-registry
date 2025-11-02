@@ -356,9 +356,9 @@ django-vite==3.1.0 \
     --hash=sha256:4e46572bd6b1ce70784be129205dc2ffcbc7a3c19fea50bebfb72b327bbde5fc \
     --hash=sha256:8b4ffe4a9fa81ff568bfb195e74dde8694aaf13fd4b656ae60bf59cce08b85e8
     # via -r requirements.prod.in
-environs[django]==14.3.0 \
-    --hash=sha256:20672d92db325ce8114872b1989104eb84f083486325b5a44bcddff56472a384 \
-    --hash=sha256:91e4c4ea964be277855cdd83a588f6375f10fad9fa452660ecb9f503c230f26a
+environs[django]==14.5.0 \
+    --hash=sha256:1abd3e3a5721fb09797438d6c902bc2f35d4580dfaffe68b8ee588b67b504e13 \
+    --hash=sha256:f7b8f6fcf3301bc674bc9c03e39b5986d116126ffb96764efd34c339ed9464ee
     # via -r requirements.prod.in
 exceptiongroup==1.3.0 \
     --hash=sha256:4d111e6e0c13d0644cad6ddaa7ed0261a0b36971f6d23e7ec9b4b9097da78a10 \
@@ -378,9 +378,9 @@ idna==3.11 \
     # via
     #   requests
     #   url-normalize
-marshmallow==4.0.1 \
-    --hash=sha256:72f14ef346f81269dbddee891bac547dda1501e9e08b6a809756ea3dbb7936a1 \
-    --hash=sha256:e1d860bd262737cb2d34e1541b84cb52c32c72c9474e3fe6f30f137ef8b0d97f
+marshmallow==4.1.0 \
+    --hash=sha256:9901660499be3b880dc92d6b5ee0b9a79e94265b7793f71021f92040c07129f1 \
+    --hash=sha256:daa9862f74e2f7864980d25c29b4ea72944cde48aa17537e3bd5797a4ae62d71
     # via environs
 orderedmultidict==1.0.1 \
     --hash=sha256:04070bbb5e87291cc9bfa51df413677faf2141c73c61d2a5f7b26bea3cd882ad \
