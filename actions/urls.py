@@ -14,5 +14,5 @@ urlpatterns = [
     path("actions/<str:repo_name>/", views.action, name="action"),
     path("actions/<str:repo_name>/<str:tag>/", views.version, name="version"),
 ]
-if settings.DEBUG_TOOLBAR:
+if settings.DEBUG_TOOLBAR:  # pragma: no cover
     urlpatterns.extend([path("__debug__/", include("debug_toolbar.urls"))])
