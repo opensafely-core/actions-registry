@@ -50,7 +50,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
 ]
-if DEBUG_TOOLBAR:
+if DEBUG_TOOLBAR:  # pragma: no cover
     INSTALLED_APPS.append("debug_toolbar")
 
 MIDDLEWARE = [
@@ -66,7 +66,7 @@ MIDDLEWARE = [
     "csp.middleware.CSPMiddleware",
     "actions.middleware.XSSFilteringMiddleware",
 ]
-if DEBUG_TOOLBAR:
+if DEBUG_TOOLBAR:  # pragma: no cover
     # Include the Debug Tooolbar middleware as early as possible; refer to the docs:
     # https://django-debug-toolbar.readthedocs.io/en/latest/installation.html#add-the-middleware
     MIDDLEWARE = ["debug_toolbar.middleware.DebugToolbarMiddleware", *MIDDLEWARE]
