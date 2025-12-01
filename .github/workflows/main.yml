@@ -120,7 +120,7 @@ jobs:
             ssh -o "UserKnownHostsFile=/dev/null" -o "StrictHostKeyChecking=no" dokku@dokku3.ebmdatalab.net git:from-image actions-registry $SHA
 
       - name: Create Sentry release
-        uses: getsentry/action-release@4f502acc1df792390abe36f2dcb03612ef144818
+        uses: getsentry/action-release@128c5058bbbe93c8e02147fe0a9c713f166259a6
         env:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_RELEASE_INTEGRATION_TOKEN }}
           SENTRY_ORG: ebm-datalab
