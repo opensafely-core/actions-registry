@@ -28,8 +28,8 @@ virtualenv:
     # allow users to specify python version in .env
     PYTHON_VERSION=${PYTHON_VERSION:-$DEFAULT_PYTHON}
 
-    # create venv and install latest pip compatible with pip-tools
-    test -d $VIRTUAL_ENV || { $PYTHON_VERSION -m venv $VIRTUAL_ENV && $PIP install pip==25.2; }
+    # create venv and install latest pip
+    test -d $VIRTUAL_ENV || { $PYTHON_VERSION -m venv $VIRTUAL_ENV && $PIP install pip; }
 
     # ensure we have pip-tools so we can run pip-compile
     test -e $BIN/pip-compile || $PIP install pip-tools
