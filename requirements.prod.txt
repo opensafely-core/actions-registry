@@ -4,9 +4,9 @@
 #
 #    pip-compile --allow-unsafe --generate-hashes --output-file=requirements.prod.txt requirements.prod.in
 #
-asgiref==3.11.0 \
-    --hash=sha256:13acff32519542a1736223fb79a715acdebe24286d98e8b164a73085f40da2c4 \
-    --hash=sha256:1db9021efadb0d9512ce8ffaf72fcef601c7b73a8807a1bb2ef143dc6b14846d
+asgiref==3.11.1 \
+    --hash=sha256:5f184dc43b7e763efe848065441eac62229c9f7b0475f41f80e207a114eda4ce \
+    --hash=sha256:e8667a091e69529631969fd45dc268fa79b99c92c5fcdda727757e52146ec133
     # via
     #   django
     #   django-permissions-policy
@@ -306,9 +306,9 @@ dj-email-url==1.0.6 \
     --hash=sha256:55ffe3329e48f54f8a75aa36ece08f365e09d61f8a209773ef09a1d4760e699a \
     --hash=sha256:cbd08327fbb08b104eac160fb4703f375532e4c0243eb230f5b960daee7a96db
     # via environs
-django==5.2.10 \
-    --hash=sha256:74df100784c288c50a2b5cad59631d71214f40f72051d5af3fdf220c20bdbbbe \
-    --hash=sha256:cf85067a64250c95d5f9067b056c5eaa80591929f7e16fbcd997746e40d6c45c
+django==5.2.11 \
+    --hash=sha256:7f2d292ad8b9ee35e405d965fbbad293758b858c34bbf7f3df551aeeac6f02d3 \
+    --hash=sha256:e7130df33ada9ab5e5e929bc19346a20fe383f5454acb2cc004508f242ee92c0
     # via
     #   -r requirements.prod.in
     #   dj-database-url
@@ -343,9 +343,9 @@ furl==2.1.4 \
     --hash=sha256:877657501266c929269739fb5f5980534a41abd6bbabcb367c136d1d3b2a6015 \
     --hash=sha256:da34d0b34e53ffe2d2e6851a7085a05d96922b5b578620a37377ff1dbeeb11c8
     # via osgithub
-gunicorn==25.0.0 \
-    --hash=sha256:4b1ab820ffc316352da7146005a9e66044a131434b17a7d2a9fb0604f1268864 \
-    --hash=sha256:b9b88f0ebc5a0fcd1e9e29a1f045f56f5402c6423ee3e3f675f679d0db5345d1
+gunicorn==25.0.3 \
+    --hash=sha256:aca364c096c81ca11acd4cede0aaeea91ba76ca74e2c0d7f879154db9d890f35 \
+    --hash=sha256:b53a7fff1a07b825b962af320554de44ae77a26abfa373711ff3f83d57d3506d
     # via -r requirements.prod.in
 idna==3.11 \
     --hash=sha256:771a87f49d9defaf64091e6e6fe9c18d4833f140bd19464795bc32d966ca37ea \
@@ -353,9 +353,9 @@ idna==3.11 \
     # via
     #   requests
     #   url-normalize
-marshmallow==4.2.1 \
-    --hash=sha256:4d1d66189c8d279ca73a6b0599d74117e5f8a3830b5cd766b75c2bb08e3464e7 \
-    --hash=sha256:d82b1a83cfbb4667d050850fbed4e9d4435576cb95f5ff37894f375dce201768
+marshmallow==4.2.2 \
+    --hash=sha256:084a9466111b7ec7183ca3a65aed758739af919fedc5ebdab60fb39d6b4dc121 \
+    --hash=sha256:ba40340683a2d1c15103647994ff2f6bc2c8c80da01904cbe5d96ee4baa78d9f
     # via environs
 orderedmultidict==1.0.2 \
     --hash=sha256:16a7ae8432e02cc987d2d6d5af2df5938258f87c870675c73ee77a0920e6f4a6 \
@@ -461,9 +461,9 @@ requests==2.32.5 \
     #   -r requirements.prod.in
     #   osgithub
     #   requests-cache
-requests-cache==1.2.1 \
-    --hash=sha256:1285151cddf5331067baa82598afe2d47c7495a1334bfe7a7d329b43e9fd3603 \
-    --hash=sha256:68abc986fdc5b8d0911318fbb5f7c80eebcd4d01bfacc6685ecf8876052511d1
+requests-cache==1.3.0 \
+    --hash=sha256:070e357ccef11a300ccef4294a85de1ab265833c5d9c9538b26cd7ba4085d54a \
+    --hash=sha256:f09f27bbf100c250886acf13a9db35b53cf2852fddd71977b47c71ea7d90dbba
     # via osgithub
 six==1.17.0 \
     --hash=sha256:4721f391ed90541fddacab5acf947aa0d3dc7d27b2e1e8eda2be8970586c3274 \
