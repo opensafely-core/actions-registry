@@ -322,9 +322,9 @@ dj-email-url==1.0.6 \
     --hash=sha256:55ffe3329e48f54f8a75aa36ece08f365e09d61f8a209773ef09a1d4760e699a \
     --hash=sha256:cbd08327fbb08b104eac160fb4703f375532e4c0243eb230f5b960daee7a96db
     # via environs
-django==5.2.13 \
-    --hash=sha256:5788fce61da23788a8ce6f02583765ab060d396720924789f97fa42119d37f7a \
-    --hash=sha256:a31589db5188d074c63f0945c3888fad104627dfcc236fb2b97f71f89da33bc4
+django==5.2.14 \
+    --hash=sha256:58a63ba841662e5c686b57ba1fec52ddd68c0b93bd96ac3029d55728f00bf8a2 \
+    --hash=sha256:6f712143bd3064310d1f50fac859c3e9a274bdcfc9595339853be7779297fc76
     # via
     #   -r requirements.prod.in
     #   dj-database-url
@@ -359,13 +359,13 @@ furl==2.1.4 \
     --hash=sha256:877657501266c929269739fb5f5980534a41abd6bbabcb367c136d1d3b2a6015 \
     --hash=sha256:da34d0b34e53ffe2d2e6851a7085a05d96922b5b578620a37377ff1dbeeb11c8
     # via osgithub
-gunicorn==25.3.0 \
-    --hash=sha256:cacea387dab08cd6776501621c295a904fe8e3b7aae9a1a3cbb26f4e7ed54660 \
-    --hash=sha256:f74e1b2f9f76f6cd1ca01198968bd2dd65830edc24b6e8e4d78de8320e2fe889
+gunicorn==26.0.0 \
+    --hash=sha256:40233d26a5f0d1872916188c276e21641155111c2853f0c2cd55260aec0d24fc \
+    --hash=sha256:ca9346f85e3a4aeeb64d491045c16b9a35647abd37ea15efe53080eb8b090baf
     # via -r requirements.prod.in
-idna==3.13 \
-    --hash=sha256:585ea8fe5d69b9181ec1afba340451fba6ba764af97026f92a91d4eef164a242 \
-    --hash=sha256:892ea0cde124a99ce773decba204c5552b69c3c67ffd5f232eb7696135bc8bb3
+idna==3.14 \
+    --hash=sha256:466d810d7a2cc1022bea9b037c39728d51ae7dad40d480fc9b7d7ecf98ba8ee3 \
+    --hash=sha256:e677eaf072e290f7b725f9acf0b3a2bd55f9fd6f7c70abe5f0e34823d0accf69
     # via
     #   requests
     #   url-normalize
@@ -514,9 +514,9 @@ url-normalize==3.0.0 \
     --hash=sha256:0552cbf2831a32a28994a13d29bca58a60e10ff6c0380e343ec6d1c2a0d232d8 \
     --hash=sha256:95234bd359f86831c1fd87c248877f2a6887db2f3b5087120083f2fffcba4889
     # via requests-cache
-urllib3==2.6.3 \
-    --hash=sha256:1b62b6884944a57dbe321509ab94fd4d3b307075e0c2eae991ac71ee15ad38ed \
-    --hash=sha256:bf272323e553dfb2e87d9bfd225ca7b0f467b919d7bbd355436d3fd37cb0acd4
+urllib3==2.7.0 \
+    --hash=sha256:231e0ec3b63ceb14667c67be60f2f2c40a518cb38b03af60abc813da26505f4c \
+    --hash=sha256:9fb4c81ebbb1ce9531cce37674bbc6f1360472bc18ca9a553ede278ef7276897
     # via
     #   requests
     #   requests-cache
