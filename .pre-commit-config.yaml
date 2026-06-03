@@ -16,9 +16,15 @@ repos:
       language: system
       types: [python]
       require_serial: true
+    - id: hadolint
+      name: Hadolint
+      description: Haskell-based Docker image linter
+      language: docker_image
+      types: [dockerfile]
+      entry: hadolint/hadolint:v2.14.0@sha256:27086352fd5e1907ea2b934eb1023f217c5ae087992eb59fde121dce9c9ff21e hadolint
 
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.5.0
+    rev: 3e8a8703264a2f4a69428a0aa4dcb512790b2c8c # v6.0.0
     hooks:
     - id: trailing-whitespace
     - id: end-of-file-fixer
@@ -28,8 +34,3 @@ repos:
     - id: check-toml
     - id: check-yaml
     - id: detect-private-key
-
-  - repo: https://github.com/stratasan/hadolint-pre-commit
-    rev: cdefcb096e520a6daa9552b1d4636f5f1e1729cd
-    hooks:
-    - id: hadolint
