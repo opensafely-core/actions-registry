@@ -358,7 +358,7 @@ exceptiongroup==1.3.1 \
 furl==2.1.4 \
     --hash=sha256:877657501266c929269739fb5f5980534a41abd6bbabcb367c136d1d3b2a6015 \
     --hash=sha256:da34d0b34e53ffe2d2e6851a7085a05d96922b5b578620a37377ff1dbeeb11c8
-    # via osgithub
+    # via -r requirements.prod.in
 gunicorn==26.0.0 \
     --hash=sha256:40233d26a5f0d1872916188c276e21641155111c2853f0c2cd55260aec0d24fc \
     --hash=sha256:ca9346f85e3a4aeeb64d491045c16b9a35647abd37ea15efe53080eb8b090baf
@@ -377,10 +377,6 @@ orderedmultidict==1.0.2 \
     --hash=sha256:16a7ae8432e02cc987d2d6d5af2df5938258f87c870675c73ee77a0920e6f4a6 \
     --hash=sha256:ab5044c1dca4226ae4c28524cfc5cc4c939f0b49e978efa46a6ad6468049f79b
     # via furl
-osgithub==0.6.0 \
-    --hash=sha256:270eddd652baa14e6f05d4a4d534cb238ebcbf47abd6f7b1f4c7224f0636534f \
-    --hash=sha256:33c282e2d0d4dfab0621fe130435215e29b7029c07b343095b08783c3812c852
-    # via -r requirements.prod.in
 packaging==26.2 \
     --hash=sha256:5fc45236b9446107ff2415ce77c807cee2862cb6fac22b8a73826d0693b0980e \
     --hash=sha256:ff452ff5a3e828ce110190feff1178bb1f2ea2281fa2075aadb987c2fb221661
@@ -475,12 +471,11 @@ requests==2.34.2 \
     --hash=sha256:f288924cae4e29463698d6d60bc6a4da69c89185ad1e0bcc4104f584e960b9ed
     # via
     #   -r requirements.prod.in
-    #   osgithub
     #   requests-cache
 requests-cache==1.3.2 \
     --hash=sha256:bdc3680931f98a1dea509d339ea6b45cea526945b47b250ce63ffd2744ee0b14 \
     --hash=sha256:c52666c76b08daa94d05a99327dd24afc46f405abc044e8c2267b540f90673d0
-    # via osgithub
+    # via -r requirements.prod.in
 six==1.17.0 \
     --hash=sha256:4721f391ed90541fddacab5acf947aa0d3dc7d27b2e1e8eda2be8970586c3274 \
     --hash=sha256:ff70335d468e7eb6ec65b95b99d3a2836546063f63acc5171de367e834932a81

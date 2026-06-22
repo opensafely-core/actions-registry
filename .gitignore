@@ -101,6 +101,7 @@ venv/
 
 # sqlite db for dev
 *.sqlite3
+*.sqlite
 
 # Local environment file
 .env
