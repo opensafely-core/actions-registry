@@ -3,7 +3,8 @@ import sys
 from django.conf import settings
 from django.core.management.base import BaseCommand, CommandError
 from django.db import transaction
-from osgithub import GithubAPIException, GithubClient
+
+from actions.github import GithubAPIException, GithubClient
 
 from ...models import Action
 

@@ -8,9 +8,10 @@ django-csp
 django-permissions-policy
 django-vite
 environs[django]
+furl
 gunicorn
-osgithub
 pyyaml
 requests
+requests_cache
 structlog
 whitenoise[brotli]

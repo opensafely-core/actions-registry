@@ -13,3 +13,4 @@ pytest-django
 pyyaml
 responses
 ruff
+httpretty
