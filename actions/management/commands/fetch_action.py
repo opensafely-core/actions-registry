@@ -9,7 +9,7 @@ from ...models import Action
 
 
 class Command(BaseCommand):
-    actions = [
+    actions = (
         "opensafely-actions/cohort-joiner",
         "opensafely-actions/cohort-report",
         "opensafely-actions/cox-ipw",
@@ -21,7 +21,7 @@ class Command(BaseCommand):
         "opensafely-actions/matching",
         "opensafely-actions/project-dag",
         "opensafely-actions/safetab",
-    ]
+    )
 
     def handle(self, *args, **kwargs):
         for action in self.actions:
