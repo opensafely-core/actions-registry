@@ -63,3 +63,8 @@ extend-ignore = [
 [tool.ruff.lint.per-file-ignores]
 "gunicorn.conf.py" = ["INP001"]
 "manage.py" = ["INP001"]
+# RUF012 warns of mutable class attributes.
+# Django uses mutable class attributes extensively.
+# https://github.com/astral-sh/ruff/issues/5243
+"**/migrations/*.py" = ["RUF012"]
+"actions/models.py" = ["RUF012"]
