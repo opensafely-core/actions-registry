@@ -5,9 +5,7 @@
 # pip-compile --generate-hashes --output-file=requirements.dev.txt requirements.dev.in
 
 django-debug-toolbar
-# Temporarily pin pip-tools for consistency with justfile.
-# See #614.
-pip-tools==7.5.3
+pip-tools
 pre-commit
 pytest
 pytest-cov
