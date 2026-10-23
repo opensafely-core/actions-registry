@@ -420,9 +420,9 @@ orderedmultidict==1.0.2 \
     --hash=sha256:16a7ae8432e02cc987d2d6d5af2df5938258f87c870675c73ee77a0920e6f4a6 \
     --hash=sha256:ab5044c1dca4226ae4c28524cfc5cc4c939f0b49e978efa46a6ad6468049f79b
     # via furl
-osgithub==0.7.1 \
-    --hash=sha256:1425e97974781ad4d1b6822d7c4c36d667a1925a7fd301a5ed181545cd7fcb50 \
-    --hash=sha256:ee4e92dc376c4cf6582b6e676e969a3fe4a7dd1dd751e5122a0ed321f9f551f1
+osgithub==0.8.0 \
+    --hash=sha256:37d19059c405816a141e9e4abe964c70b42cb7e8ce3649029be315152c1f662a \
+    --hash=sha256:80a22703a26d0e8138ed08c66ab9385d13a19974fc4686343e70c0632e7b7baa
     # via -r requirements.prod.in
 packaging==26.3 \
     --hash=sha256:94edc256424af38762eb31306eed28beb9f0efc50a8837492c9d6fd6004aed79 \
